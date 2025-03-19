@@ -1,0 +1,41 @@
+
+name: Deploy to Hostinger FTP
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Create db_connect.php from the template
+      - name: Create db_connect.php from template
+        run: |
+          cp faculty/db_connect.php.template faculty/db_connect.php
+          sed -i "s|{{DB_HOST}}|${{ secrets.HOSTINGER_DB_HOST }}|g" faculty/db_connect.php
+          sed -i "s|{{DB_NAME}}|${{ secrets.HOSTINGER_DB_NAME }}|g" faculty/db_connect.php
+          sed -i "s|{{DB_USER}}|${{ secrets.HOSTINGER_DB_USER }}|g" faculty/db_connect.php
+          sed -i "s|{{DB_PASS}}|${{ secrets.HOSTINGER_DB_PASS }}|g" faculty/db_connect.php
+
+      # Inject hCaptcha credentials
+      - name: Inject hCaptcha credentials
+        run: |
+          sed -i "s|getenv('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" index.php
+          sed -i "s|getenv('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" index.php        
+          sed -i "s|getenv('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" student/parent111.php
+          sed -i "s|getenv('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" student/parent111.php
+
+      # Deploy via FTP to Hostinger
+      - name: Deploy to Hostinger FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: /public_html/  
