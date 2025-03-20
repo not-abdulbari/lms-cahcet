@@ -1,4 +1,5 @@
 <?php
+echo 'HCAPTCHA_SITE_KEY: ' . htmlspecialchars(getenv('HCAPTCHA_SITE_KEY'));
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
