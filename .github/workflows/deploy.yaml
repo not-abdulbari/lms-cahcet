@@ -14,13 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Set up PHP
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '7.4'
-
-      # Create db_connect.php from the template
+     # Create db_connect.php from the template
       - name: Create db_connect.php from template
         run: |
           cp faculty/db_connect.php.template faculty/db_connect.php
@@ -29,17 +23,11 @@ jobs:
           sed -i "s|{{DB_USER}}|${{ secrets.HOSTINGER_DB_USER }}|g" faculty/db_connect.php
           sed -i "s|{{DB_PASS}}|${{ secrets.HOSTINGER_DB_PASS }}|g" faculty/db_connect.php
 
-      # Use hcaptcha_credentials.php directly
-      - name: Use hcaptcha_credentials.php
+      - name: Create hcaptcha_credentials.php from template
         run: |
-          cp faculty/hcaptcha_credentials.php.template hcaptcha_credentials.php
-
-      # Inject hCaptcha credentials from file into PHP scripts
-      - name: Inject hCaptcha credentials from file
-        run: |
-          sed -i "s|require 'faculty/hcaptcha_credentials.php';|include_once 'faculty/hcaptcha_credentials.php';|g" index.php
-          sed -i "s|require 'faculty/hcaptcha_credentials.php';|include_once 'faculty/hcaptcha_credentials.php';|g" student/parent111.php
-
+          cp faculty/hcaptcha_credentials.php.template faculty/hcaptcha_credentials.php
+          sed -i "s|{{HCAPTCHA_SITE}}|${{ secrets.HCAPTCHA_SITE_KEY }}|g" faculty/hcaptcha_credentials.php
+          sed -i "s|{{HCAPTCHA_SECRET}}|${{ secrets.HCAPTCHA_SECRET_KEY }}|g" faculty/hcaptcha_credentials.php
       # Deploy via FTP to Hostinger
       - name: Deploy to Hostinger FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
