@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include hCaptcha credentials
-include 'faculty/hcaptcha_credentials.php';
+include 'hcaptcha_credentials.php';
 
 $show_alert = false; // Flag to control alert display
 
@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         // Verify hCaptcha
         $hcaptcha_response = $_POST['h-captcha-response'];
         $hcaptcha_secret = $secret_key; // Fetch from hcaptcha_credentials.php
-        $hcaptcha_site_key = $site_key; // Fetch from hcaptcha_credentials.php
 
         $verify_url = "https://hcaptcha.com/siteverify";
         $data = [
@@ -249,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
             <form action="student/student_profile.php" method="POST">
                 <input type="text" name="roll_no" placeholder="Roll Number" required>
                 <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)">
-                <div class="h-captcha" data-sitekey="<?php echo $site_key; ?>" required></div>
+                <div class="h-captcha" data-sitekey="<?php echo $site_key; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
