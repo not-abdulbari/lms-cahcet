@@ -26,10 +26,10 @@ jobs:
       # Inject hCaptcha credentials
       - name: Inject hCaptcha credentials
         run: |
-          sed -i "s|getenv('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" index.php
-          sed -i "s|getenv('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" index.php        
-          sed -i "s|getenv('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" student/parent111.php
-          sed -i "s|getenv('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" student/parent111.php
+          sed -i "s|('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" index.php
+          sed -i "s|('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" index.php        
+          sed -i "s|('HCAPTCHA_SITE_KEY')|'${{ secrets.HCAPTCHA_SITE_KEY }}'|g" student/parent111.php
+          sed -i "s|('HCAPTCHA_SECRET_KEY')|'${{ secrets.HCAPTCHA_SECRET_KEY }}'|g" student/parent111.php
 
       # Deploy via FTP to Hostinger
       - name: Deploy to Hostinger FTP
