@@ -32,13 +32,13 @@ jobs:
       # Use hcaptcha_credentials.php directly
       - name: Use hcaptcha_credentials.php
         run: |
-          cp hcaptcha_credentials.php.template hcaptcha_credentials.php
+          cp faculty/hcaptcha_credentials.php.template hcaptcha_credentials.php
 
       # Inject hCaptcha credentials from file into PHP scripts
       - name: Inject hCaptcha credentials from file
         run: |
-          sed -i "s|require 'hcaptcha_credentials.php';|include_once 'hcaptcha_credentials.php';|g" index.php
-          sed -i "s|require 'hcaptcha_credentials.php';|include_once 'hcaptcha_credentials.php';|g" student/parent111.php
+          sed -i "s|require 'faculty/hcaptcha_credentials.php';|include_once 'faculty/hcaptcha_credentials.php';|g" index.php
+          sed -i "s|require 'faculty/hcaptcha_credentials.php';|include_once 'faculty/hcaptcha_credentials.php';|g" student/parent111.php
 
       # Deploy via FTP to Hostinger
       - name: Deploy to Hostinger FTP
