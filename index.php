@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     } else {
         // Verify hCaptcha
         $hcaptcha_response = $_POST['h-captcha-response'];
-        $hcaptcha_secret = getenv('HCAPTCHA_SECRET_KEY'); // Fetch from GitHub Secrets
-        $hcaptcha_site_key = getenv('HCAPTCHA_SITE_KEY'); // Fetch from GitHub Secrets
+        $hcaptcha_secret = ('HCAPTCHA_SECRET_KEY'); // Fetch from GitHub Secrets
+        $hcaptcha_site_key = ('HCAPTCHA_SITE_KEY'); // Fetch from GitHub Secrets
 
         $verify_url = "https://hcaptcha.com/siteverify";
         $data = [
