@@ -28,18 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Define department names
     $departmentNames = [
         "CSE" => "Department of Computer Science and Engineering",
-    "ECE" => "Department of Electronics and Communication Engineering",
-    "EEE" => "Department of Electrical and Electronics Engineering",
-    "MECH" => "Department of Mechanical Engineering",
-    "CIVIL" => "Department of Civil Engineering",
-    "IT" => "Department of Information Technology",
-    "AIDS" => "Department of Artificial Intelligence & Data Science",
-    "MBA" => "Department of Master of Business Administration",
-    "MCA" => "Department of Master of Computer Applications",
+        "ECE" => "Department of Electronics and Communication Engineering",
+        "EEE" => "Department of Electrical and Electronics Engineering",
+        "MECH" => "Department of Mechanical Engineering",
+        "CIVIL" => "Department of Civil Engineering",
+        "IT" => "Department of Information Technology",
+        "AIDS" => "Department of Artificial Intelligence & Data Science",
+        "MBA" => "Department of Master of Business Administration",
+        "MCA" => "Department of Master of Computer Applications",
     ];
 
     $department = isset($departmentNames[$branch]) ? $departmentNames[$branch] : "Department of $branch";
-
 
     // Fetch student marks
     $marks_sql = "SELECT m.subject AS subject_code, sub.subject_name, m.marks 
@@ -50,6 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $marks_stmt->bind_param("sss", $roll_no, $semester, $exam);
     $marks_stmt->execute();
     $marks_result = $marks_stmt->get_result();
+
+    // Fetch average attendance
+    $attendance_sql = "SELECT AVG(percentage) AS average_attendance FROM semester_attendance WHERE roll_no = ? AND semester = ?";
+    $attendance_stmt = $conn->prepare($attendance_sql);
+    $attendance_stmt->bind_param("ss", $roll_no, $semester);
+    $attendance_stmt->execute();
+    $attendance_result = $attendance_stmt->get_result()->fetch_assoc();
+    $average_attendance = $attendance_result['average_attendance'];
+    $attendance_stmt->close();
 
     // Create a new PDF instance
     $pdf = new FPDF();
@@ -79,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Add a line
     $pdf->SetY(40); // Adjust Y position to leave space for the logo and header
-    $pdf->Cell(0, 10, '__________________________________________________________________________________________________', 0, 1, 'C');
+    $pdf->Cell(0, 10, '_____________________________________________________', 0, 1, 'C');
 
     // Add "Progress Report" heading
     $pdf->SetFont('Times', 'B', 16);
@@ -92,85 +100,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->Ln(10);
 
     // Add student info
-// Set font for student info (labels in bold, values in regular)
-$pdf->SetFont('Times', 'B', 12); // Bold for labels
-$pdf->Cell(25, 10, 'Name: ', 0, 0, 'L'); // Label (reduced width)
-$pdf->SetFont('Times', '', 12); // Regular for value
-$pdf->Cell(70, 10, $student['name'], 0, 0, 'L'); // Value
+    // Set font for student info (labels in bold, values in regular)
+    $pdf->SetFont('Times', 'B', 12); // Bold for labels
+    $pdf->Cell(25, 10, 'Name: ', 0, 0, 'L'); // Label (reduced width)
+    $pdf->SetFont('Times', '', 12); // Regular for value
+    $pdf->Cell(70, 10, $student['name'], 0, 0, 'L'); // Value
 
-$pdf->SetFont('Times', 'B', 12); // Bold for labels
-$pdf->Cell(60, 10, 'Roll No.: ', 0, 0, 'R'); // Label (reduced width)
-$pdf->SetFont('Times', '', 12); // Regular for value
-$pdf->Cell(21, 10, $student['roll_no'], 0, 1, 'R'); // Value
+    $pdf->SetFont('Times', 'B', 12); // Bold for labels
+    $pdf->Cell(60, 10, 'Roll No.: ', 0, 0, 'R'); // Label (reduced width)
+    $pdf->SetFont('Times', '', 12); // Regular for value
+    $pdf->Cell(21, 10, $student['roll_no'], 0, 1, 'R'); // Value
 
-$pdf->SetFont('Times', 'B', 12); // Bold for labels
-$pdf->Cell(25, 10, 'Year: ', 0, 0, 'L'); // Label (reduced width)
-$pdf->SetFont('Times', '', 12); // Regular for value
-$pdf->Cell(70, 10, $year_roman, 0, 0, 'L'); // Value
+    $pdf->SetFont('Times', 'B', 12); // Bold for labels
+    $pdf->Cell(25, 10, 'Year: ', 0, 0, 'L'); // Label (reduced width)
+    $pdf->SetFont('Times', '', 12); // Regular for value
+    $pdf->Cell(70, 10, $year_roman, 0, 0, 'L'); // Value
 
-// Set font for student info (labels in bold, values in regular)
-$pdf->SetFont('Times', 'B', 12); // Bold for labels
-$pdf->Cell(60, 10, 'Branch & Section: ', 0, 0, 'R'); // Label aligned to the right
-$pdf->SetFont('Times', '', 12); // Regular for value
-$pdf->Cell(21, 10, $branch . ' & ' . $section, 0, 1, 'R'); // Value aligned to the right
 
-    // Add a line break
+
     $pdf->Ln(10);
 
-   // Calculate table width
-$tableWidth = 15 + 30 + 130 + 25; // Sum of column widths
+    // Calculate table width
+    $tableWidth = 15 + 30 + 130 + 25; // Sum of column widths
 
-// Calculate starting X-coordinate to center the table
-$pageWidth = 210; // A4 page width in mm
-$startX = ($pageWidth - $tableWidth) / 2;
+    // Calculate starting X-coordinate to center the table
+    $pageWidth = 210; // A4 page width in mm
+    $startX = ($pageWidth - $tableWidth) / 2;
 
-// Set the X-coordinate for the table
-$pdf->SetX($startX);
+    // Set the X-coordinate for the table
+    $pdf->SetX($startX);
 
-// Create the table header
-$pdf->SetFont('Times', 'B', 12); // Times New Roman, bold, size 12
-$pdf->Cell(15, 10, 'S.No.', 1, 0, 'C');
-$pdf->Cell(30, 10, 'Subject Code', 1, 0, 'C');
-$pdf->Cell(130, 10, 'Subject Name', 1, 0, 'C');
-$pdf->Cell(25, 10, 'Marks', 1, 1, 'C');
+    // Create the table header
+    $pdf->SetFont('Times', 'B', 12); // Times New Roman, bold, size 12
+    $pdf->Cell(15, 10, 'S.No.', 1, 0, 'C');
+    $pdf->Cell(30, 10, 'Subject Code', 1, 0, 'C');
+    $pdf->Cell(130, 10, 'Subject Name', 1, 0, 'C');
+    $pdf->Cell(25, 10, 'Marks', 1, 1, 'C'); // 1 at the end to move to the next line
 
-// Fetch and add marks data
-$pdf->SetFont('Times', '', 12); // Times New Roman, regular, size 12
-$index = 1;
-$printedSubjects = []; // Array to track printed subject codes
+    // Fetch and add marks data
+    $pdf->SetFont('Times', '', 12); // Times New Roman, regular, size 12
+    $index = 1;
+    $printedSubjects = []; // Array to track printed subject codes
 
-while ($mark = $marks_result->fetch_assoc()) {
-    // Check if the subject code has already been printed
-    if (!in_array($mark['subject_code'], $printedSubjects)) {
-        $markDisplay = $mark['marks'] < 0 ? 'AB' : ($mark['marks'] < 50 ? $mark['marks'] . ' (U)' : $mark['marks']);
-        
-        // Set the X-coordinate for each row to keep the table centered
-        $pdf->SetX($startX);
-        
-        $pdf->Cell(15, 10, $index, 1, 0, 'C');
-        $pdf->Cell(30, 10, $mark['subject_code'], 1, 0, 'C');
-        $pdf->Cell(130, 10, $mark['subject_name'], 1, 0, 'L');
-        $pdf->Cell(25, 10, $markDisplay, 1, 1, 'C');
+    while ($mark = $marks_result->fetch_assoc()) {
+        // Check if the subject code has already been printed
+        if (!in_array($mark['subject_code'], $printedSubjects)) {
+            $markDisplay = $mark['marks'] < 0 ? 'AB' : ($mark['marks'] < 50 ? $mark['marks'] . ' (U)' : $mark['marks']);
 
-        // Add the subject code to the printed list
-        $printedSubjects[] = $mark['subject_code'];
-        $index++;
+            // Set the X-coordinate for each row to keep the table centered
+            $pdf->SetX($startX);
+
+            $pdf->Cell(15, 10, $index, 1, 0, 'C');
+            $pdf->Cell(30, 10, $mark['subject_code'], 1, 0, 'C');
+            $pdf->Cell(130, 10, $mark['subject_name'], 1, 0, 'L');
+            $pdf->Cell(25, 10, $markDisplay, 1, 1, 'C');
+
+            // Add the subject code to the printed list
+            $printedSubjects[] = $mark['subject_code'];
+            $index++;
+        }
     }
-}
-    // Add a line break before the legends
-$pdf->Ln(10);
 
-// Add legends
-$pdf->SetFont('Times', 'B', 12);
-$pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L');
-$pdf->SetFont('Times', '', 12);
-$pdf->Cell(25, 10, 'AB - Absent', 0, 1, 'L');
-$pdf->Cell(25, 10, '(U) - Fail', 0, 1, 'L');
+    // Add a line break before the legends
+    $pdf->Ln(10);
+
+    // Add legends
+    $pdf->SetFont('Times', 'B', 12);
+    $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L');
+    $pdf->SetFont('Times', '', 12);
+    $pdf->Cell(25, 10, 'AB - Absent', 0, 1, 'L');
+    $pdf->Cell(25, 10, '(U) - Fail', 0, 1, 'L');
+
+        // Set font for student info (labels in bold, values in regular)
+    $pdf->SetFont('Times', 'B', 12); // Bold for labels
+    $pdf->Cell(25, 10, 'Average Attendance: ', 0, 0, 'L'); // Label
+    $pdf->SetFont('Times', '', 12); // Regular for value
+    $pdf->Cell(21, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); // Value
 
     // Output the PDF to the browser for download
     $filename = "{$student['roll_no']}-{$exam}-{$semester}.pdf";
     $pdf->Output($filename, 'D');
 }
 
+
 $conn->close();
-?>
+?> 
