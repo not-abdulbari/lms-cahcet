@@ -171,13 +171,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->Cell(25, 10, '(U) - Fail', 0, 1, 'L');
 
 // Set the font for the label
+    // Set the font for the label
     $pdf->SetFont('Times', 'B', 12); // Bold font for the label
-    $pdf->Cell(25, 10, 'Average Attendance:', 0, 0, 'L'); // Label text
+    $pdf->Cell(50, 10, 'Average Attendance:', 0, 0, 'L'); // Label text with increased width
 
 // Set the font for the value
     $pdf->SetFont('Times', '', 12); // Regular font for the value
-    $pdf->Cell(130, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); // Value text
-
+    $pdf->Cell(0, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); // Value text, using the remaining line width
     // Output the PDF to the browser for download
     $filename = "{$student['roll_no']}-{$exam}-{$semester}.pdf";
     $pdf->Output($filename, 'D');
