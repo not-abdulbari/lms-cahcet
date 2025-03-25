@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
 <body>
     <div class="header">
-        <img src="assets/logo.jpg" alt="Counsellor's Book Image">
+        <img src="assets/789asdfkl.webp" alt="LMS Portal Image">
     </div>
     <div class="banner">
         <marquee behavior="scroll" direction="left">
