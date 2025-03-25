@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting
+error_reporting(E_ALL); // Report all errors
+ini_set('display_errors', 1); // Display errors directly on the output
+
 include '../faculty/db_connect.php';
 include 'head.php'
 
