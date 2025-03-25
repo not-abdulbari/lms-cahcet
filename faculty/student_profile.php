@@ -130,38 +130,50 @@ $conn->close();
     <title>Parent - View Student Profile, Marks, Attendance, Grades, and Report</title>
     <style>
         :root {
-            --primary-color: #007BFF;
-            --secondary-color: #6C757D;
-            --success-color: #28A745;
-            --danger-color: #DC3545;
-            --warning-color: #FFC107;
-            --info-color: #17A2B8;
-            --light-color: #F8F9FA;
-            --dark-color: #343A40;
-            --white-color: #FFF;
-            --font-family: Arial, sans-serif;
+            --federal-blue: #03045eff;
+            --marian-blue: #023e8aff;
+            --honolulu-blue: #0077b6ff;
+            --blue-green: #0096c7ff;
+            --pacific-cyan: #00b4d8ff;
+            --vivid-sky-blue: #48cae4ff;
+            --non-photo-blue: #90e0efff;
+            --non-photo-blue-2: #ade8f4ff;
+            --light-cyan: #caf0f8ff;
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            font-family: Arial, sans-serif;
+            background-color: var(--light-cyan);
+            color: var(--federal-blue);
             margin: 0;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            background-color: var(--white-color);
-            padding: 20px;
+            background-color: var(--white);
+            padding: 30px;
+            border: 1px solid var(--vivid-sky-blue);
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         h1 {
             text-align: center;
-            color: var(--primary-color);
+            color: var(--marian-blue);
+            font-size: 32px;
             margin-bottom: 20px;
         }
 
@@ -170,31 +182,32 @@ $conn->close();
         }
 
         label {
-            font-weight: bold;
-            color: var(--dark-color);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--honolulu-blue);
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid var(--secondary-color);
+        input[type="text"],
+        input[type="submit"] {
+            width: 80%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--blue-green);
             border-radius: 4px;
+            font-size: 16px;
         }
 
         input[type="submit"] {
             width: 100%;
-            padding: 10px;
-            background-color: var(--primary-color);
-            color: var(--white-color);
-            border: none;
-            border-radius: 4px;
+            background-color: var(--federal-blue);
+            color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
 
         input[type="submit"]:hover {
-            background-color: var(--dark-color);
+            background-color: var(--marian-blue);
         }
 
         .error {
@@ -212,16 +225,16 @@ $conn->close();
         .tabs button {
             flex: 1;
             padding: 10px;
-            border: 1px solid var(--secondary-color);
-            background-color: var(--light-color);
+            border: 1px solid var(--blue-green);
+            background-color: var(--light-cyan);
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
         }
 
         .tabs button:hover,
         .tabs button.active {
-            background-color: var(--primary-color);
-            color: var(--white-color);
+            background-color: var(--honolulu-blue);
+            color: var(--white);
         }
 
         .tab-content {
@@ -241,13 +254,13 @@ $conn->close();
         table th,
         table td {
             padding: 10px;
-            border: 1px solid var(--secondary-color);
+            border: 1px solid var(--blue-green);
             text-align: left;
         }
 
         table th {
-            background-color: var(--secondary-color);
-            color: var(--white-color);
+            background-color: var(--marian-blue);
+            color: var(--white);
         }
 
         .report ul {
@@ -422,7 +435,7 @@ $conn->close();
         }
 
         // Click the first tab by default
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var firstTab = document.querySelector('.tab-link');
             if (firstTab) {
                 firstTab.click();
