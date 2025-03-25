@@ -186,7 +186,7 @@ $conn->close();
 
         input[type="text"],
         input[type="submit"] {
-            width: 97%;
+            width: 80%;
             padding: 12px;
             margin-bottom: 20px;
             border: 1px solid var(--blue-green);
@@ -216,7 +216,7 @@ $conn->close();
 
         /* Table Styles */
         table {
-            width: 100%;
+            width: 90%;
             border-collapse: collapse;
             margin-top: 20px;
             overflow-x: auto;
@@ -254,6 +254,7 @@ $conn->close();
     }
 
     table th, table td {
+        width : 90%
         font-size: 14px;
     }
 }
@@ -261,10 +262,13 @@ $conn->close();
 
         /* Tabs Styles */
         .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
+    display: flex;
+    justify-content: space-between; /* Ensures even spacing between tabs */
+    align-items: center; /* Aligns tabs vertically */
+    margin: 10px 0; /* Provides subtle spacing around the tabs */
+    background-color: #f3f4f6; /* Light background for aesthetics */
+    padding: 10px; /* Adds padding inside the tabs container */
+}
 
         .tabs button {
             background-color: var(--honolulu-blue);
