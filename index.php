@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     </div>
     <div class="banner">
         <marquee behavior="scroll" direction="left">
-            <p>Welcome to the Counsellor's Book System</p>
+            <p>Welcome to the Learning Management System</p>
         </marquee>
     </div>
     <div class="main-container">
