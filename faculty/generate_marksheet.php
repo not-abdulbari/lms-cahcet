@@ -222,7 +222,7 @@ body {
 <body>
     <div class="container">
         <h2>Marksheet</h2>
-        <form method="post" action="marksheet.php">
+        <form method="post" action="marksheet1.php">
             <div class="dropdown-group">
                 <label>Branch:</label>
                 <select name="branch" id="branch" required>
