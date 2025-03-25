@@ -129,47 +129,39 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent - View Student Profile, Marks, Attendance, Grades, and Report</title>
     <style>
-      :root {
-            --federal-blue: #03045eff;
-            --marian-blue: #023e8aff;
-            --honolulu-blue: #0077b6ff;
-            --blue-green: #0096c7ff;
-            --pacific-cyan: #00b4d8ff;
-            --vivid-sky-blue: #48cae4ff;
-            --non-photo-blue: #90e0efff;
-            --non-photo-blue-2: #ade8f4ff;
-            --light-cyan: #caf0f8ff;
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #6C757D;
+            --success-color: #28A745;
+            --danger-color: #DC3545;
+            --warning-color: #FFC107;
+            --info-color: #17A2B8;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+            --white-color: #FFF;
+            --font-family: Arial, sans-serif;
         }
 
-        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--light-cyan);
-            color: var(--federal-blue);
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
             margin: 0;
             padding: 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border: 1px solid var(--vivid-sky-blue);
+            background-color: var(--white-color);
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: var(--marian-blue);
-            font-size: 32px;
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
@@ -178,127 +170,84 @@ $conn->close();
         }
 
         label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 10px;
-            color: var(--honolulu-blue);
+            font-weight: bold;
+            color: var(--dark-color);
         }
 
-        input[type="text"],
-        input[type="submit"] {
-            width: 80%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid var(--blue-green);
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--secondary-color);
             border-radius: 4px;
-            font-size: 16px;
         }
 
         input[type="submit"] {
             width: 100%;
-            background-color: var(--federal-blue);
-            color: #fff;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
         input[type="submit"]:hover {
-            background-color: var(--marian-blue);
+            background-color: var(--dark-color);
         }
 
-        /* Error Message */
         .error {
-            color: #e74c3c;
+            color: var(--danger-color);
             text-align: center;
-            margin-top: 15px;
-            font-size: 18px;
+            margin: 10px 0;
         }
 
-        /* Table Styles */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            background-color: var(--light-color);
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tabs button:hover,
+        .tabs button.active {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         table {
-            width: 90%;
+            width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            overflow-x: auto;
+            margin-bottom: 20px;
         }
 
         table th,
         table td {
             padding: 10px;
-            text-align: center;
-            border: 0.1px solid var(--vivid-sky-blue);
+            border: 1px solid var(--secondary-color);
+            text-align: left;
         }
 
         table th {
-            background-color: var(--marian-blue);
-            color: #fff;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        table tr:nth-child(even) {
-            background-color: var(--light-cyan);
-        }
-
-        @media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    button {
-        font-size: 14px;
-        padding: 8px 15px;
-    }
-
-    table th, table td {
-        width : 90%
-        font-size: 14px;
-    }
-}
-
-
-        /* Tabs Styles */
-        .tabs {
-    display: flex;
-    justify-content: space-between; /* Ensures even spacing between tabs */
-    align-items: center; /* Aligns tabs vertically */
-    margin: 10px 0; /* Provides subtle spacing around the tabs */
-    background-color: #f3f4f6; /* Light background for aesthetics */
-    padding: 10px; /* Adds padding inside the tabs container */
-}
-
-        .tabs button {
-            background-color: var(--honolulu-blue);
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 12px 20px;
-            margin-right: 5px;
-            font-size: 16px;
-            color: white;
-            border-radius: 4px 4px 0 0;
-            transition: background-color 0.3s ease;
-        }
-
-
-        .tabs button.active {
-            background-color: var(--federal-blue);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            border: 1px solid var(--vivid-sky-blue);
-            border-top: none;
-            background-color: aliceblue;
-        }
-
-        .tab-content.active {
-            display: block;
+            background-color: var(--secondary-color);
+            color: var(--white-color);
         }
 
         .report ul {
@@ -308,6 +257,22 @@ $conn->close();
 
         .report ul li {
             margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            table th,
+            table td {
+                padding: 8px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -328,8 +293,8 @@ $conn->close();
         }
         if (isset($student_data)) {
             echo "<div class='tabs'>
-                <button class='tab-link' onclick=\"openTab(event, 'profile')\">Profile</button>";
-            
+                <button class='tab-link active' onclick=\"openTab(event, 'profile')\">Profile</button>";
+
             // Collect all semesters
             $all_semesters = [];
             foreach ($marks_data as $marks) {
@@ -348,7 +313,7 @@ $conn->close();
 
             echo "<div id='profile' class='tab-content active'>
                 <h3>Student Information</h3>
-                <table style='width: 100%;'>
+                <table>
                     <tr><th>Name</th><td>" . htmlspecialchars($student_data['name']) . "</td></tr>
                     <tr><th>Roll Number</th><td>" . htmlspecialchars($student_data['roll_no']) . "</td></tr>
                     <tr><th>Branch</th><td>" . htmlspecialchars($student_data['branch']) . "</td></tr>
@@ -377,7 +342,7 @@ $conn->close();
 
                 if (!empty($data['marks'])) {
                     echo "<h4>Marks</h4>
-                        <table class='marks-table' style='width: 100%;'>
+                        <table>
                             <tr><th>Subject Code</th><th>Subject Name</th><th>CAT-1</th><th>CAT-2</th><th>Model Exam</th></tr>";
                     foreach ($data['marks'] as $subject) {
                         echo "<tr>
@@ -393,7 +358,7 @@ $conn->close();
 
                 if (!empty($data['attendance'])) {
                     echo "<h4>Attendance</h4>
-                        <table class='attendance-table' style='width: 100%;'>
+                        <table>
                             <tr><th>Entry Number</th><th>Percentage</th></tr>";
                     foreach ($data['attendance'] as $entry) {
                         echo "<tr>
@@ -406,7 +371,7 @@ $conn->close();
 
                 if (!empty($data['grades'])) {
                     echo "<h4>Grades</h4>
-                        <table class='grades-table' style='width: 100%;'>
+                        <table>
                             <tr><th>Semester</th><th>Subject Code</th><th>Grade</th></tr>";
                     foreach ($data['grades'] as $entry) {
                         echo "<tr>
