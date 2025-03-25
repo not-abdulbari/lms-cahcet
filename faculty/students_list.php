@@ -92,7 +92,7 @@ th {
 .btn:active {
     transform: scale(1); /* Return to normal */
 }
-</style>
+    </style>
 </head>
 <body>
     <h2 style="text-align: center;">Students List</h2>
