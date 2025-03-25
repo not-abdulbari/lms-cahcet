@@ -1,10 +1,5 @@
 <?php
-// Enable error reporting
-error_reporting(E_ALL); // Report all errors
-ini_set('display_errors', 1); // Display errors directly on the output
-
 include '../faculty/db_connect.php';
-include 'head.php'
 
 // Initialize variables
 $student_data = null;
@@ -135,181 +130,182 @@ $conn->close();
     <title>Parent - View Student Profile, Marks, Attendance, Grades, and Report</title>
     <style>
       :root {
-    --federal-blue: #03045eff;
-    --marian-blue: #023e8aff;
-    --honolulu-blue: #0077b6ff;
-    --blue-green: #0096c7ff;
-    --pacific-cyan: #00b4d8ff;
-    --vivid-sky-blue: #48cae4ff;
-    --non-photo-blue: #90e0efff;
-    --non-photo-blue-2: #ade8f4ff;
-    --light-cyan: #caf0f8ff;
-}
+            --federal-blue: #03045eff;
+            --marian-blue: #023e8aff;
+            --honolulu-blue: #0077b6ff;
+            --blue-green: #0096c7ff;
+            --pacific-cyan: #00b4d8ff;
+            --vivid-sky-blue: #48cae4ff;
+            --non-photo-blue: #90e0efff;
+            --non-photo-blue-2: #ade8f4ff;
+            --light-cyan: #caf0f8ff;
+        }
 
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--light-cyan);
-    color: var(--federal-blue);
-    margin: 0;
-    padding: 20px;
-}
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--light-cyan);
+            color: var(--federal-blue);
+            margin: 0;
+            padding: 20px;
+        }
 
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 30px;
-    border: 1px solid var(--vivid-sky-blue);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1s ease-in-out;
-}
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border: 1px solid var(--vivid-sky-blue);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-h1 {
-    text-align: center;
-    color: var(--marian-blue);
-    font-size: 32px;
-    margin-bottom: 20px;
-}
+        h1 {
+            text-align: center;
+            color: var(--marian-blue);
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
 
-form {
-    margin-bottom: 20px;
-}
+        form {
+            margin-bottom: 20px;
+        }
 
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 10px;
-    color: var(--honolulu-blue);
-}
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--honolulu-blue);
+        }
 
-input[type="text"],
-input[type="submit"] {
-    width: 97%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid var(--blue-green);
-    border-radius: 4px;
-    font-size: 16px;
-}
+        input[type="text"],
+        input[type="submit"] {
+            width: 97%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--blue-green);
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-input[type="submit"] {
-    width: 100%;
-    background-color: var(--federal-blue);
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        input[type="submit"] {
+            width: 100%;
+            background-color: var(--federal-blue);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-input[type="submit"]:hover {
-    background-color: var(--marian-blue);
-}
+        input[type="submit"]:hover {
+            background-color: var(--marian-blue);
+        }
 
-/* Error Message */
-.error {
-    color: #e74c3c;
-    text-align: center;
-    margin-top: 15px;
-    font-size: 18px;
-}
+        /* Error Message */
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+        }
 
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    overflow-x: auto;
-}
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
 
-table th,
-table td {
-    padding: 10px;
-    text-align: center;
-    border: 0.1px solid var(--vivid-sky-blue);
-}
+        table th,
+        table td {
+            padding: 10px;
+            text-align: center;
+            border: 0.1px solid var(--vivid-sky-blue);
+        }
 
-table th {
-    background-color: var(--marian-blue);
-    color: #fff;
-    animation: fadeIn 1s ease-in-out;
-}
+        table th {
+            background-color: var(--marian-blue);
+            color: #fff;
+            animation: fadeIn 1s ease-in-out;
+        }
 
-table tr:nth-child(even) {
-    background-color: var(--light-cyan);
-}
+        table tr:nth-child(even) {
+            background-color: var(--light-cyan);
+        }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-        max-width: 100%;
-    }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
 
-    h1 {
-        font-size: 28px;
-    }
+            h1 {
+                font-size: 28px;
+            }
 
-    input[type="submit"] {
-        font-size: 14px;
-    }
+            input[type="submit"] {
+                font-size: 14px;
+            }
 
-    table th,
-    table td {
-        font-size: 14px;
-    }
-}
+            table th,
+            table td {
+                font-size: 14px;
+            }
+        }
 
-/* Tabs Styles */
-.tabs {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
+        /* Tabs Styles */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
 
-.tabs button {
-    background-color: var(--honolulu-blue);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 12px 20px;
-    margin-right: 5px;
-    font-size: 16px;
-    color: white;
-    border-radius: 4px 4px 0 0;
-    transition: background-color 0.3s ease;
-}
+        .tabs button {
+            background-color: var(--honolulu-blue);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 20px;
+            margin-right: 5px;
+            font-size: 16px;
+            color: white;
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.3s ease;
+        }
 
-.tabs button.active {
-    background-color: var(--federal-blue);
-    color: white;
-}
 
-.tab-content {
-    display: none;
-    padding: 20px;
-    border: 1px solid var(--vivid-sky-blue);
-    border-top: none;
-    background-color: aliceblue;
-}
+        .tabs button.active {
+            background-color: var(--federal-blue);
+            color: white;
+        }
 
-.tab-content.active {
-    display: block;
-}
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid var(--vivid-sky-blue);
+            border-top: none;
+            background-color: aliceblue;
+        }
 
-.report ul {
-    list-style-type: disc;
-    padding-left: 20px;
-}
+        .tab-content.active {
+            display: block;
+        }
 
-.report ul li {
-    margin-bottom: 5px;
-}
+        .report ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .report ul li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 
