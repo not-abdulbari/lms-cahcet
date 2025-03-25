@@ -63,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         .header img {
             width: 100%;
             height: auto;
-            object-fit: cover;
-        }
+            }
 
         .banner {
-            margin-top: 40px;
+            margin-top: 0;
+            padding: 0;
             background-color: #003366;
             color: white;
             height: 60px;
@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
         .eye-icon i {
             position: absolute;
-            right: 75px;
+            right: 15%;
             color: grey;
         }
 
