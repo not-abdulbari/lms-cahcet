@@ -268,6 +268,14 @@ $conn->close();
                 font-size: 24px;
             }
 
+            input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+            
             table th,
             table td {
                 padding: 8px;
