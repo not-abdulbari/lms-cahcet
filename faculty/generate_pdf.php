@@ -2,8 +2,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 // Include the FPDF library
-require('../fpdf186/fpdf.php'); // Update the path to where you extracted FPDF
+require('../fpdf186/fpdf.php');
 
 // Include your database connection file
 include 'db_connect.php';
@@ -56,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attendance_stmt->bind_param("ss", $roll_no, $semester);
     $attendance_stmt->execute();
     $attendance_result = $attendance_stmt->get_result()->fetch_assoc();
-    $average_attendance = $attendance_result['average_attendance'];
+    $average_attendance = isset($attendance_result['average_attendance']) ? $attendance_result['average_attendance'] : 0; // Default to 0 if null
     $attendance_stmt->close();
 
     // Create a new PDF instance
@@ -116,8 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->SetFont('Times', '', 12); // Regular for value
     $pdf->Cell(70, 10, $year_roman, 0, 0, 'L'); // Value
 
-
-
     $pdf->Ln(10);
 
     // Calculate table width
@@ -171,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->Cell(25, 10, 'AB - Absent', 0, 1, 'L');
     $pdf->Cell(25, 10, '(U) - Fail', 0, 1, 'L');
 
-        // Set font for student info (labels in bold, values in regular)
+    // Set font for student info (labels in bold, values in regular)
     $pdf->SetFont('Times', 'B', 12); // Bold for labels
     $pdf->Cell(25, 10, 'Average Attendance: ', 0, 0, 'L'); // Label
     $pdf->SetFont('Times', '', 12); // Regular for value
@@ -182,6 +181,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->Output($filename, 'D');
 }
 
-
 $conn->close();
-?> 
+?>
