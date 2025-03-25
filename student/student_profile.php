@@ -108,36 +108,40 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent - View Student Marks, Attendance, Grades, and Report</title>
-    <style>
-        /* General Styles */
+        <style>
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #6C757D;
+            --success-color: #28A745;
+            --danger-color: #DC3545;
+            --warning-color: #FFC107;
+            --info-color: #17A2B8;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+            --white-color: #FFF;
+            --font-family: Arial, sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
             margin: 0;
             padding: 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border: 1px solid #ddd;
+            background-color: var(--white-color);
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            font-size: 32px;
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
@@ -146,132 +150,84 @@ $conn->close();
         }
 
         label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 10px;
-            color: #555;
+            font-weight: bold;
+            color: var(--dark-color);
         }
 
-        input[type="text"],
-        input[type="submit"] {
-            width: 97%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--secondary-color);
             border-radius: 4px;
-            font-size: 16px;
         }
 
         input[type="submit"] {
             width: 100%;
-            background-color: #0b0140;
-            color: #fff;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: var(--dark-color);
         }
 
-        /* Error Message */
         .error {
-            color: #e74c3c;
+            color: var(--danger-color);
             text-align: center;
-            margin-top: 15px;
-            font-size: 18px;
+            margin: 10px 0;
         }
 
-        /* Table Styles */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            background-color: var(--light-color);
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tabs button:hover,
+        .tabs button.active {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            overflow-x: auto;
+            margin-bottom: 20px;
         }
 
         table th,
         table td {
             padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid var(--secondary-color);
+            text-align: left;
         }
 
         table th {
-            background-color: #0b0140;
-            color: #fff;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        table tr:hover {
-            background-color: #e9f5ff;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            input[type="submit"] {
-                font-size: 14px;
-            }
-
-            table th,
-            table td {
-                font-size: 14px;
-            }
-        }
-
-        /* Tabs Styles */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .tabs button {
-            background-color: #4617bc;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 12px 20px;
-            margin-right: 5px;
-            font-size: 16px;
-            color: white;
-            border-radius: 4px 4px 0 0;
-            transition: background-color 0.3s ease;
-        }
-
-        .tabs button:hover {
-            background-color: #3b0e94;
-        }
-
-        .tabs button.active {
-            background-color: #3b0e94;
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-top: none;
-            background-color: #fff;
-        }
-
-        .tab-content.active {
-            display: block;
+            background-color: var(--secondary-color);
+            color: var(--white-color);
         }
 
         .report ul {
@@ -281,6 +237,30 @@ $conn->close();
 
         .report ul li {
             margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+            
+            table th,
+            table td {
+                padding: 8px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
