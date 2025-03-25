@@ -239,26 +239,25 @@ $conn->close();
             background-color: var(--light-cyan);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                max-width: 100%;
-            }
+    .container {
+        padding: 10px;
+    }
 
-            h1 {
-                font-size: 28px;
-            }
+    h1 {
+        font-size: 24px;
+    }
 
-            input[type="submit"] {
-                font-size: 14px;
-            }
+    button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
 
-            table th,
-            table td {
-                font-size: 14px;
-            }
-        }
+    table th, table td {
+        font-size: 14px;
+    }
+}
+
 
         /* Tabs Styles */
         .tabs {
