@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->SetFont('Times', 'B', 12); // Bold for labels
     $pdf->Cell(25, 10, 'Average Attendance: ', 0, 0, 'L'); // Label
     $pdf->SetFont('Times', '', 12); // Regular for value
-    $pdf->Cell(25, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); // Value
+    $pdf->Cell(35, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); // Value
 
     // Output the PDF to the browser for download
     $filename = "{$student['roll_no']}-{$exam}-{$semester}.pdf";
