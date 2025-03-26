@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
             padding: 0;
             background-color: #003366;
             color: white;
-            height: 60px;
+            height: 45px;
             display: flex;
             justify-content: center;
             align-items: center;
