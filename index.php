@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
         .header {
             width: 100%;
-            height: 250px;
+            height: auto;
         }
 
         .header img {
