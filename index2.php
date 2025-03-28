@@ -261,29 +261,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             display: none;
         }
         
-        #captcha-container {
-            width: 90%
-            max-width: 300px;          
-            height: 80px;        
-            margin: 20px auto;      
-            border: 1px solid #ccc; 
-            border-radius: 8px;    
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            background: #f9f9f9;   
-            padding: 10px;         
-        }
-        
+               
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
                 align-items: center;
             }
 
-            #captcha-container {
-                width: 64%;    
-                padding: 15px;
-            }
-
+            
             .header {
                 width: 100%;
                 height: 70px;
@@ -317,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                     <input type="password" name="password" id="password" placeholder="Password" required>
                     <i class="fas fa-eye-slash icon"></i>
                 </div>
-                <div id="captcha-container" class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -327,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             <form id="studentLoginForm" action="" method="POST">
                 <input type="text" name="roll_no" placeholder="Roll Number" required>
                 <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)">
-                <div id="captcha-container" class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div  class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
