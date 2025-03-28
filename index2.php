@@ -261,6 +261,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             display: none;
         }
 
+        .hcaptcha{
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
