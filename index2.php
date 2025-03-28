@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
 
         input {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
             border: 2px solid #ddd;
@@ -250,6 +250,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
 
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background-color: #f4f4f4;
+            font-size: 1em;
+            color: #333;
             display: none;
         }
 
