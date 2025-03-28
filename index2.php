@@ -262,7 +262,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
         
         #captcha-container {
-            width: 300px;          
+            width: 90%
+            max-width: 300px;          
             height: 80px;        
             margin: 20px auto;      
             border: 1px solid #ccc; 
@@ -279,8 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             }
 
             #captcha-container {
-                width: 100%;
-                max-width: 320px;    
+                width: 64%;    
                 padding: 15px;
             }
 
