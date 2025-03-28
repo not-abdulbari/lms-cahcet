@@ -260,21 +260,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             color: #333;
             display: none;
         }
-
-        .hcaptcha{
-           width: 300px;      
-            height: 80px;      
-            margin: 20px auto;  
-            border: 1px solid #ccc;
-            border-radius: 8px;  
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-            background: #f9f9f9; 
+        
+        #captcha-container {
+            width: 300px;          
+            height: 80px;        
+            margin: 20px auto;      
+            border: 1px solid #ccc; 
+            border-radius: 8px;    
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: #f9f9f9;   
+            padding: 10px;         
         }
-
+        
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            #captcha-container {
+                width: 100%;
+                max-width: 320px;    
+                padding: 15px;
             }
 
             .header {
@@ -310,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                     <input type="password" name="password" id="password" placeholder="Password" required>
                     <i class="fas fa-eye-slash icon"></i>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div id="captcha-container" class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -320,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             <form id="studentLoginForm" action="" method="POST">
                 <input type="text" name="roll_no" placeholder="Roll Number" required>
                 <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)">
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div id="captcha-container" class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
