@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
 // Handle Student Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
-    include 'student/db_connect.php';
+    include 'faculty/db_connect.php';
 
     // Verify hCaptcha
     $hcaptchaResponse = $_POST['h-captcha-response'];
@@ -206,7 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
 
         input {
             width: 80%;
-            max-width: 300px;
             padding: 10px;
             margin: 10px 0;
             border: 2px solid #ddd;
@@ -217,8 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
 
         button {
-            width: 100%;
-            max-width: 300px;
             background-color: #2575fc;
             color: white;
             border: none;
@@ -232,7 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         .eye-icon {
             display: flex;
             width: 100%;
-            max-width: 300px;
             position: relative;
             justify-content: center;
             align-items: center;
@@ -240,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
 
         .eye-icon i {
             position: absolute;
-            right: 10%;
+            right: 15%;
             color: grey;
         }
 
