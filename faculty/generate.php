@@ -38,6 +38,8 @@ while ($row = $subjectsQuery->fetch_assoc()) {
 }
 
 $reportData = [];
+$studentFailures = [];
+$allStudents = [];
 
 // Iterate over each subject to fetch and calculate data
 foreach ($subjects as $subject) {
@@ -48,7 +50,7 @@ foreach ($subjects as $subject) {
 
     // Fetch marks
     $result = $conn->query("
-        SELECT marks FROM marks 
+        SELECT roll_no, marks FROM marks 
         WHERE branch='$branch' AND year='$year' 
         AND section='$section' AND semester='$semester'
         AND subject='$subject' AND exam='$exam'
@@ -57,11 +59,16 @@ foreach ($subjects as $subject) {
     $absent = 0;
     $passed = 0;
     $failed = 0;
-    $totalStudents = 0;
+    $appeared = 0;
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            $studentId = $row['roll_no'];
             $mark = $row['marks'];
+
+            if (!isset($allStudents[$studentId])) {
+                $allStudents[$studentId] = 0;
+            }
 
             if ($mark == '-1') {
                 $absent++;
@@ -69,32 +76,61 @@ foreach ($subjects as $subject) {
             }
 
             $numericMark = (int)$mark;
+            $appeared++;
 
             if ($numericMark >= 50) {
                 $passed++;
             } else {
                 $failed++;
+                $studentFailures[$studentId] = ($studentFailures[$studentId] ?? 0) + 1;
             }
-
-            $totalStudents++;
         }
     }
 
-    $appeared = $totalStudents + $absent;
     $passPercent = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0;
 
-    if ($totalStudents > 0) {
+    if ($appeared > 0) {
         $reportData[] = [
             'subject' => $subject,
             'subjectName' => $subjectName,
-            'totalPresent' => $totalStudents,
-            'totalAppear' => $appeared,
+            'totalPresent' => $appeared,
+            'totalAppear' => $appeared + $absent,
             'passed' => $passed,
             'failed' => $failed,
             'passPercent' => $passPercent,
         ];
     }
 }
+
+// Calculate student failure statistics only for the provided year, semester, section, and exam
+$allCleared = 0;
+$failedOne = 0;
+$failedTwo = 0;
+$failedThree = 0;
+$failedMoreThanThree = 0;
+$totalAppeared = 0;
+
+foreach ($allStudents as $studentId => $count) {
+    $failCount = $studentFailures[$studentId] ?? 0;
+
+    if ($failCount == 0) {
+        $allCleared++;
+    } elseif ($failCount == 1) {
+        $failedOne++;
+    } elseif ($failCount == 2) {
+        $failedTwo++;
+    } elseif ($failCount == 3) {
+        $failedThree++;
+    } else {
+        $failedMoreThanThree++;
+    }
+
+    if ($failCount >= 0) {
+        $totalAppeared++;
+    }
+}
+
+$overallPassPercent = $totalAppeared > 0 ? round(($allCleared / $totalAppeared) * 100, 2) : 0;
 ?>
 
 <!DOCTYPE html>
@@ -106,7 +142,7 @@ foreach ($subjects as $subject) {
             body { margin: 14px; font-family: Times new roman; font-size: 14px }
             .no-print { display: none; }
             table { width: 100%; border-collapse: collapse; margin-top: 14px; }
-            th, td { border: 1px solid #000; padding: 8px; text-align:left; }
+            th, td { border: 1px solid #000; padding: 4px; text-align:left; }
             .header { text-align: center; display: flex; align-items: center; justify-content: center; }
             h3{ margin-bottom: -10px;}
             .header img { margin-top:10px; height: 90px;}
@@ -173,6 +209,42 @@ foreach ($subjects as $subject) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <p style="text-align: center;">Overall Student Performance</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Performance Category</th>
+                        <th>Number of Students</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cleared All Subjects</td>
+                        <td><?= htmlspecialchars($allCleared) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Failed in One Subject</td>
+                        <td><?= htmlspecialchars($failedOne) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Failed in Two Subjects</td>
+                        <td><?= htmlspecialchars($failedTwo) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Failed in Three Subjects</td>
+                        <td><?= htmlspecialchars($failedThree) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Failed in More Than Three Subjects</td>
+                        <td><?= htmlspecialchars($failedMoreThanThree) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="text-align: center;">Overall Pass Percentage</p>
+            <p style="text-align: center; font-size: 14px; font-weight: bold;"><?= htmlspecialchars($overallPassPercent) ?>%</p>
+
             <div class="signatures">
                 <div>Test Coordinator</div>
                 <div>HOD</div>
