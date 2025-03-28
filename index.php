@@ -9,28 +9,35 @@ $show_alert = false; // Flag to control alert display
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     include 'faculty/db_connect.php';
 
-    $input_username = $_POST['username'];
-    $input_password = $_POST['password'];
+    // Sanitize user inputs
+    $input_username = htmlspecialchars($_POST['username']);
+    $input_password = htmlspecialchars($_POST['password']);
     $input_hashed_password = hash('sha256', $input_password);
 
+    // Prepare and execute SQL statement securely
     $sql = "SELECT hashed_password FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $input_username);
-    $stmt->execute();
-    $stmt->bind_result($stored_hashed_password);
-    $stmt->fetch();
-
-    if ($input_hashed_password === $stored_hashed_password) {
-        $_SESSION['logged_in'] = true;
+    if ($stmt) {
+        $stmt->bind_param('s', $input_username);
+        $stmt->execute();
+        $stmt->bind_result($stored_hashed_password);
+        $stmt->fetch();
+        
+        // Verify password
+        if ($input_hashed_password === $stored_hashed_password) {
+            $_SESSION['logged_in'] = true;
+            $stmt->close();
+            $conn->close();
+            header('Location: faculty/home.php');
+            exit();
+        } else {
+            $show_alert = true; // Set flag for invalid credentials
+        }
+        
         $stmt->close();
-        $conn->close();
-        header('Location: faculty/home.php');
-        exit();
     } else {
-        $show_alert = true; // Set flag for invalid credentials
+        die('Error preparing the SQL statement.');
     }
-
-    $stmt->close();
     $conn->close();
 }
 ?>
@@ -63,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         .header img {
             width: 100%;
             height: auto;
-            }
+        }
 
         .banner {
             margin-top: 0;
@@ -159,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         input[type="password"]::-ms-clear {
             display: none;
         }
-
 
         @media (max-width: 768px) {
             .main-container {
