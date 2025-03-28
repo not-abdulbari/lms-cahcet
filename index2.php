@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     $resultJson = json_decode($result, true);
 
     if ($resultJson['success'] !== true) {
-        $error = 'hCaptcha verification failed. Please try again.';
+        $captcha_error = 'hCaptcha verification failed. Please try again.';
     } else {
         // Sanitize user inputs
         $input_username = htmlspecialchars($_POST['username']);
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     $resultJson = json_decode($result, true);
 
     if ($resultJson['success'] !== true) {
-        $error = 'hCaptcha verification failed. Please try again.';
+        $captcha_error = 'hCaptcha verification failed. Please try again.';
     } else {
         // Sanitize user inputs
         $input_roll_no = htmlspecialchars($_POST['roll_no']);
@@ -179,6 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             justify-content: space-between;
             margin-top: 20px;
             padding: 0 15px;
+            flex-wrap: wrap;
         }
 
         .container,
@@ -189,7 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             text-align: center;
             padding: 20px;
             margin: 10px;
-            width: 30%;
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
         }
 
         h2 {
@@ -216,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
 
         button {
+            width: 80%;
             background-color: #2575fc;
             color: white;
             border: none;
@@ -228,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
 
         .eye-icon {
             display: flex;
-            width: 100%;
+            width: 80%;
             position: relative;
             justify-content: center;
             align-items: center;
@@ -286,6 +290,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     <div class="main-container">
         <div class="container">
             <h2>Institution Login</h2>
+            <?php if (isset($captcha_error)): ?>
+                <p style="color: red;"><?php echo $captcha_error; ?></p>
+            <?php elseif ($show_alert): ?>
+                <p style="color: red;">Invalid username or password</p>
+            <?php endif; ?>
             <form id="loginForm" action="" method="POST">
                 <input type="text" name="username" placeholder="Username" required>
                 <div class="eye-icon">
@@ -296,9 +305,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 <button type="submit">Login</button>
             </form>
         </div>
-        <!-- Rest of your existing HTML remains unchanged -->
         <div class="container">
             <h2>Student Login</h2>
+            <?php if (isset($captcha_error)): ?>
+                <p style="color: red;"><?php echo $captcha_error; ?></p>
+            <?php elseif ($show_alert): ?>
+                <p style="color: red;">Invalid roll number or date of birth</p>
+            <?php endif; ?>
             <form id="studentLoginForm" action="" method="POST">
                 <input type="text" name="roll_no" placeholder="Roll Number" required>
                 <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)">
