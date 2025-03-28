@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
 
         input {
-            width: 80%;
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 2px solid #ddd;
