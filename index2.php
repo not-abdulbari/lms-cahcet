@@ -214,6 +214,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
             font-size: 1em;
             color: #333;
         }
+        .h-captcha {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background-color: #f4f4f4;
+            font-size: 1em;
+            color: #333;
+        }
 
         button {
             background-color: #2575fc;
