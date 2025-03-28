@@ -67,6 +67,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         $conn->close();
     }
 }
+
+// Handle Student Login
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
+    include 'student/db_connect.php';
+
+    // Verify hCaptcha
+    $hcaptchaResponse = $_POST['h-captcha-response'];
+    $secretKey = $config['HCAPTCHA_SECRET_KEY'];
+
+    $verifyUrl = 'https://hcaptcha.com/siteverify';
+    $data = [
+        'secret' => $secretKey,
+        'response' => $hcaptchaResponse,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    ];
+
+    $options = [
+        'http' => [
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data),
+        ]
+    ];
+    $context  = stream_context_create($options);
+    $result = file_get_contents($verifyUrl, false, $context);
+    $resultJson = json_decode($result, true);
+
+    if ($resultJson['success'] !== true) {
+        $error = 'hCaptcha verification failed. Please try again.';
+    } else {
+        // Sanitize user inputs
+        $input_roll_no = htmlspecialchars($_POST['roll_no']);
+        $input_dob = htmlspecialchars($_POST['dob']);
+
+        // Prepare and execute SQL statement securely
+        $sql = "SELECT * FROM students WHERE roll_no = ? AND dob = ?";
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param('ss', $input_roll_no, $input_dob);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $_SESSION['student_logged_in'] = true;
+                $_SESSION['roll_no'] = $input_roll_no;
+                $stmt->close();
+                $conn->close();
+                header('Location: student/student_profile.php');
+                exit();
+            } else {
+                $show_alert = true; // Set flag for invalid credentials
+            }
+            
+            $stmt->close();
+        } else {
+            die('Error preparing the SQL statement.');
+        }
+        $conn->close();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -240,9 +299,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         <!-- Rest of your existing HTML remains unchanged -->
         <div class="container">
             <h2>Student Login</h2>
-            <form action="student/student_profile.php" method="POST">
+            <form id="studentLoginForm" action="" method="POST">
                 <input type="text" name="roll_no" placeholder="Roll Number" required>
                 <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)">
+                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -272,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
             }
         });
 
-        // AJAX form submission
+        // AJAX form submission for Institution Login
         $(document).ready(function () {
             $('#loginForm').on('submit', function (e) {
                 e.preventDefault(); // Prevent the form from submitting
@@ -286,6 +346,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
                             alert('Invalid username or password');
                         } else {
                             window.location.href = 'faculty/home.php';
+                        }
+                    }
+                });
+            });
+
+            // AJAX form submission for Student Login
+            $('#studentLoginForm').on('submit', function (e) {
+                e.preventDefault(); // Prevent the form from submitting
+
+                $.ajax({
+                    url: '', // The same page
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.includes('Invalid roll number or date of birth')) {
+                            alert('Invalid roll number or date of birth');
+                        } else {
+                            window.location.href = 'student/student_profile.php';
                         }
                     }
                 });
