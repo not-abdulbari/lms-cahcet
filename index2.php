@@ -236,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
 
         .eye-icon i {
             position: absolute;
-            right: 15%;
+            right: 10%;
             color: grey;
         }
 
