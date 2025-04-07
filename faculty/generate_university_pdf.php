@@ -210,7 +210,11 @@ $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
   $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L'); 
   $pdf->SetFont('Times', '', 12); 
 
-  $pdf->Cell(25, 10, 'RA - Re-Appearance(FAIL)', 0, 1, 'L');
+$pdf->SetFont('Arial', 'B', 12); // Set bold font
+$pdf->Cell(10, 10, 'RA', 0, 0, 'L'); // Print 'RA' in bold
+
+$pdf->SetFont('Arial', '', 12); // Revert to normal font
+$pdf->Cell(50, 10, ' - Re-Appearance (FAIL)', 0, 1, 'L'); // Print the rest in normal
 
 
   // Set the font for the label 
