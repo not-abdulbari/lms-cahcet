@@ -157,7 +157,7 @@
 
   // Create the table header 
   $pdf->SetFont('Times', 'B', 12); 
-  $pdf->Cell(20, 10, 'Sem', 1, 0, 'C'); 
+  $pdf->Cell(20, 10, 'Semester', 1, 0, 'C'); 
   $pdf->Cell(40, 10, 'Subject Code', 1, 0, 'C'); 
   $pdf->Cell(80, 10, 'Subject Name', 1, 0, 'C'); 
   $pdf->Cell(25, 10, 'Grade', 1, 0, 'C'); 
@@ -182,21 +182,40 @@
       // Determine result based on grade (U, UA -> RA, otherwise PASS)
       $grade = strtoupper($mark['grade']);
       $result = (in_array($grade, ['U', 'UA'])) ? 'RA' : 'PASS';
-      
-      $pdf->SetX($startX); 
-      $pdf->Cell(20, 10, $mark['semester'], 1, 0, 'C'); 
-      $pdf->Cell(40, 10, $mark['subject_code'], 1, 0, 'C'); 
-      
-      // Handle potentially long subject names by allowing multi-line cells
-      $yBefore = $pdf->GetY(); // Store current Y position
-      $pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L'); 
-      $yAfter = $pdf->GetY(); // Store new Y position after MultiCell
 
-      $pdf->SetXY($startX + 140, $yBefore); // Adjust X and Y position for the next cells
-      $cellHeight = $yAfter - $yBefore; // Calculate the height of the cell
+      $pdf->SetX($startX);
 
-      $pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C'); 
-      $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C'); 
+      // Store current Y before writing the row
+      $yBefore = $pdf->GetY();
+
+      // Temporarily store current X (needed for proper placement later)
+      $x = $pdf->GetX();
+
+      // 1. Draw Sem cell (but don't move to new line)
+      $pdf->MultiCell(20, 10, $mark['semester'], 1, 'C');
+      $yAfter = $pdf->GetY();
+      $cellHeight = $yAfter - $yBefore;
+
+      // Reset Y to top of this row, move X to next cell
+      $pdf->SetXY($x + 20, $yBefore);
+
+      // 2. Draw Subject Code cell
+      $pdf->MultiCell(40, 10, $mark['subject_code'], 1, 'C');
+
+      // Reset Y again
+      $pdf->SetXY($x + 60, $yBefore);
+
+      // 3. Subject Name (this is already fine)
+      $pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');
+
+      // Reset Y again
+      $pdf->SetXY($x + 140, $yBefore);
+
+      // 4. Grade
+      $pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C');
+
+      // 5. Result
+      $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
     }
   } else {
     $pdf->SetX($startX);
@@ -210,18 +229,8 @@
   $pdf->SetFont('Times', 'B', 12); 
   $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L'); 
   $pdf->SetFont('Times', '', 12); 
-  $pdf->Cell(25, 10, 'AB - Absent', 0, 1, 'L'); 
-  $pdf->Cell(25, 10, '(U) - Fail', 0, 1, 'L'); 
-  $pdf->Cell(25, 10, 'RA - Reappear', 0, 1, 'L');
+  $pdf->Cell(25, 10, 'RA - Re-appearance (FAIL) ', 0, 1, 'L');
   $pdf->Cell(25, 10, 'UA - Unauthorized Absent', 0, 1, 'L');
-
-  // Set the font for the label 
-  $pdf->SetFont('Times', 'B', 12); 
-  $pdf->Cell(50, 10, 'Average Attendance:', 0, 0, 'L'); 
-
-  // Set the font for the value 
-  $pdf->SetFont('Times', '', 12); 
-  $pdf->Cell(0, 10, round($average_attendance, 2) . '%', 0, 1, 'L'); 
 
   // Output the PDF to the browser for download 
   $filename = "{$student['roll_no']}-{$exam}-{$semester}.pdf"; 
