@@ -7,6 +7,39 @@ $student_data = [];
 $student_info_exists = false;
 $student_data_error = '';
 
+// Function to get the client's IP address
+function getClientIP() {
+    if (array_key_exists('HTTP_CLIENT_IP', $_SERVER))
+        return $_SERVER['HTTP_CLIENT_IP'];
+    elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER))
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else
+        return $_SERVER['REMOTE_ADDR'];
+}
+
+// Function to get device information
+function getDeviceInfo() {
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $deviceModel = "Unknown";
+    $deviceOwner = "Unknown";
+    $imei = "Unknown";
+
+    // Example logic to determine device model and owner (customize as needed)
+    if (strpos($userAgent, 'iPhone') !== false) {
+        $deviceModel = "iPhone";
+        $deviceOwner = "iOS User";
+    } elseif (strpos($userAgent, 'Android') !== false) {
+        $deviceModel = "Android Device";
+        $deviceOwner = "Android User";
+    }
+
+    return [
+        'device_model' => $deviceModel,
+        'device_owner' => $deviceOwner,
+        'imei' => $imei
+    ];
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
     $roll_no = mysqli_real_escape_string($conn, $_POST['roll_no']);
 
@@ -46,6 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     $chemis = floatval($_POST['chemis']);
     $quota = mysqli_real_escape_string($conn, $_POST['quota']);
     $cutoff = round($math + $physic + $chemis, 2);
+    
+    // Get device information
+    $device_info = getDeviceInfo();
+    $device_model = mysqli_real_escape_string($conn, $device_info['device_model']);
+    $device_owner = mysqli_real_escape_string($conn, $device_info['device_owner']);
+    $imei = mysqli_real_escape_string($conn, $device_info['imei']);
+    $ip_address = getClientIP();
 
     // Form validation
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
@@ -58,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         echo "Invalid marks. Marks should be between 0 and 100.";
     } else {
         // Insert additional data into 'student_information' table
-        $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota')";
+        $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota, device_model, ip_address, device_owner, imei) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota', '$device_model', '$ip_address', '$device_owner', '$imei')";
         
         if (mysqli_query($conn, $insert_query)) {
             echo "Student data successfully stored.";
@@ -153,16 +193,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         }
     </style>
     <script>
-            function confirmSubmission() {
-            const dobInput = document.getElementById('dob').value;
-
-            // Convert the date format to DD/MM/YYYY
-            const dobParts = dobInput.split('-'); // Assuming input format is YYYY-MM-DD
-            const formattedDOB = `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}`; // Rearranging to DD/MM/YYYY
-
-            const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, there is no way to change the information.`;
+        function confirmSubmission() {
+            const dob = document.getElementById('dob').value;
+            const confirmMessage = `Please confirm that your Date of Birth is correct: ${dob}. Once you submit, there is no way to change the information.`;
             return confirm(confirmMessage);
-            }
+        }
 
         function validateForm() {
             const parentPhone = document.getElementById('parent_phone').value;
@@ -281,6 +316,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
                     </div>
                 </div>
                 <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div style="display: none;">
+                    <input type="hidden" name="device_model" id="device_model">
+                    <input type="hidden" name="device_owner" id="device_owner">
+                    <input type="hidden" name="imei" id="imei">
+                </div>
                 <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
                     <input type="submit" name="submit_student_info" value="Submit">
                     <button type="button" onclick="window.location.reload();">Cancel</button>
@@ -290,5 +330,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     <?php elseif ($student_data_error): ?>
         <p class="error"><?php echo $student_data_error; ?></p>
     <?php endif; ?>
+    <script>
+        // Simulate device information gathering
+        document.getElementById('device_model').value = 'Simulated Device Model';
+        document.getElementById('device_owner').value = 'Simulated Device Owner';
+        document.getElementById('imei').value = 'Simulated IMEI';
+    </script>
 </body>
 </html>
