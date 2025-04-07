@@ -142,11 +142,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         }
     </style>
     <script>
-        function confirmSubmission() {
-            const dob = document.getElementById('dob').value;
-            const confirmMessage = `Please confirm that your Date of Birth is correct: ${dob}. Once you submit, there is no way to change the information.`;
-            return confirm(confirmMessage);
-        }
+function confirmSubmission() {
+    const dobInput = document.getElementById('dob').value;
+
+    // Convert the date format to DD/MM/YYYY
+    const dobParts = dobInput.split('-'); // Assuming input format is YYYY-MM-DD
+    const formattedDOB = `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}`; // Rearranging to DD/MM/YYYY
+
+    const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, there is no way to change the information.`;
+    return confirm(confirmMessage);
+}
     </script>
 </head>
 <body>
