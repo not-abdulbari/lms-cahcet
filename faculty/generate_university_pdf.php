@@ -258,61 +258,17 @@ function convertToRoman($year) {
     return isset($roman[$numeric-1]) ? $roman[$numeric-1] : $year;
 }
 
-$conn->close(); 
+$conn->close();
 
 class PDF extends FPDF {
     function GetMultiCellHeight($w, $h, $txt) {
-        // Calculate the height of the MultiCell with given width, height, and text
-        $cw = &$this->CurrentFont['cw'];
-        if ($w == 0) $w = $this->w - $this->rMargin - $this->x;
-        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
-        $s = str_replace("\r", '', $txt);
-        $nb = strlen($s);
-        if ($nb > 0 && $s[$nb - 1] == "\n") $nb--;
-        $sep = -1;
-        $i = 0;
-        $j = 0;
-        $l = 0;
-        $ns = 0;
-        $nl = 1;
-        while ($i < $nb) {
-            $c = $s[$i];
-            if ($c == "\n") {
-                if ($sep == -1) {
-                    if ($i == $j) {
-                        $i++;
-                    }
-                    $j = $i;
-                    $l = 0;
-                    $ns = 0;
-                    $nl++;
-                    continue;
-                }
-            }
-            if ($c == ' ') {
-                $sep = $i;
-                $ls = $l;
-                $ns++;
-            }
-            $l += $cw[$c];
-            if ($l > $wmax) {
-                if ($sep == -1) {
-                    if ($i == $j) {
-                        $i++;
-                    }
-                } else {
-                    $i = $sep + 1;
-                }
-                $j = $i;
-                $l = 0;
-                $ns = 0;
-                $nl++;
-                $sep = -1;
-            } else {
-                $i++;
-            }
-        }
-        return $nl * $h;
+        // Temporarily create a cell with the same content and measure its height
+        $this->SetFont('Times', '', 12);
+        $this->SetXY(10, 10); // Set position off the visible area
+        $this->MultiCell($w, $h, $txt);
+        $height = $this->GetY() - 10; // Calculate the height
+        $this->SetXY(10, 10); // Reset position
+        return $height;
     }
 }
 
