@@ -17,6 +17,7 @@ $result = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $branch = $_POST['branch'];
     $year = $_POST['year'];
+    $year_roman = $_POST['year_roman'];
     $section = $_POST['section'];
     $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
     $exam = isset($_POST['exam']) ? $_POST['exam'] : 'University';
