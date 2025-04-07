@@ -188,26 +188,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Temporarily store current X (needed for proper placement later)
             $x = $pdf->GetX();
 
-            // Calculate the height of the subject name cell
-            $subject_height = $pdf->GetMultiCellHeight(75, 10, $mark['subject_name'] ?? 'Unknown Subject');
+            // Calculate the number of lines needed for the subject name
+            $nb = $pdf->NbLines(75, $mark['subject_name'] ?? 'Unknown Subject');
 
             // Calculate the maximum cell height
-            $cellHeight = max(10, $subject_height);
+            $cellHeight = max(10, 10 * $nb);
 
             // 1. Draw Sem cell
-            $pdf->MultiCell(20, $cellHeight, $mark['semester'], 1, 'C');
+            $pdf->MultiCell(20, $cellHeight / $nb, $mark['semester'], 1, 'C');
 
             // Reset Y to top of this row, move X to next cell
             $pdf->SetXY($x + 20, $pdf->GetY() - $cellHeight);
 
             // 2. Draw Subject Code cell
-            $pdf->MultiCell(45, $cellHeight, $mark['subject_code'], 1, 'C');
+            $pdf->MultiCell(45, $cellHeight / $nb, $mark['subject_code'], 1, 'C');
 
             // Reset Y again
             $pdf->SetXY($x + 65, $pdf->GetY() - $cellHeight);
 
             // 3. Subject Name
-            $pdf->MultiCell(75, $cellHeight, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');
+            $pdf->MultiCell(75, $cellHeight / $nb, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');
 
             // Reset Y again
             $pdf->SetXY($x + 140, $pdf->GetY() - $cellHeight);
@@ -261,14 +261,48 @@ function convertToRoman($year) {
 $conn->close();
 
 class PDF extends FPDF {
-    function GetMultiCellHeight($w, $h, $txt) {
-        // Temporarily create a cell with the same content and measure its height
-        $this->SetFont('Times', '', 12);
-        $this->SetXY(10, 10); // Set position off the visible area
-        $this->MultiCell($w, $h, $txt);
-        $height = $this->GetY() - 10; // Calculate the height
-        $this->SetXY(10, 10); // Reset position
-        return $height;
+    function NbLines($w, $txt) {
+        // Calculates the number of lines a MultiCell of width w will take
+        $cw = &$this->CurrentFont['cw'];
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
+        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $txt);
+        $nb = strlen($s);
+        if ($nb > 0 and $s[$nb - 1] == "\n")
+            $nb--;
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ')
+                $sep = $i;
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j)
+                        $i++;
+                } else
+                    $i = $sep + 1;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else
+                $i++;
+        }
+        return $nl;
     }
 }
 
