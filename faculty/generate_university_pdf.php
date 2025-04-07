@@ -183,22 +183,23 @@
       $grade = strtoupper($mark['grade']);
       $result = (in_array($grade, ['U', 'UA'])) ? 'RA' : 'PASS';
       
-$pdf->SetX($startX);  
-$yBefore = $pdf->GetY();  
-
-// Semester and Subject Code with dynamic height
-$pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C');  
-$pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C');  
+$pdf->SetX($startX);
+$yBefore = $pdf->GetY(); // Store current Y position
 
 // MultiCell for Subject Name
-$pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');  
-$yAfter = $pdf->GetY();  
-$cellHeight = $yAfter - $yBefore;  
+$pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');
+$yAfter = $pdf->GetY(); // Store new Y position after MultiCell
+$cellHeight = $yAfter - $yBefore; // Calculate the height of the cell
 
-$pdf->SetXY($startX + 140, $yBefore);  
-$pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C');  
-$pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');  
+// Adjust left-side cells to match the dynamic height
+$pdf->SetXY($startX, $yBefore); // Reset position for Semester
+$pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C');
+$pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C');
 
+// Position for Grade and Result
+$pdf->SetXY($startX + 140, $yBefore);
+$pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C');
+$pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
     }
   } else {
     $pdf->SetX($startX);
