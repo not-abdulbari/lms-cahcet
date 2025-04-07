@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     $physic = $_POST['physic'];
     $chemis = $_POST['chemis'];
     $quota = $_POST['quota'];
-    $cutoff = $math + $physic + $chemis;
+    $cutoff = $math + $physic/2 + $chemis/2;
 
     // Insert additional data into 'student_information' table
     $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota')";
