@@ -8,7 +8,7 @@ $student_info_exists = false;
 $student_data_error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
-    $roll_no = $_POST['roll_no'];
+    $roll_no = mysqli_real_escape_string($conn, $_POST['roll_no']);
 
     // Fetch student details from the 'students' table
     $student_query = "SELECT * FROM students WHERE roll_no = '$roll_no'";
@@ -29,31 +29,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])) {
-    $roll_no = $_POST['roll_no'];
-    $mail = $_POST['mail'];
-    $dob = $_POST['dob'];
-    $father_name = $_POST['father_name'];
-    $occupation = $_POST['occupation'];
-    $parent_phone = $_POST['parent_phone'];
-    $student_phone = $_POST['student_phone'];
-    $present_addr = $_POST['present_addr'];
-    $permanent_addr = $_POST['permanent_addr'];
-    $languages_known = $_POST['languages_known'];
-    $school = $_POST['school'];
-    $medium = $_POST['medium'];
-    $math = $_POST['math'];
-    $physic = $_POST['physic'];
-    $chemis = $_POST['chemis'];
-    $quota = $_POST['quota'];
-    $cutoff = $math + $physic + $chemis;
+    $roll_no = mysqli_real_escape_string($conn, $_POST['roll_no']);
+    $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+    $dob = mysqli_real_escape_string($conn, $_POST['dob']);
+    $father_name = mysqli_real_escape_string($conn, $_POST['father_name']);
+    $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
+    $parent_phone = mysqli_real_escape_string($conn, $_POST['parent_phone']);
+    $student_phone = mysqli_real_escape_string($conn, $_POST['student_phone']);
+    $present_addr = mysqli_real_escape_string($conn, $_POST['present_addr']);
+    $permanent_addr = mysqli_real_escape_string($conn, $_POST['permanent_addr']);
+    $languages_known = mysqli_real_escape_string($conn, $_POST['languages_known']);
+    $school = mysqli_real_escape_string($conn, $_POST['school']);
+    $medium = mysqli_real_escape_string($conn, $_POST['medium']);
+    $math = floatval($_POST['math']);
+    $physic = floatval($_POST['physic']);
+    $chemis = floatval($_POST['chemis']);
+    $quota = mysqli_real_escape_string($conn, $_POST['quota']);
+    $cutoff = round($math + $physic + $chemis, 2);
 
-    // Insert additional data into 'student_information' table
-    $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota')";
-    
-    if (mysqli_query($conn, $insert_query)) {
-        echo "Student data successfully stored.";
+    // Form validation
+    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email format.";
+    } elseif (!is_numeric($parent_phone) || strlen($parent_phone) != 10) {
+        echo "Invalid parent's phone number.";
+    } elseif (!is_numeric($student_phone) || strlen($student_phone) != 10) {
+        echo "Invalid student's phone number.";
+    } elseif ($math < 0 || $math > 100 || $physic < 0 || $physic > 100 || $chemis < 0 || $chemis > 100) {
+        echo "Invalid marks. Marks should be between 0 and 100.";
     } else {
-        echo "Error: " . $insert_query . "<br>" . mysqli_error($conn);
+        // Insert additional data into 'student_information' table
+        $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota')";
+        
+        if (mysqli_query($conn, $insert_query)) {
+            echo "Student data successfully stored.";
+        } else {
+            echo "Error: " . $insert_query . "<br>" . mysqli_error($conn);
+        }
     }
 }
 ?>
@@ -142,16 +153,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         }
     </style>
     <script>
-function confirmSubmission() {
-    const dobInput = document.getElementById('dob').value;
+            function confirmSubmission() {
+            const dobInput = document.getElementById('dob').value;
 
-    // Convert the date format to DD/MM/YYYY
-    const dobParts = dobInput.split('-'); // Assuming input format is YYYY-MM-DD
-    const formattedDOB = `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}`; // Rearranging to DD/MM/YYYY
+            // Convert the date format to DD/MM/YYYY
+            const dobParts = dobInput.split('-'); // Assuming input format is YYYY-MM-DD
+            const formattedDOB = `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}`; // Rearranging to DD/MM/YYYY
 
-    const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, there is no way to change the information.`;
-    return confirm(confirmMessage);
-}
+            const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, there is no way to change the information.`;
+            return confirm(confirmMessage);
+            }
+
+        function validateForm() {
+            const parentPhone = document.getElementById('parent_phone').value;
+            const studentPhone = document.getElementById('student_phone').value;
+            const math = parseFloat(document.getElementById('math').value);
+            const physic = parseFloat(document.getElementById('physic').value);
+            const chemis = parseFloat(document.getElementById('chemis').value);
+
+            if (isNaN(math) || math < 0 || math > 100 || isNaN(physic) || physic < 0 || physic > 100 || isNaN(chemis) || chemis < 0 || chemis > 100) {
+                alert("Invalid marks. Marks should be between 0 and 100.");
+                return false;
+            }
+
+            if (!/^\d{10}$/.test(parentPhone)) {
+                alert("Invalid parent's phone number. It should be a 10-digit number.");
+                return false;
+            }
+
+            if (!/^\d{10}$/.test(studentPhone)) {
+                alert("Invalid student's phone number. It should be a 10-digit number.");
+                return false;
+            }
+
+            return confirmSubmission();
+        }
     </script>
 </head>
 <body>
@@ -177,7 +213,7 @@ function confirmSubmission() {
             <p class="error">You've already entered your data. If you need to modify it, contact your counsellor.</p>
         <?php else: ?>
             <h3>Additional Information</h3>
-            <form method="POST" action="" onsubmit="return confirmSubmission()">
+            <form method="POST" action="" onsubmit="return validateForm()">
                 <input type="hidden" name="roll_no" value="<?php echo htmlspecialchars($student_data['roll_no']); ?>">
                 <div class="user-details">
                     <div class="input-box">
