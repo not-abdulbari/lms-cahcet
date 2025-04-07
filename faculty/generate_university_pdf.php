@@ -188,11 +188,15 @@
       $pdf->Cell(40, 10, $mark['subject_code'], 1, 0, 'C'); 
       
       // Handle potentially long subject names by allowing multi-line cells
+      $yBefore = $pdf->GetY(); // Store current Y position
       $pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L'); 
-      
-      $pdf->SetX($startX + 140); // Adjust X position for the next cells
-      $pdf->Cell(25, 10, $mark['grade'], 1, 0, 'C'); 
-      $pdf->Cell(25, 10, $result, 1, 1, 'C'); 
+      $yAfter = $pdf->GetY(); // Store new Y position after MultiCell
+
+      $pdf->SetXY($startX + 140, $yBefore); // Adjust X and Y position for the next cells
+      $cellHeight = $yAfter - $yBefore; // Calculate the height of the cell
+
+      $pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C'); 
+      $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C'); 
     }
   } else {
     $pdf->SetX($startX);
