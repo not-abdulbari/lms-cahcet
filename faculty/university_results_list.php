@@ -17,14 +17,9 @@ $result = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $branch = $_POST['branch'];
     $year = $_POST['year'];
-    $year_roman = $_POST['year_roman'];
-    $section = $_POST['section'];
+    $year_roman = isset($_POST['year_roman']) ? $_POST['year_roman'] : '';    $section = $_POST['section'];
     $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
     $exam = isset($_POST['exam']) ? $_POST['exam'] : 'University';
-
-    // Convert year to Roman numeral
-    $romanNumerals = ['I', 'II', 'III', 'IV', 'V'];
-    $year_roman = isset($romanNumerals[$year-1]) ? $romanNumerals[$year-1] : $year;
 
     // Fetch students based on criteria
     $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
