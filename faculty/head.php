@@ -206,7 +206,7 @@ if (!function_exists('getCurrentDateTime')) {
                     <a href="capa_select.php">CAPA Form</a>
                     <a href="generate_namelist.php">NAMELIST</a>
                     <a href="consolidated_marklist.php">Consolidated Marklist</a>
-                    
+                    <a href="university_results.php">University Progress Report</a>
                 </div>
             </li>
             <li class="dropdown">
