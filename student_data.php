@@ -4,7 +4,7 @@ include 'faculty/db_connect.php';
 $config = include('config.php');
 
 $student_data = [];
-$student_info_data = [];
+$student_info_exists = false;
 $student_data_error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
@@ -14,14 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
     $student_query = "SELECT * FROM students WHERE roll_no = '$roll_no'";
     $student_result = mysqli_query($conn, $student_query);
 
-    // Fetch student additional information from 'student_information' table
+    // Check if student additional information exists in 'student_information' table
     $student_info_query = "SELECT * FROM student_information WHERE roll_no = '$roll_no'";
     $student_info_result = mysqli_query($conn, $student_info_query);
 
     if (mysqli_num_rows($student_result) > 0) {
         $student_data = mysqli_fetch_assoc($student_result);
         if (mysqli_num_rows($student_info_result) > 0) {
-            $student_info_data = mysqli_fetch_assoc($student_info_result);
+            $student_info_exists = true;
         }
     } else {
         $student_data_error = "No student found with the given roll number.";
@@ -168,26 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             <tr><th>Section</th><td><?php echo htmlspecialchars($student_data['section']); ?></td></tr>
         </table>
 
-        <?php if (!empty($student_info_data)): ?>
-            <h3>Additional Information</h3>
-            <table>
-                <tr><th>Mail</th><td><?php echo htmlspecialchars($student_info_data['mail']); ?></td></tr>
-                <tr><th>Date of Birth</th><td><?php echo htmlspecialchars($student_info_data['dob']); ?></td></tr>
-                <tr><th>Father's Name</th><td><?php echo htmlspecialchars($student_info_data['father_name']); ?></td></tr>
-                <tr><th>Occupation</th><td><?php echo htmlspecialchars($student_info_data['occupation']); ?></td></tr>
-                <tr><th>Parent's Phone</th><td><?php echo htmlspecialchars($student_info_data['parent_phone']); ?></td></tr>
-                <tr><th>Student's Phone</th><td><?php echo htmlspecialchars($student_info_data['student_phone']); ?></td></tr>
-                <tr><th>Present Address</th><td><?php echo htmlspecialchars($student_info_data['present_addr']); ?></td></tr>
-                <tr><th>Permanent Address</th><td><?php echo htmlspecialchars($student_info_data['permanent_addr']); ?></td></tr>
-                <tr><th>Languages Known</th><td><?php echo htmlspecialchars($student_info_data['languages_known']); ?></td></tr>
-                <tr><th>School</th><td><?php echo htmlspecialchars($student_info_data['school']); ?></td></tr>
-                <tr><th>Medium</th><td><?php echo htmlspecialchars($student_info_data['medium']); ?></td></tr>
-                <tr><th>Math</th><td><?php echo htmlspecialchars($student_info_data['math']); ?></td></tr>
-                <tr><th>Physics</th><td><?php echo htmlspecialchars($student_info_data['physic']); ?></td></tr>
-                <tr><th>Chemistry</th><td><?php echo htmlspecialchars($student_info_data['chemis']); ?></td></tr>
-                <tr><th>Quota</th><td><?php echo htmlspecialchars($student_info_data['quota']); ?></td></tr>
-                <tr><th>Cutoff</th><td><?php echo htmlspecialchars($student_info_data['cutoff']); ?></td></tr>
-            </table>
+        <?php if ($student_info_exists): ?>
             <p class="error">You've already entered your data. If you need to modify it, contact your counsellor.</p>
         <?php else: ?>
             <h3>Additional Information</h3>
