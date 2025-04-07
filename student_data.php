@@ -4,6 +4,7 @@ include 'faculty/db_connect.php';
 $config = include('config.php');
 
 $student_data = [];
+$student_info_data = [];
 $student_data_error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
@@ -13,8 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
     $student_query = "SELECT * FROM students WHERE roll_no = '$roll_no'";
     $student_result = mysqli_query($conn, $student_query);
 
+    // Fetch student additional information from 'student_information' table
+    $student_info_query = "SELECT * FROM student_information WHERE roll_no = '$roll_no'";
+    $student_info_result = mysqli_query($conn, $student_info_query);
+
     if (mysqli_num_rows($student_result) > 0) {
         $student_data = mysqli_fetch_assoc($student_result);
+        if (mysqli_num_rows($student_info_result) > 0) {
+            $student_info_data = mysqli_fetch_assoc($student_info_result);
+        }
     } else {
         $student_data_error = "No student found with the given roll number.";
     }
@@ -37,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     $physic = $_POST['physic'];
     $chemis = $_POST['chemis'];
     $quota = $_POST['quota'];
-    $cutoff = $math + $physic/2 + $chemis/2;
+    $cutoff = $math + $physic + $chemis;
 
     // Insert additional data into 'student_information' table
     $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota')";
@@ -84,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             border-radius: 5px;
             box-sizing: border-box;
         }
-        input[type="submit"] {
+        input[type="submit"], button {
             background-color: #5cb85c;
             color: #fff;
             border: none;
@@ -93,8 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
+            margin-bottom: 10px;
         }
-        input[type="submit"]:hover {
+        input[type="submit"]:hover, button:hover {
             background-color: #4cae4c;
         }
         table {
@@ -132,6 +141,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             }
         }
     </style>
+    <script>
+        function confirmSubmission() {
+            const dob = document.getElementById('dob').value;
+            const confirmMessage = `Please confirm that your Date of Birth is correct: ${dob}. Once you submit, there is no way to change the information.`;
+            return confirm(confirmMessage);
+        }
+    </script>
 </head>
 <body>
     <h2>Student Data Entry</h2>
@@ -152,77 +168,103 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             <tr><th>Section</th><td><?php echo htmlspecialchars($student_data['section']); ?></td></tr>
         </table>
 
-        <h3>Additional Information</h3>
-        <form method="POST" action="">
-            <input type="hidden" name="roll_no" value="<?php echo htmlspecialchars($student_data['roll_no']); ?>">
-            <div class="user-details">
-                <div class="input-box">
-                    <label for="mail">Mail</label>
-                    <input type="email" name="mail" id="mail" required>
+        <?php if (!empty($student_info_data)): ?>
+            <h3>Additional Information</h3>
+            <table>
+                <tr><th>Mail</th><td><?php echo htmlspecialchars($student_info_data['mail']); ?></td></tr>
+                <tr><th>Date of Birth</th><td><?php echo htmlspecialchars($student_info_data['dob']); ?></td></tr>
+                <tr><th>Father's Name</th><td><?php echo htmlspecialchars($student_info_data['father_name']); ?></td></tr>
+                <tr><th>Occupation</th><td><?php echo htmlspecialchars($student_info_data['occupation']); ?></td></tr>
+                <tr><th>Parent's Phone</th><td><?php echo htmlspecialchars($student_info_data['parent_phone']); ?></td></tr>
+                <tr><th>Student's Phone</th><td><?php echo htmlspecialchars($student_info_data['student_phone']); ?></td></tr>
+                <tr><th>Present Address</th><td><?php echo htmlspecialchars($student_info_data['present_addr']); ?></td></tr>
+                <tr><th>Permanent Address</th><td><?php echo htmlspecialchars($student_info_data['permanent_addr']); ?></td></tr>
+                <tr><th>Languages Known</th><td><?php echo htmlspecialchars($student_info_data['languages_known']); ?></td></tr>
+                <tr><th>School</th><td><?php echo htmlspecialchars($student_info_data['school']); ?></td></tr>
+                <tr><th>Medium</th><td><?php echo htmlspecialchars($student_info_data['medium']); ?></td></tr>
+                <tr><th>Math</th><td><?php echo htmlspecialchars($student_info_data['math']); ?></td></tr>
+                <tr><th>Physics</th><td><?php echo htmlspecialchars($student_info_data['physic']); ?></td></tr>
+                <tr><th>Chemistry</th><td><?php echo htmlspecialchars($student_info_data['chemis']); ?></td></tr>
+                <tr><th>Quota</th><td><?php echo htmlspecialchars($student_info_data['quota']); ?></td></tr>
+                <tr><th>Cutoff</th><td><?php echo htmlspecialchars($student_info_data['cutoff']); ?></td></tr>
+            </table>
+            <p class="error">You've already entered your data. If you need to modify it, contact your counsellor.</p>
+        <?php else: ?>
+            <h3>Additional Information</h3>
+            <form method="POST" action="" onsubmit="return confirmSubmission()">
+                <input type="hidden" name="roll_no" value="<?php echo htmlspecialchars($student_data['roll_no']); ?>">
+                <div class="user-details">
+                    <div class="input-box">
+                        <label for="mail">Mail</label>
+                        <input type="email" name="mail" id="mail" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" name="dob" id="dob" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="father_name">Father's Name</label>
+                        <input type="text" name="father_name" id="father_name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="occupation">Occupation</label>
+                        <input type="text" name="occupation" id="occupation" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="parent_phone">Parent's Phone</label>
+                        <input type="text" name="parent_phone" id="parent_phone" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="student_phone">Student's Phone</label>
+                        <input type="text" name="student_phone" id="student_phone" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="present_addr">Present Address</label>
+                        <textarea name="present_addr" id="present_addr" required></textarea>
+                    </div>
+                    <div class="input-box">
+                        <label for="permanent_addr">Permanent Address</label>
+                        <textarea name="permanent_addr" id="permanent_addr" required></textarea>
+                    </div>
+                    <div class="input-box">
+                        <label for="languages_known">Languages Known</label>
+                        <input type="text" name="languages_known" id="languages_known" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="school">School</label>
+                        <input type="text" name="school" id="school" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="medium">Medium</label>
+                        <input type="text" name="medium" id="medium" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="math">Math</label>
+                        <input type="number" name="math" id="math" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="physic">Physics</label>
+                        <input type="number" name="physic" id="physic" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="chemis">Chemistry</label>
+                        <input type="number" name="chemis" id="chemis" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="quota">Quota</label>
+                        <select name="quota" id="quota" required>
+                            <option value="management">Management</option>
+                            <option value="counselling">Counselling</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="input-box">
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" name="dob" id="dob" required>
+                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
+                    <input type="submit" name="submit_student_info" value="Submit">
+                    <button type="button" onclick="window.location.reload();">Cancel</button>
                 </div>
-                <div class="input-box">
-                    <label for="father_name">Father's Name</label>
-                    <input type="text" name="father_name" id="father_name" required>
-                </div>
-                <div class="input-box">
-                    <label for="occupation">Occupation</label>
-                    <input type="text" name="occupation" id="occupation" required>
-                </div>
-                <div class="input-box">
-                    <label for="parent_phone">Parent's Phone</label>
-                    <input type="text" name="parent_phone" id="parent_phone" required>
-                </div>
-                <div class="input-box">
-                    <label for="student_phone">Student's Phone</label>
-                    <input type="text" name="student_phone" id="student_phone" required>
-                </div>
-                <div class="input-box">
-                    <label for="present_addr">Present Address</label>
-                    <textarea name="present_addr" id="present_addr" required></textarea>
-                </div>
-                <div class="input-box">
-                    <label for="permanent_addr">Permanent Address</label>
-                    <textarea name="permanent_addr" id="permanent_addr" required></textarea>
-                </div>
-                <div class="input-box">
-                    <label for="languages_known">Languages Known</label>
-                    <input type="text" name="languages_known" id="languages_known" required>
-                </div>
-                <div class="input-box">
-                    <label for="school">School</label>
-                    <input type="text" name="school" id="school" required>
-                </div>
-                <div class="input-box">
-                    <label for="medium">Medium</label>
-                    <input type="text" name="medium" id="medium" required>
-                </div>
-                <div class="input-box">
-                    <label for="math">Math</label>
-                    <input type="number" name="math" id="math" required>
-                </div>
-                <div class="input-box">
-                    <label for="physic">Physics</label>
-                    <input type="number" name="physic" id="physic" required>
-                </div>
-                <div class="input-box">
-                    <label for="chemis">Chemistry</label>
-                    <input type="number" name="chemis" id="chemis" required>
-                </div>
-                <div class="input-box">
-                    <label for="quota">Quota</label>
-                    <select name="quota" id="quota" required>
-                        <option value="management">Management</option>
-                        <option value="counselling">Counselling</option>
-                    </select>
-                </div>
-            </div>
-            <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
-            <input type="submit" name="submit_student_info" value="Submit">
-        </form>
+            </form>
+        <?php endif; ?>
     <?php elseif ($student_data_error): ?>
         <p class="error"><?php echo $student_data_error; ?></p>
     <?php endif; ?>
