@@ -110,20 +110,13 @@
   $pdf->SetXY(40, 30); 
   $pdf->Cell(0, 10, $department, 0, 1, 'C'); 
 
-  $pdf->SetFont('Times', '', 12); 
-  $pdf->SetXY(40, 38); 
-
   // Add a line 
-  $pdf->SetY(40); 
-  $pdf->Cell(0, 10, '_________________________________________________________________________________', 0, 1, 'C'); 
+  $pdf->SetY(38); 
+  $pdf->Cell(0, 10, '___________________________________________________________________________________', 0, 1, 'C'); 
 
   // Add "Progress Report" heading 
   $pdf->SetFont('Times', 'B', 16); 
-  $pdf->Cell(0, 10, 'RESULT FOR', 0, 1, 'C'); 
-
-  // Add exam type (CAT1/CAT2/Model Exam) 
-  $pdf->SetFont('Times', 'B', 14); 
-  $pdf->Cell(0, 10, $exam . ' Exam', 0, 1, 'C'); 
+  $pdf->Cell(0, 10, 'RESULT FOR'.$exam.'EXAMINATION', 0, 1, 'C'); 
 
   $pdf->Ln(10); 
 
@@ -183,22 +176,20 @@
       $grade = strtoupper($mark['grade']);
       $result = (in_array($grade, ['U', 'UA'])) ? 'RA' : 'PASS';
       
-$pdf->SetX($startX);  
-$yBefore = $pdf->GetY();  
+      $pdf->SetX($startX); 
+      $pdf->Cell(20, 10, $mark['semester'], 1, 0, 'C'); 
+      $pdf->Cell(40, 10, $mark['subject_code'], 1, 0, 'C'); 
+      
+      // Handle potentially long subject names by allowing multi-line cells
+      $yBefore = $pdf->GetY(); // Store current Y position
+      $pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L'); 
+      $yAfter = $pdf->GetY(); // Store new Y position after MultiCell
 
-// Semester and Subject Code with dynamic height
-$pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C');  
-$pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C');  
+      $pdf->SetXY($startX + 140, $yBefore); // Adjust X and Y position for the next cells
+      $cellHeight = $yAfter - $yBefore; // Calculate the height of the cell
 
-// MultiCell for Subject Name
-$pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');  
-$yAfter = $pdf->GetY();  
-$cellHeight = $yAfter - $yBefore;  
-
-$pdf->SetXY($startX + 140, $yBefore);  
-$pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C');  
-$pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');  
-
+      $pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C'); 
+      $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C'); 
     }
   } else {
     $pdf->SetX($startX);
@@ -212,10 +203,12 @@ $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
   $pdf->SetFont('Times', 'B', 12); 
   $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L'); 
   $pdf->SetFont('Times', '', 12); 
-  $pdf->Cell(25, 10, 'RA - Re-appearance (FAIL)', 0, 1, 'L');
+
+  $pdf->Cell(25, 10, 'RA - Re-Appearance(FAIL)', 0, 1, 'L');
 
 
-
+  // Set the font for the label 
+  $pdf->SetFont('Times', 'B', 12); 
 
   // Output the PDF to the browser for download 
   $filename = "{$student['roll_no']}-{$exam}.pdf"; 
