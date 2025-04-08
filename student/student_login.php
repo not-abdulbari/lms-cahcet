@@ -339,7 +339,7 @@ $conn->close();
             // Generate semester tabs only if there is data for that semester
             for ($i = 1; $i <= 8; $i++) {
                 $has_data = isset($all_semesters[$i]) && (!empty($all_semesters[$i]['marks']) || !empty($all_semesters[$i]['attendance']) || !empty($all_semesters[$i]['grades']) || isset($all_semesters[$i]['report']) || !empty($all_semesters[$i]['university_results']));
-                $is_pg_sem3 = in_array(strtoupper($branch), ['MABA', 'MAC']) && $i == 3 && isset($all_semesters[3]['university_results']) && !empty($all_semesters[3]['university_results']);
+                $is_pg_sem3 = in_array(strtoupper($branch), ['MBA', 'MCA']) && $i == 3 && isset($all_semesters[3]['university_results']) && !empty($all_semesters[3]['university_results']);
 
                 if ($has_data || $is_pg_sem3) {
                     echo "<button class='tab-link' onclick=\"openTab(event, 'semester-$i')\">Semester $i</button>";
@@ -360,8 +360,8 @@ $conn->close();
                       </div>";
 
             foreach ($all_semesters as $semester => $data) {
-                $is_pg_sem3_content = in_array(strtoupper($branch), ['MABA', 'MAC']) && $semester == 3 && isset($data['university_results']) && !empty($data['university_results']);
-                $has_other_data = !empty($data['marks']) || !empty($data['attendance']) || !empty($data['grades']) || isset($data['report']) || (!empty($data['university_results']) && !(in_array(strtoupper($branch), ['MABA', 'MAC']) && $semester == 3));
+                $is_pg_sem3_content = in_array(strtoupper($branch), ['MBA', 'MCA']) && $semester == 3 && isset($data['university_results']) && !empty($data['university_results']);
+                $has_other_data = !empty($data['marks']) || !empty($data['attendance']) || !empty($data['grades']) || isset($data['report']) || (!empty($data['university_results']) && !(in_array(strtoupper($branch), ['MBA', 'MCA']) && $semester == 3));
 
                 if ($has_other_data || $is_pg_sem3_content) {
                     echo "<div id='semester-$semester' class='tab-content'>
@@ -431,10 +431,11 @@ $conn->close();
  if (isset($data['university_results']) && !empty($data['university_results'])) {
   echo "<h4>University Exam Results</h4>
     <table class='university-results-table' style='width: 100%;'>
-    <tr><th>Subject Code</th><th>Subject Name</th><th>Grade</th><th>Result</th></tr>";
+    <tr><th>Semester</th><th>Subject Code</th><th>Subject Name</th><th>Grade</th><th>Result</th></tr>";
   foreach ($data['university_results'] as $result) {
   $final_result = (in_array(strtoupper($result['grade']), ['U', 'UA'])) ? 'RA' : 'Pass';
   echo "<tr>
+    <td>" . htmlspecialchars($result['semester']) . "</td>
     <td>" . htmlspecialchars($result['subject_code']) . "</td>
     <td>" . htmlspecialchars($result['subject_name']) . "</td>
     <td>" . htmlspecialchars($result['grade']) . "</td>
