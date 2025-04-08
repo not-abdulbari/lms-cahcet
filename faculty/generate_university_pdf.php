@@ -176,26 +176,20 @@
       $grade = strtoupper($mark['grade']);
       $result = (in_array($grade, ['U', 'UA'])) ? 'RA' : 'PASS';
       
-     $yBefore = $pdf->GetY(); // Store current Y position
+      $pdf->SetX($startX); 
+      $pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C'); 
+      $pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C'); 
+      
+      // Handle potentially long subject names by allowing multi-line cells
+      $yBefore = $pdf->GetY(); // Store current Y position
+      $pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L'); 
+      $yAfter = $pdf->GetY(); // Store new Y position after MultiCell
 
-// Simulate MultiCell height calculation first (without printing)
-$startX = $pdf->GetX();
-$pdf->SetXY($startX + 60, $yBefore); // Move to position for subject name
-$pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L');
-$yAfter = $pdf->GetY(); // Capture the Y position after MultiCell
-$cellHeight = $yAfter - $yBefore; // Determine max height
+      $pdf->SetXY($startX + 140, $yBefore); // Adjust X and Y position for the next cells
+      $cellHeight = $yAfter - $yBefore; // Calculate the height of the cell
 
-// Reset position and print all cells with matching height
-$pdf->SetXY($startX, $yBefore);
-$pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C'); 
-$pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C'); 
-
-$pdf->SetXY($startX + 60, $yBefore); // Reprint subject name at the original position
-$pdf->MultiCell(80, 10, $mark['subject_name'] ?? 'Unknown Subject', 1, 'L'); 
-
-$pdf->SetXY($startX + 140, $yBefore); // Adjust position for next cells
-$pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C'); 
-$pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
+      $pdf->Cell(25, $cellHeight, $mark['grade'], 1, 0, 'C'); 
+      $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C'); 
     }
   } else {
     $pdf->SetX($startX);
@@ -210,11 +204,7 @@ $pdf->Cell(25, $cellHeight, $result, 1, 1, 'C');
   $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L'); 
   $pdf->SetFont('Times', '', 12); 
 
-$pdf->SetFont('Times', 'B', 12); // Set bold font
-$pdf->Cell(15, 10, 'RA', 0, 0, 'L'); // Print 'RA' in bold
-
-$pdf->SetFont('Times', '', 12); // Revert to normal font
-$pdf->Cell(50, 10, ' - Re-Appearance (FAIL)', 0, 1, 'L'); // Print the rest in normal
+  $pdf->Cell(25, 10, 'RA - Re-Appearance(FAIL)', 0, 1, 'L');
 
 
   // Set the font for the label 
