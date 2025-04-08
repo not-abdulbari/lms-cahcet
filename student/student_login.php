@@ -121,8 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 }
             }
 
-            // Logic to display PG (MABA, MAC) results in Semester 3
-            if (in_array(strtoupper($branch), ['MABA', 'MAC'])) {
+            // Logic to display PG (MBA, MCA) results in Semester 3
+            if (in_array(strtoupper($branch), ['MBA', 'MCA'])) {
                 $semester_to_display = 3;
             }
 
