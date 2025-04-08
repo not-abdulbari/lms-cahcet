@@ -127,7 +127,7 @@
   $pdf->Cell(70, 10, $student['name'], 0, 0, 'L'); 
 
   $pdf->SetFont('Times', 'B', 12); 
-  $pdf->Cell(30, 10, 'Reg No.: ', 0, 0, 'R'); // Changed to keep on same line
+  $pdf->Cell(35, 10, 'Register No.: ', 0, 0, 'R'); // Changed to keep on same line
   $pdf->SetFont('Times', '', 12); 
   $pdf->Cell(50, 10, $student['reg_no'], 0, 1, 'L'); // Keep on same line
 
