@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     $physic = floatval($_POST['physic']);
     $chemis = floatval($_POST['chemis']);
     $quota = mysqli_real_escape_string($conn, $_POST['quota']);
-    $cutoff = round($math + $physic + $chemis, 2);
+    $cutoff = round($math + $physic/2 + $chemis/2, 2);
     
     // Get device information
     $device_info = getDeviceInfo();
