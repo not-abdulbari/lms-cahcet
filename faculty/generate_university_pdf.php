@@ -177,8 +177,8 @@
       $result = (in_array($grade, ['U', 'UA'])) ? 'RA' : 'PASS';
       
       $pdf->SetX($startX); 
-      $pdf->Cell(20, $cellHeight, $mark['semester'], 1, 0, 'C'); 
-      $pdf->Cell(40, $cellHeight, $mark['subject_code'], 1, 0, 'C'); 
+      $pdf->Cell(20, 10, $mark['semester'], 1, 0, 'C'); 
+      $pdf->Cell(40, 10, $mark['subject_code'], 1, 0, 'C'); 
       
       // Handle potentially long subject names by allowing multi-line cells
       $yBefore = $pdf->GetY(); // Store current Y position
