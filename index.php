@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 $_SESSION['roll_no'] = $input_roll_no;
                 $stmt->close();
                 $conn->close();
-                header('Location: student/student_profile.php');
+                header('Location: student/student_login.php');
                 exit();
             } else {
                 $show_alert = true; // Set flag for invalid credentials
@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                         if (response.includes('Invalid roll number or date of birth')) {
                             alert('Invalid roll number or date of birth');
                         } else {
-                            window.location.href = 'student/student_profile.php';
+                            window.location.href = 'student/student_login.php';
                         }
                     }
                 });
