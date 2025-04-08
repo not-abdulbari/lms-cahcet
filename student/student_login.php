@@ -299,7 +299,7 @@ $conn->close();
 <body>
     <div class="container">
         <h1>STUDENT DASHBOARD</h1>
-        <form method="POST" action="student_profile.php">
+        <form method="POST" action="student_login.php">
             <label for="roll_number">Enter Roll Number:</label>
             <input type="text" name="roll_number" id="roll_number" required>
             <input type="submit" name="submit" value="View Details">
