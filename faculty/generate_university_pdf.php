@@ -204,7 +204,7 @@
   $pdf->Cell(20, 10, 'DEFINITIONS:', 0, 1, 'L'); 
   $pdf->SetFont('Times', '', 12); 
 
-  $pdf->Cell(25, 10, 'RA - Re-Appearance(FAIL)', 0, 1, 'L');
+  $pdf->Cell(25, 10, '   RA → Re-Appearance (Failed Exam) ', 0, 1, 'L');
 
 
   // Set the font for the label 
