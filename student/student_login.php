@@ -431,14 +431,13 @@ $conn->close();
  if (isset($data['university_results']) && !empty($data['university_results'])) {
   echo "<h4>University Exam Results</h4>
     <table class='university-results-table' style='width: 100%;'>
-    <tr><th>Subject Code</th><th>Subject Name</th><th>Grade</th><th>Exam</th><th>Result</th></tr>";
+    <tr><th>Subject Code</th><th>Subject Name</th><th>Grade</th><th>Result</th></tr>";
   foreach ($data['university_results'] as $result) {
   $final_result = (in_array(strtoupper($result['grade']), ['U', 'UA'])) ? 'RA' : 'Pass';
   echo "<tr>
     <td>" . htmlspecialchars($result['subject_code']) . "</td>
     <td>" . htmlspecialchars($result['subject_name']) . "</td>
     <td>" . htmlspecialchars($result['grade']) . "</td>
-    <td>" . htmlspecialchars($result['exam']) . "</td>
     <td>" . htmlspecialchars($final_result) . "</td>
     </tr>";
   }
