@@ -9,12 +9,13 @@ $student_data_error = '';
 
 // Function to get the client's IP address
 function getClientIP() {
-    if (array_key_exists('HTTP_CLIENT_IP', $_SERVER))
+    if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
         return $_SERVER['HTTP_CLIENT_IP'];
-    elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER))
+    } elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
         return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else
+    } else {
         return $_SERVER['REMOTE_ADDR'];
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
