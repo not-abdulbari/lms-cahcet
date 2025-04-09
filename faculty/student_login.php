@@ -1,5 +1,6 @@
 <?php
 include '../faculty/db_connect.php';
+include 'head.php';
 // Handling form submission
 $marks_data = [];
 $attendance_data = [];
