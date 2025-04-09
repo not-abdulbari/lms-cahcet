@@ -176,18 +176,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     </style>
     <script>
         function confirmDOB() {
-            const dob = document.getElementById('dob').value;
-            if (!dob) {
-                alert('Please enter your Date of Birth.');
-                return false;
-            }
-            const confirmMessage = `Please confirm that your Date of Birth is correct: ${dob}. Once you submit, it cannot be changed.`;
-            const confirmed = confirm(confirmMessage);
-            if (!confirmed) {
-                alert('Submission cancelled. Please review your information before submitting.');
-            }
-            return confirmed;
-        }
+    const dobInput = document.getElementById('dob').value;
+    if (!dobInput) {
+        alert('Please enter your Date of Birth.');
+        return false;
+    }
+
+    // Convert the date into DD-MM-YYYY format
+    const dob = new Date(dobInput);
+    const formattedDOB = `${dob.getDate().toString().padStart(2, '0')}-${(dob.getMonth() + 1).toString().padStart(2, '0')}-${dob.getFullYear()}`;
+
+    const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, it cannot be changed.`;
+    const confirmed = confirm(confirmMessage);
+    
+    if (!confirmed) {
+        alert('Submission cancelled. Please review your information before submitting.');
+    }
+
+    return confirmed;
+}
+
 
         function toggleFields() {
             const courseType = document.querySelector('input[name="course_type"]:checked').value;
