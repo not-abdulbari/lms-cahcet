@@ -213,6 +213,7 @@ if (!function_exists('getCurrentDateTime')) {
                 <a href="javascript:void(0)">STUDENT</a>
                 <div class="dropdown-content">
                     <a href="parent.php">STUDENT LOGIN</a>
+                    <a href="../student/student_login.php">STUDENT LOGIN</a>
                     <a href="student_profile.php">Under Development</a>
                 </div>
             </li>
