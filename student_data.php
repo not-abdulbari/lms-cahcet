@@ -66,23 +66,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
 
     // Form validation
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email format.";
+        echo "<script>alert('Invalid email format.');</script>";
     } elseif (!is_numeric($parent_phone) || strlen($parent_phone) != 10) {
-        echo "Invalid parent's phone number.";
+        echo "<script>alert('Invalid parent\'s phone number. It should be a 10-digit number.');</script>";
     } elseif (!is_numeric($student_phone) || strlen($student_phone) != 10) {
-        echo "Invalid student's phone number.";
+        echo "<script>alert('Invalid student\'s phone number. It should be a 10-digit number.');</script>";
     } elseif ($course_type == 'UG' && ($math < 0 || $math > 100 || $physic < 0 || $physic > 100 || $chemis < 0 || $chemis > 100)) {
-        echo "Invalid marks. Marks should be between 0 and 100.";
+        echo "<script>alert('Invalid marks. Marks should be between 0 and 100.');</script>";
     } elseif (($course_type == 'Diploma' || $course_type == 'PG') && ($cgpa < 0 || $cgpa > 10)) {
-        echo "Invalid CGPA. CGPA should be between 0 and 10.";
+        echo "<script>alert('Invalid CGPA. CGPA should be between 0 and 10.');</script>";
     } else {
         // Insert additional data into 'student_information' table
         $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, course_type, math, physic, chemis, cutoff, quota, cgpa) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$course_type', '$math', '$physic', '$chemis', '$cutoff', '$quota', '$cgpa')";
 
         if (mysqli_query($conn, $insert_query)) {
-            echo "Student data successfully stored.";
+            echo "<script>alert('Student data successfully stored.');</script>";
         } else {
-            echo "Error: " . $insert_query . "<br>" . mysqli_error($conn);
+            echo "<script>alert('Error storing student data: " . mysqli_real_escape_string($conn, mysqli_error($conn)) . "');</script>";
         }
     }
 }
@@ -175,6 +175,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         }
     </style>
     <script>
+        function confirmDOB() {
+            const dob = document.getElementById('dob').value;
+            if (!dob) {
+                alert('Please enter your Date of Birth.');
+                return false;
+            }
+            const confirmMessage = `Please confirm that your Date of Birth is correct: ${dob}. Once you submit, it cannot be changed.`;
+            const confirmed = confirm(confirmMessage);
+            if (!confirmed) {
+                alert('Submission cancelled. Please review your information before submitting.');
+            }
+            return confirmed;
+        }
+
         function toggleFields() {
             const courseType = document.querySelector('input[name="course_type"]:checked').value;
             document.getElementById('ug-fields').style.display = courseType === 'UG' ? 'block' : 'none';
@@ -184,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
 </head>
 <body>
     <h2>Student Data Entry</h2>
-    <form method="POST" action="">
+    <form method="POST" action="" onsubmit="return confirmDOB()">
         <label for="roll_no">Roll Number <span class="required">*</span></label>
         <input type="text" name="roll_no" id="roll_no" required>
         <input type="submit" name="fetch_student" value="Fetch Student Details">
@@ -205,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             <p class="error">You've already entered your data. If you need to modify it, contact your counsellor.</p>
         <?php else: ?>
             <h3>Additional Information</h3>
-            <form method="POST" action="">
+            <form method="POST" action="" onsubmit="return confirmDOB()">
                 <input type="hidden" name="roll_no" value="<?php echo htmlspecialchars($student_data['roll_no']); ?>">
                 <div class="user-details">
                     <div class="input-box">
