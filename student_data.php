@@ -17,29 +17,6 @@ function getClientIP() {
         return $_SERVER['REMOTE_ADDR'];
 }
 
-// Function to get device information
-function getDeviceInfo() {
-    $userAgent = $_SERVER['HTTP_USER_AGENT'];
-    $deviceModel = "Unknown";
-    $deviceOwner = "Unknown";
-    $imei = "Unknown";
-
-    // Example logic to determine device model and owner (customize as needed)
-    if (strpos($userAgent, 'iPhone') !== false) {
-        $deviceModel = "iPhone";
-        $deviceOwner = "iOS User";
-    } elseif (strpos($userAgent, 'Android') !== false) {
-        $deviceModel = "Android Device";
-        $deviceOwner = "Android User";
-    }
-
-    return [
-        'device_model' => $deviceModel,
-        'device_owner' => $deviceOwner,
-        'imei' => $imei
-    ];
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch_student'])) {
     $roll_no = mysqli_real_escape_string($conn, $_POST['roll_no']);
 
@@ -73,19 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     $permanent_addr = mysqli_real_escape_string($conn, $_POST['permanent_addr']);
     $languages_known = mysqli_real_escape_string($conn, $_POST['languages_known']);
     $school = mysqli_real_escape_string($conn, $_POST['school']);
-    $medium = mysqli_real_escape_string($conn, $_POST['medium']);
-    $math = floatval($_POST['math']);
-    $physic = floatval($_POST['physic']);
-    $chemis = floatval($_POST['chemis']);
+    $course_type = mysqli_real_escape_string($conn, $_POST['course_type']);
+    $math = isset($_POST['math']) ? floatval($_POST['math']) : null;
+    $physic = isset($_POST['physic']) ? floatval($_POST['physic']) : null;
+    $chemis = isset($_POST['chemis']) ? floatval($_POST['chemis']) : null;
+    $cgpa = isset($_POST['cgpa']) ? floatval($_POST['cgpa']) : null;
     $quota = mysqli_real_escape_string($conn, $_POST['quota']);
-    $cutoff = round($math + $physic/2 + $chemis/2, 2);
-    
-    // Get device information
-    $device_info = getDeviceInfo();
-    $device_model = mysqli_real_escape_string($conn, $device_info['device_model']);
-    $device_owner = mysqli_real_escape_string($conn, $device_info['device_owner']);
-    $imei = mysqli_real_escape_string($conn, $device_info['imei']);
-    $ip_address = getClientIP();
+    $cutoff = null;
+
+    if ($course_type == 'UG') {
+        // Calculate cutoff for UG
+        $cutoff = round($math + $physic + $chemis, 2);
+    }
 
     // Form validation
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
@@ -94,12 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         echo "Invalid parent's phone number.";
     } elseif (!is_numeric($student_phone) || strlen($student_phone) != 10) {
         echo "Invalid student's phone number.";
-    } elseif ($math < 0 || $math > 100 || $physic < 0 || $physic > 100 || $chemis < 0 || $chemis > 100) {
+    } elseif ($course_type == 'UG' && ($math < 0 || $math > 100 || $physic < 0 || $physic > 100 || $chemis < 0 || $chemis > 100)) {
         echo "Invalid marks. Marks should be between 0 and 100.";
+    } elseif (($course_type == 'Diploma' || $course_type == 'PG') && ($cgpa < 0 || $cgpa > 10)) {
+        echo "Invalid CGPA. CGPA should be between 0 and 10.";
     } else {
         // Insert additional data into 'student_information' table
-        $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, medium, math, physic, chemis, cutoff, quota, device_model, ip_address, device_owner, imei) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$medium', '$math', '$physic', '$chemis', '$cutoff', '$quota', '$device_model', '$ip_address', '$device_owner', '$imei')";
-        
+        $insert_query = "INSERT INTO student_information (roll_no, mail, dob, father_name, occupation, parent_phone, student_phone, present_addr, permanent_addr, languages_known, school, course_type, math, physic, chemis, cutoff, quota, cgpa) VALUES ('$roll_no', '$mail', '$dob', '$father_name', '$occupation', '$parent_phone', '$student_phone', '$present_addr', '$permanent_addr', '$languages_known', '$school', '$course_type', '$math', '$physic', '$chemis', '$cutoff', '$quota', '$cgpa')";
+
         if (mysqli_query($conn, $insert_query)) {
             echo "Student data successfully stored.";
         } else {
@@ -186,6 +164,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             flex: 1;
             min-width: 45%;
         }
+        .required {
+            color: red;
+        }
         @media (max-width: 768px) {
             .user-details .input-box {
                 min-width: 100%;
@@ -193,47 +174,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
         }
     </style>
     <script>
-        function confirmSubmission() {
-    const dobInput = document.getElementById('dob').value;
-
-    // Convert the date format to DD/MM/YYYY
-    const dobParts = dobInput.split('-'); // Assuming input format is YYYY-MM-DD
-    const formattedDOB = `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}`; // Rearranging to DD/MM/YYYY
-
-    const confirmMessage = `Please confirm that your Date of Birth is correct: ${formattedDOB}. Once you submit, there is no way to change the information.`;
-    return confirm(confirmMessage);
-}
-
-        function validateForm() {
-            const parentPhone = document.getElementById('parent_phone').value;
-            const studentPhone = document.getElementById('student_phone').value;
-            const math = parseFloat(document.getElementById('math').value);
-            const physic = parseFloat(document.getElementById('physic').value);
-            const chemis = parseFloat(document.getElementById('chemis').value);
-
-            if (isNaN(math) || math < 0 || math > 100 || isNaN(physic) || physic < 0 || physic > 100 || isNaN(chemis) || chemis < 0 || chemis > 100) {
-                alert("Invalid marks. Marks should be between 0 and 100.");
-                return false;
-            }
-
-            if (!/^\d{10}$/.test(parentPhone)) {
-                alert("Invalid parent's phone number. It should be a 10-digit number.");
-                return false;
-            }
-
-            if (!/^\d{10}$/.test(studentPhone)) {
-                alert("Invalid student's phone number. It should be a 10-digit number.");
-                return false;
-            }
-
-            return confirmSubmission();
+        function toggleFields() {
+            const courseType = document.querySelector('input[name="course_type"]:checked').value;
+            document.getElementById('ug-fields').style.display = courseType === 'UG' ? 'block' : 'none';
+            document.getElementById('cgpa-field').style.display = (courseType === 'Diploma' || courseType === 'PG') ? 'block' : 'none';
         }
     </script>
 </head>
 <body>
     <h2>Student Data Entry</h2>
     <form method="POST" action="">
-        <label for="roll_no">Roll Number</label>
+        <label for="roll_no">Roll Number <span class="required">*</span></label>
         <input type="text" name="roll_no" id="roll_no" required>
         <input type="submit" name="fetch_student" value="Fetch Student Details">
     </form>
@@ -253,79 +204,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
             <p class="error">You've already entered your data. If you need to modify it, contact your counsellor.</p>
         <?php else: ?>
             <h3>Additional Information</h3>
-            <form method="POST" action="" onsubmit="return validateForm()">
+            <form method="POST" action="">
                 <input type="hidden" name="roll_no" value="<?php echo htmlspecialchars($student_data['roll_no']); ?>">
                 <div class="user-details">
                     <div class="input-box">
-                        <label for="mail">Mail</label>
+                        <label for="mail">Mail <span class="required">*</span></label>
                         <input type="email" name="mail" id="mail" required>
                     </div>
                     <div class="input-box">
-                        <label for="dob">Date of Birth</label>
+                        <label for="dob">Date of Birth <span class="required">*</span></label>
                         <input type="date" name="dob" id="dob" required>
                     </div>
                     <div class="input-box">
-                        <label for="father_name">Father's Name</label>
+                        <label for="father_name">Father's Name <span class="required">*</span></label>
                         <input type="text" name="father_name" id="father_name" required>
                     </div>
                     <div class="input-box">
-                        <label for="occupation">Occupation</label>
+                        <label for="occupation">Occupation <span class="required">*</span></label>
                         <input type="text" name="occupation" id="occupation" required>
                     </div>
                     <div class="input-box">
-                        <label for="parent_phone">Parent's Phone</label>
+                        <label for="parent_phone">Parent's Phone <span class="required">*</span></label>
                         <input type="text" name="parent_phone" id="parent_phone" required>
                     </div>
                     <div class="input-box">
-                        <label for="student_phone">Student's Phone</label>
+                        <label for="student_phone">Student's Phone <span class="required">*</span></label>
                         <input type="text" name="student_phone" id="student_phone" required>
                     </div>
                     <div class="input-box">
-                        <label for="present_addr">Present Address</label>
+                        <label for="present_addr">Present Address <span class="required">*</span></label>
                         <textarea name="present_addr" id="present_addr" required></textarea>
                     </div>
                     <div class="input-box">
-                        <label for="permanent_addr">Permanent Address</label>
+                        <label for="permanent_addr">Permanent Address <span class="required">*</span></label>
                         <textarea name="permanent_addr" id="permanent_addr" required></textarea>
                     </div>
                     <div class="input-box">
-                        <label for="languages_known">Languages Known</label>
+                        <label for="languages_known">Languages Known <span class="required">*</span></label>
                         <input type="text" name="languages_known" id="languages_known" required>
                     </div>
                     <div class="input-box">
-                        <label for="school">School</label>
+                        <label for="school">School <span class="required">*</span></label>
                         <input type="text" name="school" id="school" required>
                     </div>
                     <div class="input-box">
-                        <label for="medium">Medium</label>
-                        <input type="text" name="medium" id="medium" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="math">Math</label>
-                        <input type="number" name="math" id="math" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="physic">Physics</label>
-                        <input type="number" name="physic" id="physic" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="chemis">Chemistry</label>
-                        <input type="number" name="chemis" id="chemis" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="quota">Quota</label>
+                        <label for="quota">Quota <span class="required">*</span></label>
                         <select name="quota" id="quota" required>
                             <option value="management">Management</option>
                             <option value="counselling">Counselling</option>
                         </select>
                     </div>
+                    <div>
+                        <p>Select Course Type <span class="required">*</span>:</p>
+                        <label><input type="radio" name="course_type" value="UG" onclick="toggleFields()" required> UG</label>
+                        <label><input type="radio" name="course_type" value="Diploma" onclick="toggleFields()"> Diploma</label>
+                        <label><input type="radio" name="course_type" value="PG" onclick="toggleFields()"> PG</label>
+                    </div>
+                    <div id="ug-fields" style="display: none;">
+                        <div class="input-box">
+                            <label for="math">Math</label>
+                            <input type="number" name="math" id="math">
+                        </div>
+                        <div class="input-box">
+                            <label for="physic">Physics</label>
+                            <input type="number" name="physic" id="physic">
+                        </div>
+                        <div class="input-box">
+                            <label for="chemis">Chemistry</label>
+                            <input type="number" name="chemis" id="chemis">
+                        </div>
+                    </div>
+                    <div id="cgpa-field" style="display: none;">
+                        <div class="input-box">
+                            <label for="cgpa">CGPA</label>
+                            <input type="number" step="0.01" name="cgpa" id="cgpa">
+                        </div>
+                    </div>
                 </div>
                 <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
-                <div style="display: none;">
-                    <input type="hidden" name="device_model" id="device_model">
-                    <input type="hidden" name="device_owner" id="device_owner">
-                    <input type="hidden" name="imei" id="imei">
-                </div>
                 <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
                     <input type="submit" name="submit_student_info" value="Submit">
                     <button type="button" onclick="window.location.reload();">Cancel</button>
@@ -335,11 +291,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
     <?php elseif ($student_data_error): ?>
         <p class="error"><?php echo $student_data_error; ?></p>
     <?php endif; ?>
-    <script>
-        // Simulate device information gathering
-        document.getElementById('device_model').value = 'Simulated Device Model';
-        document.getElementById('device_owner').value = 'Simulated Device Owner';
-        document.getElementById('imei').value = 'Simulated IMEI';
-    </script>
 </body>
 </html>
