@@ -278,10 +278,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
                         </select>
                     </div>
                     <div>
-                        <p>Select Course Type <span class="required">*</span>:</p>
+                        <p>Select Previous Course Type <span class="required">*</span>:</p>
                         <label><input type="radio" name="course_type" value="UG" onclick="toggleFields()" required> +2/HSC </label>
                         <label><input type="radio" name="course_type" value="Diploma" onclick="toggleFields()"> Diploma</label>
-                        <label><input type="radio" name="course_type" value="PG" onclick="toggleFields()"> PG</label>
+                        <label><input type="radio" name="course_type" value="PG" onclick="toggleFields()"> UG</label>
                     </div>
                     <div id="ug-fields" style="display: none;">
                         <div class="input-box">
