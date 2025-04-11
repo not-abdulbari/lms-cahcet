@@ -193,7 +193,6 @@ if (!function_exists('getCurrentDateTime')) {
             <li><a href="home.php">Home</a></li>
             <li><a href="faculty_dashboard.php">Marks</a></li>
             <li><a href="attendance_dashboard.php">Attendance</a></li>
-            <li><a href="add_grades.php">Grade</a></li>
             <li><a href="add_subject.php">Subject</a></li>
             <li><a href="student_report.php">Students Report</a></li>
             <li class="dropdown">
