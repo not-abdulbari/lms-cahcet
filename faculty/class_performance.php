@@ -263,6 +263,13 @@ body {
                     <?php } ?>
                 </select>
             </div>
+            <!-- New Checkbox -->
+            <div class="dropdown-group">
+                <label>
+                    <input type="checkbox" name="nba_logo" value="1">
+                    Is NBA logo needed?
+                </label>
+            </div>
 
             
             <div class="btn-container">
