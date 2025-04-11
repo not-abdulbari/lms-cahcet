@@ -217,6 +217,16 @@ $semesters = $conn->query("SELECT DISTINCT semester FROM marks WHERE semester IS
                     <?php } ?>
                 </select>
             </div>
+            <div class="dropdown-group">
+                <label>Year (Roman):</label>
+                <select name="year_roman" required>
+                    <option value="">Select Year</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                </select>
+            </div
 
             <div class="dropdown-group">
                 <label>Section:</label>
@@ -227,16 +237,15 @@ $semesters = $conn->query("SELECT DISTINCT semester FROM marks WHERE semester IS
                     <?php } ?>
                 </select>
             </div>
-
+            <!-- New Checkbox -->
             <div class="dropdown-group">
-                <label>Semester:</label>
-                <select name="semester" required>
-                    <option value="">Select Semester</option>
-                    <?php while ($row = $semesters->fetch_assoc()) { ?>
-                        <option value="<?= htmlspecialchars($row['semester']) ?>"><?= htmlspecialchars($row['semester']) ?></option>
-                    <?php } ?>
-                </select>
+                <label>
+                    <input type="checkbox" name="nba_logo" value="1">
+                    Is NBA logo needed?
+                </label>
             </div>
+
+            
 
             <div class="btn-container">
                 <a href="faculty_dashboard.php" class="btn btn-back">← Back</a>
