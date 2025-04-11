@@ -133,11 +133,6 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
     <!-- College Logo on the Left -->
     <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo" style="height: 90px;">
 
-    <!-- NBA Logo on the Right (conditionally displayed) -->
-    <?php if ($isNbaLogoNeeded) { ?>
-        <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
-    <?php } ?>
-
     <!-- College Details in the Center -->
     <div style="text-align: center; flex-grow: 1;">
         <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
@@ -145,6 +140,9 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
         <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
         <h3>Academic Year 2024 - 2025 (EVEN)</h3>
     </div>
+        <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+        <?php } ?>    
 </div>
     <p style="text-align: center;">______________________________________________________________________________________________</p>
     <div class="report-data">
