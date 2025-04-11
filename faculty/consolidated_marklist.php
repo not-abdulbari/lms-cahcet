@@ -13,6 +13,8 @@ $branches = $conn->query("SELECT DISTINCT branch FROM marks WHERE branch IS NOT 
 $years = $conn->query("SELECT DISTINCT year FROM marks WHERE year IS NOT NULL ORDER BY year ASC");
 $sections = $conn->query("SELECT DISTINCT section FROM marks WHERE section IS NOT NULL ORDER BY section ASC");
 $semesters = $conn->query("SELECT DISTINCT semester FROM marks WHERE semester IS NOT NULL ORDER BY CAST(semester AS UNSIGNED) ASC");
+$exams = $conn->query("SELECT DISTINCT exam FROM marks WHERE exam IS NOT NULL ORDER BY exam ASC");
+
 ?>
 
 <!DOCTYPE html>
@@ -270,6 +272,15 @@ body {
                     <option value="">Select Semester</option>
                     <?php while ($row = $semesters->fetch_assoc()) { ?>
                         <option value="<?= htmlspecialchars($row['semester']) ?>"><?= htmlspecialchars($row['semester']) ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="dropdown-group">
+                <label>Exam Type:</label>
+                <select name="exam" required>
+                    <option value="">Select Exam Type</option>
+                    <?php while ($row = $exams->fetch_assoc()) { ?>
+                        <option value="<?= htmlspecialchars($row['exam']) ?>"><?= htmlspecialchars($row['exam']) ?></option>
                     <?php } ?>
                 </select>
             </div>
