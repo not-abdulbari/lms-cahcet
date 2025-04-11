@@ -116,7 +116,10 @@
 
   // Add "Progress Report" heading 
   $pdf->SetFont('Times', 'B', 16); 
-  $pdf->Cell(0, 10, 'RESULT FOR '.$exam.' EXAMINATION', 0, 1, 'C'); 
+  $pdf->Cell(0, 10, 'UNIVERSITY RESULT', 0, 1, 'C'); 
+  
+  $pdf->SetFont('Times', 'B', 12); 
+  $pdf->Cell(0, 17, 'RESULT FOR '.$exam.' EXAMINATION', 0, 1, 'C'); 
 
   $pdf->Ln(10); 
 
