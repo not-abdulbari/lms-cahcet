@@ -11,6 +11,8 @@ $subject = $conn->real_escape_string($_POST['subject']);
 $exam = $conn->real_escape_string($_POST['exam']);
 $faculty_code = $conn->real_escape_string($_POST['faculty_code']);
 $exam_date = $conn->real_escape_string($_POST['exam_date']);
+$isNbaLogoNeeded = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
 // Fetch faculty name
 $facultyNameQuery = $conn->query("SELECT faculty_name FROM faculty WHERE faculty_code='$faculty_code'");
