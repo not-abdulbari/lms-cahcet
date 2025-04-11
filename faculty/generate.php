@@ -14,6 +14,8 @@ $year_roman = $conn->real_escape_string($_POST['year_roman']);
 $section = isset($_POST['section']) ? $conn->real_escape_string($_POST['section']) : '';
 $semester = isset($_POST['semester']) ? $conn->real_escape_string($_POST['semester']) : '';
 $exam = isset($_POST['exam']) ? $conn->real_escape_string($_POST['exam']) : '';
+$isNbaLogoNeeded = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
 // Map branch names to department names
 $departmentNames = [
@@ -175,6 +177,9 @@ $overallPassPercent = $totalAppeared > 0 ? round(($allCleared / $totalAppeared) 
             <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
             <h3>Academic Year 2024 - 2025 (EVEN)</h3>
         </div>
+        <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+        <?php } ?>
     </div>
     <p style="text-align: center;">______________________________________________________________________________________________</p>
     <div class="report-data">
