@@ -17,6 +17,7 @@ $subject = $conn->real_escape_string($_POST['subject']);
 $exam = $conn->real_escape_string($_POST['exam']);
 $faculty_code = $conn->real_escape_string($_POST['faculty_code']);
 $exam_date = $conn->real_escape_string($_POST['exam_date']);
+$isNbaLogoNeeded = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
 
 // Map branch names to department names
 $departmentNames = [
@@ -129,13 +130,15 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
         <button class="print-btn" onclick="printMarksList()">Print Report Analysis</button>
     </div>
     <div class="header">
-    <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo">
+        <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo">
+        <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo">
+        <?php } ?>
         <div>
             <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
             <h3>MELVISHARAM - 632509</h3>
             <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
             <h3>Academic Year 2024 - 2025 (EVEN)</h3>
-
         </div>
     </div>
     <p style="text-align: center;">______________________________________________________________________________________________</p>
