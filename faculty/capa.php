@@ -228,7 +228,7 @@ while ($row = $failedStudentsQuery->fetch_assoc()) {
 
     <div class="signatures">
         <div>
-        <p>HOD</p>
+        <p>                                        HOD</p>
     </div>
     </div>
 </div>
