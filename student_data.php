@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
 
     if ($course_type == 'UG') {
         // Calculate cutoff for UG
-        $cutoff = round($math + $physic + $chemis, 2);
+        $cutoff = round($math + $physic/2 + $chemis/2, 2);
     }
 
     // Form validation
