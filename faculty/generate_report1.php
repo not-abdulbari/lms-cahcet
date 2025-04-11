@@ -129,18 +129,23 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
     <div class="no-print">
         <button class="print-btn" onclick="printMarksList()">Print Report Analysis</button>
     </div>
-    <div class="header">
-        <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo">
-        <?php if ($isNbaLogoNeeded) { ?>
-            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="float: right; margin-right: 20px; height: 90px;">
-        <?php } ?>
-        <div>
-            <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
-            <h3>MELVISHARAM - 632509</h3>
-            <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
-            <h3>Academic Year 2024 - 2025 (EVEN)</h3>
-        </div>
+    <div class="header" style="display: flex; align-items: center; justify-content: space-between;">
+    <!-- College Logo on the Left -->
+    <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo" style="height: 90px;">
+
+    <!-- NBA Logo on the Right (conditionally displayed) -->
+    <?php if ($isNbaLogoNeeded) { ?>
+        <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+    <?php } ?>
+
+    <!-- College Details in the Center -->
+    <div style="text-align: center; flex-grow: 1;">
+        <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
+        <h3>MELVISHARAM - 632509</h3>
+        <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
+        <h3>Academic Year 2024 - 2025 (EVEN)</h3>
     </div>
+</div>
     <p style="text-align: center;">______________________________________________________________________________________________</p>
     <div class="report-data">
         <h3 id="examTitle" style="text-align: center;">INTERNAL EXAM RESULT ANALYSIS</h3>
