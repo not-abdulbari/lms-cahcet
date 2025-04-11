@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $exam = isset($_POST['exam']) ? $_POST['exam'] : '';
     $exam_date = isset($_POST['exam_date']) ? $_POST['exam_date'] : '';
     $faculty_code = isset($_POST['faculty_code']) ? $_POST['faculty_code'] : '';
+    $isNbaLogoNeeded = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
     // Fetch marks and student details if all parameters are set
     if (!empty($branch) && !empty($year) && !empty($section) && !empty($semester) && !empty($subject) && !empty($exam)) {
@@ -129,6 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
         <h3>Academic Year 2024 - 2025 (EVEN)</h3>
     </div>
+        <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+        <?php } ?>
 </div>
 <p style="text-align: center;">______________________________________________________________________________________________</p>
 
