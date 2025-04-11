@@ -132,7 +132,7 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
     <div class="header">
         <img src="../assets/24349bb44aaa1a8c.jpg" alt="College Logo">
         <?php if ($isNbaLogoNeeded) { ?>
-            <img src="../assets/nba-logo.svg" alt="NBA Logo">
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="float: right; margin-right: 20px; height: 90px;">
         <?php } ?>
         <div>
             <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
