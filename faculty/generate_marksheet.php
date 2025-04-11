@@ -300,6 +300,13 @@ body {
                 <label>Exam Date:</label>
                 <input type="date" name="exam_date" value="<?= date('Y-m-d') ?>" required>
             </div>
+            <!-- New Checkbox -->
+            <div class="dropdown-group">
+                <label>
+                    <input type="checkbox" name="nba_logo" value="1">
+                    Is NBA logo needed?
+                </label>
+            </div>
 
             <div class="btn-container">
                 <a href="faculty_dashboard.php" class="btn btn-back">← Back</a>
