@@ -13,6 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $branch = isset($_POST['branch']) ? $_POST['branch'] : '';
     $year = isset($_POST['year']) ? $_POST['year'] : '';
     $section = isset($_POST['section']) ? $_POST['section'] : '';
+    $year_roman = isset($_POST['year_roman']) ? $_POST['year_roman'] : '';
+    $isNbaLogoNeeded = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
     // Fetch student details if all parameters are set
     if (!empty($branch) && !empty($year) && !empty($section)) {
@@ -66,6 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             h3 { margin-bottom: -10px; }
             .header img { margin-top: 10px; height: 90px; }
         }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .header-row div {
+            width: 50%;
+        }
     </style>
     <script>
         function printNameList() {
@@ -83,9 +95,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div>
         <h3>C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY</h3>
         <h3>MELVISHARAM - 632509</h3>
-        <h3><?= htmlspecialchars($department) ?></h3> </div>
+        <h3><?= htmlspecialchars($department) ?></h3>
+        <h3>Academic Year 2024 - 2025 (EVEN)</h3>
+
+    </div>
+    <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+        <?php } ?>
 </div>
 <p style="text-align: center;">______________________________________________________________________________________________</p>
+
+<!-- New row for year (roman) and section -->
+<div class="header-row">
+    <div style="text-align: left;">Year: <?= htmlspecialchars($year_roman) ?></div>
+    <div style="text-align: right;">Section: <?= htmlspecialchars($section) ?></div>
+</div>
 
 <div class="container">
     <h2 style="text-align: center;">Student Name List</h2>
