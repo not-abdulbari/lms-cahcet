@@ -141,6 +141,9 @@ while ($row = $failedStudentsQuery->fetch_assoc()) {
             <h3><?= htmlspecialchars($department) ?></h3> 
             <h3>Academic Year 2024 - 2025 (EVEN)</h3> 
         </div>
+        <?php if ($isNbaLogoNeeded) { ?>
+            <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 90px;">
+        <?php } ?>
     </div>
 <p style="text-align: center;">_________________________________________________________________________________________________________________________________________</p>
 
