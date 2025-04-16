@@ -65,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         th, td { border: 1px solid #000; padding: 2px; text-align: left; font-size: 12px; } /* Reduced padding */
         .header { text-align: center; display: flex; align-items: center; justify-content: center; }
         h3 { margin-bottom: -10px; }
-        hr { margin-top: 15px; }
         .header img { margin-top: 10px; height: 90px; }
         .exam-type { font-size: 18px; font-weight: bold; text-align: center; margin-top: 10px; }
         .info-container { display: flex; justify-content: space-between; margin-top: 20px; }
@@ -78,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         th, td { border: 1px solid #000; padding: 2px; text-align: left; font-size: 12px; } /* Reduced padding */
         .header { text-align: center; display: flex; align-items: center; justify-content: center; }
         h3 { margin-bottom: -10px; }
-        hr { margin-top: 15px; }
         .header img { margin-top: 10px; height: 90px; }
         .exam-type { font-size: 18px; font-weight: bold; text-align: center; margin-top: 10px; }
         .info-container { display: flex; justify-content: space-between; margin-top: 20px; }
@@ -108,19 +106,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h3>MELVISHARAM - 632509</h3>
         <h3><?= htmlspecialchars($department) ?></h3> <!-- Dynamic Department Name -->
         <h3>Academic Year 2024 - 2025 (EVEN)</h3>
-        <hr>
     </div>
     <?php if (isset($_POST['include_nba_logo']) && $_POST['include_nba_logo'] == '1') { ?>
         <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 100px; margin-right: 20px;">
     <?php } ?>
+    
+        <p style="text-align:center;" >_________________________________________________________________________________________</p>
 </div>
 <div class="container">
     <h2 class="exam-type">Consolidated Marksheet</h2>
+    <h3></h3><strong> <?= htmlspecialchars($exam) ?> Exam</strong></h3>
     <?php if (!empty($marks_by_student)) { ?>
         <div class="info-container">
             <div class="info-left">
-                <p><strong>Year/Sem/Sec:</strong> <?= htmlspecialchars("$year_roman / $semester / $section") ?></p>
-                <p><strong>Exam:</strong> <?= htmlspecialchars($exam) ?></p>
+                <p><strong>Year / Sem / Sec :</strong> <?= htmlspecialchars("$year_roman / $semester / $section") ?></p>
+                
             </div>
         </div>
         <table>
