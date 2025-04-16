@@ -287,7 +287,7 @@ body {
 
             <label>
         <input type="checkbox" name="include_nba_logo" id="include_nba_logo" value="1">
-        Include NBA Logo
+        Is NBA logo needed?
     </label>
 
             <div class="btn-container">
