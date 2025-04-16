@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <p style="text-align:center;" >_________________________________________________________________________________________</p>
 <div class="container">
     <h2 class="exam-type">Consolidated Marksheet</h2>
-    <h3></h3><strong> <?= htmlspecialchars($exam) ?> Exam</strong></h3>
+    <h3 style="text-align:center;"><strong> <?= htmlspecialchars($exam) ?> Exam</strong></h3>
     <?php if (!empty($marks_by_student)) { ?>
         <div class="info-container">
             <div class="info-left">
