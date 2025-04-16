@@ -95,8 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <button class="print-btn" onclick="printMarksList()">Print Marksheet</button>
 </div>
 
-<div class="back-btn">
-    <button class="print-btn"><a href="consolidated_marklist.php">Back</a></button>
+
 </div>
 
 <div class="header">
@@ -111,8 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 100px; margin-right: 20px;">
     <?php } ?>
     
-        <p style="text-align:center;" >_________________________________________________________________________________________</p>
 </div>
+    <p style="text-align:center;" >_________________________________________________________________________________________</p>
 <div class="container">
     <h2 class="exam-type">Consolidated Marksheet</h2>
     <h3></h3><strong> <?= htmlspecialchars($exam) ?> Exam</strong></h3>
