@@ -58,142 +58,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consolidated Marksheet</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .header img {
-            height: 100px;
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            margin: 5px 0;
-            font-size: 1.2em;
-        }
-
-        .container {
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #000;
-            text-align: center;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        td {
-            vertical-align: middle;
-        }
-
-        .info-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 1em;
-        }
-
-        .info-left {
-            width: 48%;
-        }
-
-        .exam-type {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .signatures {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1em;
-            padding: 0 50px;
-        }
-
-        .no-print {
-            margin: 20px 0;
-            position: absolute;
-            right: 2%;
-        }
-
-        .back-btn {
-            position: absolute;
-            left: 2%;
-            top: 4%;
-        }
-
-        .back-btn a {
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .print-btn {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .print-btn:hover {
-            background-color: #2980b9;
-        }
-
-        /* Hide unnecessary elements in print view */
-        @media print {
-            .no-print, .back-btn {
-                display: none;
-            }
-
-            body {
-                margin: 0;
-                font-size: 12pt;
-                line-height: 1.4;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 10px;
-            }
-
-            th, td {
-                border: 0.8px solid #000;
-                text-align: center;
-                padding: 6px;
-            }
-
-            th {
-                background-color: #f1f1f1;
-            }
-        }
+       @media print {
+        body { margin: 14px; font-family: Times New Roman; font-size: 14px; }
+        .no-print { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        th, td { border: 1px solid #000; padding: 2px; text-align: left; font-size: 12px; } /* Reduced padding */
+        .header { text-align: center; display: flex; align-items: center; justify-content: center; }
+        h3 { margin-bottom: -10px; }
+        .header img { margin-top: 10px; height: 90px; }
+        .exam-type { font-size: 18px; font-weight: bold; text-align: center; margin-top: 10px; }
+        .info-container { display: flex; justify-content: space-between; margin-top: 20px; }
+        .info-left, .info-right { width: 48%; }
+        .signatures { margin-top: 150px; display: flex; justify-content: space-between; }
+    }
+    @media screen {
+        body { margin: 14px; font-family: Times New Roman; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        th, td { border: 1px solid #000; padding: 2px; text-align: left; font-size: 12px; } /* Reduced padding */
+        .header { text-align: center; display: flex; align-items: center; justify-content: center; }
+        h3 { margin-bottom: -10px; }
+        .header img { margin-top: 10px; height: 90px; }
+        .exam-type { font-size: 18px; font-weight: bold; text-align: center; margin-top: 10px; }
+        .info-container { display: flex; justify-content: space-between; margin-top: 20px; }
+        .info-left, .info-right { width: 48%; }
+        .signatures { margin-top: 150px; display: flex; justify-content: space-between; }
+    }
     </style>
     <script>
         function printMarksList() {
@@ -220,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <hr>
     </div>
     <?php if (isset($_POST['include_nba_logo']) && $_POST['include_nba_logo'] == '1') { ?>
-        <img src="../assets/nba-logo.png" alt="NBA Logo" style="height: 100px; margin-right: 20px;">
+        <img src="../assets/nba-logo.svg" alt="NBA Logo" style="height: 100px; margin-right: 20px;">
     <?php } ?>
 </div>
 <div class="container">
