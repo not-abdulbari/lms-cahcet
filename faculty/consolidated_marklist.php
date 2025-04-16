@@ -223,7 +223,7 @@ body {
 </head>
 <body>
     <div class="container">
-        <h2>Marksheet</h2>
+        <h2>Consolidated Markslist</h2>
         <form id="marksheetForm" method="post" action="generate_consolidated_marklist.php">
             <div class="dropdown-group">
                 <label>Branch:</label>
@@ -284,6 +284,11 @@ body {
                     <?php } ?>
                 </select>
             </div>
+
+            <label>
+        <input type="checkbox" name="include_nba_logo" id="include_nba_logo" value="1">
+        Include NBA Logo
+    </label>
 
             <div class="btn-container">
                 <a href="faculty_dashboard.php" class="btn btn-back">← Back</a>
