@@ -233,16 +233,18 @@ body {
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="entry">Select Attendance Entry:</label>
-                <select name="entry" id="entry" required>
-                    <option value="">Select Entry</option>
-                    <option value="Entry 1">Entry 1</option>
-                    <option value="Entry 2">Entry 2</option>
-                </select>
-            </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="entry">Select Attendance Entry:</label>
+            <select name="entry" id="entry" required>
+                <option value="">Select Entry</option>
+                <option value="Entry 1">Entry 1</option>
+                <option value="Entry 2">Entry 2</option>
+                <option value="Entry 3">Entry 3</option>
+                <option value="Entry 4">Entry 4</option>
+            </select>
         </div>
+    </div>
 
         <button type="submit">Go to Attendance Entry</button>
     </form>
