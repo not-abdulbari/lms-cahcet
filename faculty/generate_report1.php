@@ -145,7 +145,7 @@ $passPercentAppeared = $appeared > 0 ? round(($passed / $appeared) * 100, 2) : 0
         <?php } ?>    
 </div>
     <p style="text-align: center;">______________________________________________________________________________________________</p>
-    <p style="text-align: right;">CAHCET / AD/ <?= htmlspecialchars($branch) ?> / CFT - 06 </p>
+    <p style="text-align: right;">CAHCET / AD / <?= htmlspecialchars($branch) ?> / CFT - 06 </p>
 
     <div class="report-data">
         <h3 id="examTitle" style="text-align: center;">INTERNAL EXAM RESULT ANALYSIS</h3>
