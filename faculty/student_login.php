@@ -127,9 +127,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 }
             }
 
-            // Logic to display PG (MBA, MCA) results in Semester 3
+            // Logic to display PG (MBA, MCA) results in Semester 3 and 1
             if (in_array(strtoupper($branch), ['MBA', 'MCA'])) {
-                $semester_to_display = 3;
+                if ($year_of_passing == 2025) {
+                    $semester_to_display = 3;
+                } elseif ($year_of_passing == 2026) {
+                    $semester_to_display = 1;
+                }
             }
 
             $university_results_data[$semester_to_display][$row['subject_code']] = $row;
