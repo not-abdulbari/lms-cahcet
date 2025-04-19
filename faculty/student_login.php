@@ -36,18 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     if (isset($student_data)) {
         // Fetch marks
-$sql_marks = "
-SELECT m.semester, m.subject, 
-    LOWER(TRIM(s.subject_name)) AS normalized_subject_name, -- Normalize subject name
-    MAX(CASE WHEN m.exam = 'CAT1' THEN m.marks END) AS CAT1,
-    MAX(CASE WHEN m.exam = 'CAT2' THEN m.marks END) AS CAT2,
-    MAX(CASE WHEN m.exam = 'Model' THEN m.marks END) AS Model
-FROM marks m
-JOIN subjects s ON m.subject = s.subject_code
-WHERE m.roll_no = ?
-GROUP BY m.semester, m.subject, normalized_subject_name -- Group by normalized subject name
-ORDER BY m.semester ASC, m.subject ASC
-";
+        $sql_marks = "
+        SELECT m.semester, m.subject, s.subject_name,
+                MAX(CASE WHEN m.exam = 'CAT1' THEN m.marks END) AS CAT1,
+                MAX(CASE WHEN m.exam = 'CAT2' THEN m.marks END) AS CAT2,
+                MAX(CASE WHEN m.exam = 'Model' THEN m.marks END) AS Model
+        FROM marks m
+        JOIN subjects s ON m.subject = s.subject_code
+        WHERE m.roll_no = ?
+        GROUP BY m.semester, m.subject, s.subject_name
+        ORDER BY m.semester ASC, m.subject ASC
+        ";
         $stmt = $conn->prepare($sql_marks);
         $stmt->bind_param("s", $roll_number);
         $stmt->execute();
@@ -376,7 +375,7 @@ $conn->close();
                         foreach ($data['marks'] as $subject) {
                             echo "<tr>
                                       <td>" . htmlspecialchars($subject['subject']) . "</td>
-                                      <td>" . htmlspecialchars($subject['normalized_subject_name']) . "</td>
+                                      <td>" . htmlspecialchars($subject['subject_name']) . "</td>
                                       <td>" . htmlspecialchars($subject['CAT1']) . "</td>
                                       <td>" . htmlspecialchars($subject['CAT2']) . "</td>
                                       <td>" . htmlspecialchars($subject['Model']) . "</td>
