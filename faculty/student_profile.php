@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
            si.student_phone, si.present_addr, si.permanent_addr, si.languages_known, si.school, si.medium, 
            si.math, si.physic, si.chemis, si.cutoff, si.quota 
     FROM students s 
-    JOIN student_info si ON s.roll_no = si.roll_no 
+    JOIN student_information si ON s.roll_no = si.roll_no 
     WHERE s.roll_no = ?";
     if ($stmt = $conn->prepare($sql_student)) {
         $stmt->bind_param("s", $roll_number);
@@ -326,6 +326,8 @@ $conn->close();
                     <tr><th>Roll Number</th><td>" . htmlspecialchars($student_data['roll_no']) . "</td></tr>
                     <tr><th>Branch</th><td>" . htmlspecialchars($student_data['branch']) . "</td></tr>
                     <tr><th>Year</th><td>" . htmlspecialchars($student_data['year']) . "</td></tr>
+                    
+                    <tr><th>Mail:</th><td>" . htmlspecialchars($student_data['mail']) . "</td></tr>
                     <tr><th>Date of Birth</th><td>" . htmlspecialchars($student_data['dob']) . "</td></tr>
                     <tr><th>Father's Name</th><td>" . htmlspecialchars($student_data['father_name']) . "</td></tr>
                     <tr><th>Occupation</th><td>" . htmlspecialchars($student_data['occupation']) . "</td></tr>
@@ -340,7 +342,10 @@ $conn->close();
                     <tr><th>Physics</th><td>" . htmlspecialchars($student_data['physic']) . "</td></tr>
                     <tr><th>Chemistry</th><td>" . htmlspecialchars($student_data['chemis']) . "</td></tr>
                     <tr><th>Cutoff</th><td>" . htmlspecialchars($student_data['cutoff']) . "</td></tr>
+                    <tr><th>CGPA</th><td>" . htmlspecialchars($student_data['cgpa']) . "</td></tr>
                     <tr><th>Quota</th><td>" . htmlspecialchars($student_data['quota']) . "</td></tr>
+                    <tr><th>Cours Type</th><td>" . htmlspecialchars($student_data['course_type']) . "</td></tr>
+                    
                 </table>
             </div>";
 
