@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '../faculty/db_connect.php';
+include 'db_connect.php';
 
 // Initialize variables
 $student_data = null;
