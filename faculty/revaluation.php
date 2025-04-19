@@ -363,7 +363,7 @@ $conn->close();
                         </tbody>
                     </table>
                 </div>
-                <input type="submit" name="save_changes" value="Save Changes">
+                <input type="submit" name="save_changes" value="Save Changes" style="margin-top: 15px;">
             </form>
         <?php endif; ?>
     </div>
