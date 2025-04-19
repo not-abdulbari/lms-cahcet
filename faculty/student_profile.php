@@ -1,8 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-include 'db_connect.php';
+include '../faculty/db_connect.php';
 
 // Initialize variables
 $student_data = null;
@@ -176,49 +173,6 @@ $conn->close();
             font-weight: bold;
             color: var(--dark-color);
         }
-    .form-container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #000;
-    }
-    .form-row {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .form-row label {
-      width: 250px;
-      font-weight: bold;
-    }
-    .form-row span {
-      flex: 1;
-      border-bottom: 1px solid #000;
-      display: inline-block;
-      padding-left: 5px;
-    }
-    .address-box {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px 0;
-    }
-    .address-column {
-      width: 48%;
-    }
-    .address-column textarea {
-      width: 100%;
-      height: 80px;
-      border: 1px solid #000;
-    }
-    .marks-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    .marks-table th, .marks-table td {
-      border: 1px solid #000;
-      text-align: center;
-      padding: 5px;
-    }
 
         input[type="text"] {
             width: 100%;
@@ -365,55 +319,35 @@ $conn->close();
             }
             echo "</div>";
 
-            echo "<div class="form-container">
- 
-    <div class="form-row"><label>Student Name :</label><span><?= htmlspecialchars($student_data['name']) ?></span></div>
-    <div class="form-row"><label>Date of Birth :</label><span><?= htmlspecialchars($student_data['dob']) ?></span></div>
-    <div class="form-row"><label>Roll Number :</label><span><?= htmlspecialchars($student_data['roll_no']) ?></span></div>
-    <div class="form-row"><label>Register Number :</label><span><?= htmlspecialchars($student_data['reg_no']) ?></span></div>
-    <div class="form-row"><label>Branch :</label><span><?= htmlspecialchars($student_data['branch']) ?></span></div>
-    <div class="form-row"><label>MAIL :</label><span><?= htmlspecialchars($student_data['mail']) ?></span></div>
-    <div class="form-row"><label>Year of passing :</label><span><?= htmlspecialchars($student_data['year']) ?></span></div>
-    <div class="form-row"><label>Father's Name :</label><span><?= htmlspecialchars($student_data['father_name']) ?></span></div>
-    <div class="form-row"><label>Father's Occupation :</label><span><?= htmlspecialchars($student_data['occupation']) ?></span></div>
-    <div class="form-row"><label>Students Phone No. :</label><span><?= htmlspecialchars($student_data['student_phone']) ?></span></div>
-    <div class="form-row"><label>Parent's Phone No. :</label><span><?= htmlspecialchars($student_data['parent_phone']) ?></span></div>
-
-    <div class="address-box">
-      <div class="address-column">
-        <label>Permanent Address</label>
-        <textarea readonly><?= htmlspecialchars($student_data['permanent_addr']) ?></textarea>
-      </div>
-      <div class="address-column">
-        <label>Present Address</label>
-        <textarea readonly><?= htmlspecialchars($student_data['present_addr']) ?></textarea>
-      </div>
-    </div>
-
-    <div class="form-row"><label>Languages known :</label><span><?= htmlspecialchars($student_data['languages_known']) ?></span></div>
-    <div class="form-row"><label>Name of the school last studied :</label><span><?= htmlspecialchars($student_data['school']) ?></span></div>
-    <div class="form-row"><label>Medium of Instruction in +2 :</label><span><?= htmlspecialchars($student_data['medium']) ?></span></div>
-
-    <div class="form-row"><label>Marks in +2 :</label></div>
-    <table class="marks-table">
-      <tr>
-        <th>Maths</th>
-        <th>Physics</th>
-        <th>Chemistry</th>
-        <th>Cut off Mark</th>
-        <th>Quota</th>
-      </tr>
-      <tr>
-        <td><?= htmlspecialchars($student_data['math']) ?></td>
-        <td><?= htmlspecialchars($student_data['physic']) ?></td>
-        <td><?= htmlspecialchars($student_data['chemis']) ?></td>
-        <td><?= htmlspecialchars($student_data['cutoff']) ?></td>
-        <td><?= htmlspecialchars($student_data['quota']) ?></td>
-      </tr>
-    </table>
-    <div class="form-row"><label>CGPA :</label><span><?= htmlspecialchars($student_data['cgpa']) ?></span></div>
-    <div class="form-row"><label>Course Type :</label><span><?= htmlspecialchars($student_data['couse_type']) ?></span></div>
-  </div>";
+            echo "<div id='profile' class='tab-content active'>
+                <h3>Student Information</h3>
+                <table>
+                    <tr><th>Name</th><td>" . htmlspecialchars($student_data['name']) . "</td></tr>
+                    <tr><th>Roll Number</th><td>" . htmlspecialchars($student_data['roll_no']) . "</td></tr>
+                    <tr><th>Register Number</th><td>" . htmlspecialchars($student_data['reg_no']) . "</td></tr>
+                    <tr><th>Branch</th><td>" . htmlspecialchars($student_data['branch']) . "</td></tr>
+                    <tr><th>Year</th><td>" . htmlspecialchars($student_data['year']) . "</td></tr>
+                    <tr><th>Mail:</th><td>" . htmlspecialchars($student_data['mail']) . "</td></tr>
+                    <tr><th>Date of Birth</th><td>" . htmlspecialchars($student_data['dob']) . "</td></tr>
+                    <tr><th>Father's Name</th><td>" . htmlspecialchars($student_data['father_name']) . "</td></tr>
+                    <tr><th>Occupation</th><td>" . htmlspecialchars($student_data['occupation']) . "</td></tr>
+                    <tr><th>Parent's Phone</th><td>" . htmlspecialchars($student_data['parent_phone']) . "</td></tr>
+                    <tr><th>Student's Phone</th><td>" . htmlspecialchars($student_data['student_phone']) . "</td></tr>
+                    <tr><th>Present Address</th><td>" . htmlspecialchars($student_data['present_addr']) . "</td></tr>
+                    <tr><th>Permanent Address</th><td>" . htmlspecialchars($student_data['permanent_addr']) . "</td></tr>
+                    <tr><th>Languages Known</th><td>" . htmlspecialchars($student_data['languages_known']) . "</td></tr>
+                    <tr><th>School</th><td>" . htmlspecialchars($student_data['school']) . "</td></tr>
+                    <tr><th>Medium</th><td>" . htmlspecialchars($student_data['medium']) . "</td></tr>
+                    <tr><th>Maths</th><td>" . htmlspecialchars($student_data['math']) . "</td></tr>
+                    <tr><th>Physics</th><td>" . htmlspecialchars($student_data['physic']) . "</td></tr>
+                    <tr><th>Chemistry</th><td>" . htmlspecialchars($student_data['chemis']) . "</td></tr>
+                    <tr><th>Cutoff</th><td>" . htmlspecialchars($student_data['cutoff']) . "</td></tr>
+                    <tr><th>CGPA</th><td>" . htmlspecialchars($student_data['cgpa']) . "</td></tr>
+                    <tr><th>Quota</th><td>" . htmlspecialchars($student_data['quota']) . "</td></tr>
+                    <tr><th>Course Type</th><td>" . htmlspecialchars($student_data['course_type']) . "</td></tr>
+                    
+                </table>
+            </div>";
 
             foreach ($all_semesters as $semester => $data) {
                 echo "<div id='semester-$semester' class='tab-content'>
