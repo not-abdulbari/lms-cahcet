@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     // Fetch student biodata from student and student_info tables
     $sql_student = "
-    SELECT s.name, s.roll_no, s.year, s.branch, si.mail, si.dob, si.father_name, si.occupation, si.parent_phone, 
+    SELECT s.name, s.roll_no,s.reg_no, s.year, s.branch, si.mail, si.dob, si.father_name, si.occupation, si.parent_phone, 
            si.student_phone, si.present_addr, si.permanent_addr, si.languages_known, si.school, si.medium, 
            si.math, si.physic, si.chemis, si.cutoff, si.quota 
     FROM students s 
@@ -326,7 +326,6 @@ $conn->close();
                     <tr><th>Roll Number</th><td>" . htmlspecialchars($student_data['roll_no']) . "</td></tr>
                     <tr><th>Branch</th><td>" . htmlspecialchars($student_data['branch']) . "</td></tr>
                     <tr><th>Year</th><td>" . htmlspecialchars($student_data['year']) . "</td></tr>
-                    
                     <tr><th>Mail:</th><td>" . htmlspecialchars($student_data['mail']) . "</td></tr>
                     <tr><th>Date of Birth</th><td>" . htmlspecialchars($student_data['dob']) . "</td></tr>
                     <tr><th>Father's Name</th><td>" . htmlspecialchars($student_data['father_name']) . "</td></tr>
@@ -344,7 +343,7 @@ $conn->close();
                     <tr><th>Cutoff</th><td>" . htmlspecialchars($student_data['cutoff']) . "</td></tr>
                     <tr><th>CGPA</th><td>" . htmlspecialchars($student_data['cgpa']) . "</td></tr>
                     <tr><th>Quota</th><td>" . htmlspecialchars($student_data['quota']) . "</td></tr>
-                    <tr><th>Cours Type</th><td>" . htmlspecialchars($student_data['course_type']) . "</td></tr>
+                    <tr><th>Course Type</th><td>" . htmlspecialchars($student_data['course_type']) . "</td></tr>
                     
                 </table>
             </div>";
