@@ -1,5 +1,6 @@
 <?php
 include '../faculty/db_connect.php';
+include 'head.php';
 // Handling form submission
 $marks_data = [];
 $attendance_data = [];
@@ -35,15 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     if (isset($student_data)) {
         // Fetch marks
+    
         $sql_marks = "
-        SELECT m.semester, m.subject, s.subject_name,
-                MAX(CASE WHEN m.exam = 'CAT1' THEN m.marks END) AS CAT1,
-                MAX(CASE WHEN m.exam = 'CAT2' THEN m.marks END) AS CAT2,
-                MAX(CASE WHEN m.exam = 'Model' THEN m.marks END) AS Model
+        SELECT m.semester, m.subject AS subject_code, 
+           (SELECT s1.subject_name 
+            FROM subjects s1 
+            WHERE s1.subject_code = m.subject 
+            LIMIT 1) AS subject_name, -- Select the first occurrence of the subject name
+            MAX(CASE WHEN m.exam = 'CAT1' THEN m.marks END) AS CAT1,
+            MAX(CASE WHEN m.exam = 'CAT2' THEN m.marks END) AS CAT2,
+            MAX(CASE WHEN m.exam = 'Model' THEN m.marks END) AS Model
         FROM marks m
         JOIN subjects s ON m.subject = s.subject_code
         WHERE m.roll_no = ?
-        GROUP BY m.semester, m.subject, s.subject_name
+        GROUP BY m.semester, m.subject
         ORDER BY m.semester ASC, m.subject ASC
         ";
         $stmt = $conn->prepare($sql_marks);
@@ -121,9 +127,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 }
             }
 
-            // Logic to display PG (MBA, MCA) results in Semester 3
+            // Logic to display PG (MBA, MCA) results in Semester 3 and 1
             if (in_array(strtoupper($branch), ['MBA', 'MCA'])) {
-                $semester_to_display = 3;
+                if ($year_of_passing == 2025) {
+                    $semester_to_display = 3;
+                } elseif ($year_of_passing == 2026) {
+                    $semester_to_display = 1;
+                }
             }
 
             $university_results_data[$semester_to_display][$row['subject_code']] = $row;
@@ -373,7 +383,7 @@ $conn->close();
                                   <tr><th>Subject Code</th><th>Subject Name</th><th>CAT-1</th><th>CAT-2</th><th>Model Exam</th></tr>";
                         foreach ($data['marks'] as $subject) {
                             echo "<tr>
-                                      <td>" . htmlspecialchars($subject['subject']) . "</td>
+                                      <td>" . htmlspecialchars($subject['subject_code']) . "</td>
                                       <td>" . htmlspecialchars($subject['subject_name']) . "</td>
                                       <td>" . htmlspecialchars($subject['CAT1']) . "</td>
                                       <td>" . htmlspecialchars($subject['CAT2']) . "</td>
