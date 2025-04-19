@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $sql_student = "
     SELECT s.name, s.roll_no,s.reg_no, s.year, s.branch, si.mail, si.dob, si.father_name, si.occupation, si.parent_phone, 
            si.student_phone, si.present_addr, si.permanent_addr, si.languages_known, si.school, si.medium, 
-           si.math, si.physic, si.chemis, si.cutoff, si.quota 
+           si.math, si.physic, si.chemis, si.cutoff, si.quota, si.cgpa, si.course_type
     FROM students s 
     JOIN student_information si ON s.roll_no = si.roll_no 
     WHERE s.roll_no = ?";
@@ -324,6 +324,7 @@ $conn->close();
                 <table>
                     <tr><th>Name</th><td>" . htmlspecialchars($student_data['name']) . "</td></tr>
                     <tr><th>Roll Number</th><td>" . htmlspecialchars($student_data['roll_no']) . "</td></tr>
+                    <tr><th>Register Number</th><td>" . htmlspecialchars($student_data['reg_no']) . "</td></tr>
                     <tr><th>Branch</th><td>" . htmlspecialchars($student_data['branch']) . "</td></tr>
                     <tr><th>Year</th><td>" . htmlspecialchars($student_data['year']) . "</td></tr>
                     <tr><th>Mail:</th><td>" . htmlspecialchars($student_data['mail']) . "</td></tr>
