@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include '../faculty/db_connect.php';
 include 'head.php';
 
 // Handling form submission
@@ -61,18 +61,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fetch'])) {
 
 // Handle grade updates
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save_changes'])) {
+    $reg_no = $_POST['reg_no']; // Ensure we use the specific student's register number
+
     foreach ($_POST['grade'] as $key => $new_grade) {
         // Parse the unique key (semester|subject_code|exam)
         list($semester, $subject_code, $exam) = explode('|', $key);
         
-        // Update the grade in the database
-        $sql_update_grade = "UPDATE university_results SET grade = ? WHERE semester = ? AND subject_code = ? AND exam = ?";
+        // Update the grade in the database only for the specific student
+        $sql_update_grade = "UPDATE university_results 
+                             SET grade = ? 
+                             WHERE reg_no = ? AND semester = ? AND subject_code = ? AND exam = ?";
         $stmt = $conn->prepare($sql_update_grade);
-        $stmt->bind_param("siss", $new_grade, $semester, $subject_code, $exam);
+        $stmt->bind_param("ssiss", $new_grade, $reg_no, $semester, $subject_code, $exam);
         $stmt->execute();
         $stmt->close();
     }
-    echo "<p class='success'>Grades updated successfully!</p>";
+    echo "<p class='success'>Grades updated successfully for Register Number: $reg_no!</p>";
 }
 $conn->close();
 ?>
@@ -93,13 +97,13 @@ $conn->close();
         }
 
         .container {
-            max-width: 1000px; /* Fixed width for better clarity */
+            max-width: 1000px;
             margin: 20px auto;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            overflow: hidden; /* Prevent content overflow */
+            overflow: hidden;
         }
 
         h1 {
@@ -163,20 +167,6 @@ $conn->close();
             font-size: 14px;
         }
 
-        .student-info {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #f7f7f7;
-            border-left: 4px solid #4CAF50;
-            border-radius: 4px;
-        }
-
-        .student-info p {
-            margin: 0 0 5px;
-            font-size: 16px;
-            color: #333333;
-        }
-
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -187,7 +177,7 @@ $conn->close();
             padding: 10px;
             border: 1px solid #dddddd;
             text-align: left;
-            vertical-align: middle; /* Center content vertically */
+            vertical-align: middle;
         }
 
         .results-table th {
@@ -204,10 +194,6 @@ $conn->close();
             background-color: #f9f9f9;
         }
 
-        .results-table-container {
-            margin-top: 20px;
-        }
-
         .edit-button, .cancel-button {
             cursor: pointer;
             color: #ffffff;
@@ -218,7 +204,7 @@ $conn->close();
         }
 
         .edit-button {
-            background-color: #20c997; /* Sea blue-green color */
+            background-color: #20c997;
         }
 
         .edit-button:hover {
@@ -226,50 +212,22 @@ $conn->close();
         }
 
         .cancel-button {
-            background-color: #e74c3c; /* Red color */
+            background-color: #e74c3c;
         }
 
         .cancel-button:hover {
             background-color: #c0392b;
         }
 
-        /* Ensure consistent row height */
-        .results-table td {
-            height: 50px; /* Minimum height for table rows */
-        }
-
-        /* Prevent content resizing */
-        select {
-            width: 100%; /* Ensure dropdown does not resize the cell */
-            max-width: 200px; /* Limit dropdown width */
-        }
-
         span.grade-text {
-            display: inline-block; /* Prevent resizing */
-            width: 100%; /* Align with dropdown width */
-            max-width: 200px; /* Match dropdown width */
+            display: inline-block;
+            width: 100%;
+            max-width: 200px;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
-
-            .container {
-                padding: 15px;
-            }
-
-            input[type="text"], select {
-                font-size: 14px;
-            }
-
-            input[type="submit"] {
-                font-size: 14px;
-            }
+        select {
+            width: 100%;
+            max-width: 200px;
         }
     </style>
     <script>
@@ -279,14 +237,14 @@ $conn->close();
             const editButton = document.getElementById(`edit-button-${rowId}`);
 
             if (gradeText.style.display === "none") {
-                gradeText.style.display = "inline-block"; /* Show text */
-                gradeSelect.style.display = "none"; /* Hide dropdown */
-                editButton.className = "edit-button"; /* Change to edit button style */
+                gradeText.style.display = "inline-block";
+                gradeSelect.style.display = "none";
+                editButton.className = "edit-button";
                 editButton.innerText = "Edit";
             } else {
-                gradeText.style.display = "none"; /* Hide text */
-                gradeSelect.style.display = "inline-block"; /* Show dropdown */
-                editButton.className = "cancel-button"; /* Change to cancel button style */
+                gradeText.style.display = "none";
+                gradeSelect.style.display = "inline-block";
+                editButton.className = "cancel-button";
                 editButton.innerText = "Cancel";
             }
         }
@@ -363,7 +321,8 @@ $conn->close();
                         </tbody>
                     </table>
                 </div>
-                <input type="submit" name="save_changes" value="Save Changes" style="margin-top: 15px;">
+                <input type="hidden" name="reg_no" value="<?php echo htmlspecialchars($student_data['reg_no']); ?>">
+                <input type="submit" name="save_changes" value="Save Changes">
             </form>
         <?php endif; ?>
     </div>
