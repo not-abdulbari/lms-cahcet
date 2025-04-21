@@ -1,6 +1,29 @@
 <?php
+session_start();
+if (empty($_SESSION['student_logged_in']) || empty($_SESSION['roll_no'])) {
+    // Debugging: Log session data to check why redirection happens
+    error_log("Session data: " . print_r($_SESSION, true));
+    header('Location: ../index.php');
+    exit();
+}
 include '../faculty/db_connect.php';
-include 'head.php';
+
+$roll_number = $_SESSION['roll_no'];
+$sql_student = "SELECT roll_no, reg_no, name, branch, year, section FROM students WHERE roll_no = ?";
+$stmt = $conn->prepare($sql_student);
+$stmt->bind_param("s", $roll_number);
+$stmt->execute();
+$result_student = $stmt->get_result();
+
+if ($result_student->num_rows > 0) {
+    $student_data = $result_student->fetch_assoc();
+} else {
+    echo "Student data not found.";
+    exit();
+}
+$stmt->close();
+// Remove $conn->close() here to avoid closing the connection prematurely.
+
 // Handling form submission
 $marks_data = [];
 $attendance_data = [];
@@ -8,7 +31,7 @@ $grades_data = [];
 $report_data = null;
 $university_results_data = []; // General array for all university results
 $student_data_error = null;
-$student_data = null; // Initialize student_data
+// $student_data = null; // Removed unnecessary initialization
 $year_of_passing = null; // Initialize year of passing
 $branch = null; // Initialize branch
 
@@ -141,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $stmt->close();
     }
 }
-$conn->close();
+$conn->close(); // Keep this at the very end of the script to close the connection after all operations.
 ?>
 
 <!DOCTYPE html>
@@ -308,18 +331,19 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-        <h1>STUDENT DASHBOARD</h1>
-        <form method="POST" action="student_login.php">
-            <label for="roll_number">Enter Roll Number:</label>
-            <input type="text" name="roll_number" id="roll_number" required>
-            <input type="submit" name="submit" value="View Details">
-        </form>
-
         <?php
         if (isset($student_data_error)) { echo "<p class='error'>$student_data_error</p>"; }
         if (isset($student_data)) {
             echo "<div class='tabs'>
                           <button class='tab-link' onclick=\"openTab(event, 'profile')\">Profile</button>";
+            for ($i = 1; $i <= 8; $i++) {
+                $has_data = isset($all_semesters[$i]) && (!empty($all_semesters[$i]['marks']) || !empty($all_semesters[$i]['attendance']) || !empty($all_semesters[$i]['grades']) || isset($all_semesters[$i]['report']) || !empty($all_semesters[$i]['university_results']));
+                $is_pg_sem3 = in_array(strtoupper($branch), ['MBA', 'MCA']) && $i == 3 && isset($all_semesters[3]['university_results']) && !empty($all_semesters[3]['university_results']);
+
+                if ($has_data || $is_pg_sem3) {
+                    echo "<button class='tab-link' onclick=\"openTab(event, 'semester-$i')\">Semester $i</button>";
+                }
+            }
 
             $all_semesters = [];
             foreach ($marks_data as $semester => $marks) {
