@@ -194,7 +194,7 @@ if (!function_exists('getCurrentDateTime')) {
             <li><a href="faculty_dashboard.php">Marks</a></li>
             <li><a href="attendance_dashboard.php">Attendance</a></li>
             <li><a href="add_subject.php">Subject</a></li>
-            <li><a href="under_maintenance.php">REVALUATION</a></li>
+            <li><a href="revaluation.php">REVALUATION</a></li>
             <li class="dropdown">
                 <a href="javascript:void(0)">Reports</a>
                 <div class="dropdown-content">
@@ -205,7 +205,7 @@ if (!function_exists('getCurrentDateTime')) {
                     <a href="capa_select.php">CAPA Form</a>
                     <a href="generate_namelist.php">NAMELIST</a>
                     <a href="consolidated_marklist.php">Consolidated Marklist</a>
-                    <a href="under_maintenance.html">University Progress Report</a>
+                    <a href="university_results.php">University Progress Report</a>
                 </div>
             </li>
             <li class="dropdown">
