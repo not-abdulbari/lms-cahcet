@@ -1,5 +1,5 @@
 <?php
-include '../faculty/db_connect.php';
+include 'db_connect.php';
 include 'head.php';
 
 // Handling form submission
@@ -112,6 +112,19 @@ $conn->close();
             color: #333333;
             margin-bottom: 20px;
             text-transform: uppercase;
+        }
+        .student-info {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-left: 4px solid #4CAF50;
+            border-radius: 4px;
+        }
+
+        .student-info p {
+            margin: 0 0 5px;
+            font-size: 16px;
+            color: #333333;
         }
 
         form {
