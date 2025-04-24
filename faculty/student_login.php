@@ -19,23 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     $roll_number = $_POST['roll_no'];
     $reg_no = $_POST['reg_no'];
     
-    // // Update students table
-    // $sql_update_student = "UPDATE students SET 
-    //                       name = ?,
-    //                       branch = ?,
-    //                       year = ?,
-    //                       section = ?
-    //                       WHERE roll_no = ?";
-    // $stmt = $conn->prepare($sql_update_student);
-    // $stmt->bind_param("sssss", 
-    //                  $_POST['name'],
-    //                  $_POST['branch'],
-    //                  $_POST['year'],
-    //                  $_POST['section'],
-    //                  $roll_number);
-    // $stmt->execute();
-    // $stmt->close();
-    
     // Update student_information table
     $sql_update_info = "UPDATE student_information SET 
                        mail = ?,
