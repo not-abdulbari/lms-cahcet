@@ -198,24 +198,17 @@ if (!function_exists('getCurrentDateTime')) {
             <li class="dropdown">
                 <a href="javascript:void(0)">Reports</a>
                 <div class="dropdown-content">
-                    <a href="report_selection.php">Result Analysis</a>
-                    <a href="generate_marksheet.php">Mark List</a>
-                    <a href="progress_prelims.php">Progress Report</a>
-                    <a href="class_performance.php">Consolidated Result Analysis</a>
+                    <a href="report_selection.php">Subjectwise Result Analysis</a>
+                    <a href="generate_marksheet.php">MarkList</a>
+                    <a href="progress_prelims.php">Internal Exam Progress Report</a>
+                    <a href="class_performance.php">Consolidated Exam Result Analysis</a>
                     <a href="capa_select.php">CAPA Form</a>
-                    <a href="generate_namelist.php">NAMELIST</a>
+                    <a href="generate_namelist.php">Students Namelist</a>
                     <a href="consolidated_marklist.php">Consolidated Marklist</a>
                     <a href="university_results.php">University Progress Report</a>
                 </div>
             </li>
-            <li class="dropdown">
-                <a href="javascript:void(0)">STUDENT</a>
-                <div class="dropdown-content">
-                    <a href="parent.php">STUDENT LOGIN</a>
-                    <a href="student_login.php">NEW STUDENT LOGIN</a>
-                    <a href="student_profile.php">Under Development</a>
-                </div>
-            </li>
+            <li><a href="student_login.php">STUDENT LOGIN</a></li>
             <li><a href="logout.php" class="logout-link">Logout</a></li>
         </ul>
     </nav>
