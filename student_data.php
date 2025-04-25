@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <title>Student Data Entry</title>
     <style>
         body {
@@ -304,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_student_info'])
                         </div>
                     </div>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="turnstile" data-sitekey="<?php echo $config['TURNSTILE_SITE_KEY']; ?>"></div>
                 <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
                     <input type="submit" name="submit_student_info" value="Submit">
                     <button type="button" onclick="window.location.reload();">Cancel</button>
