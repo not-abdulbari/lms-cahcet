@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 </div>
                 <div class="input-group">
                     <div class="eye-icon">
-                        <input style="width: 100%;" type="password" name="password" placeholder="Password" required>
+                        <input type="password" name="password" placeholder="Password" required>
                         <i class="fas fa-eye-slash icon"></i>
                     </div>
                 </div>
