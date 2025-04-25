@@ -131,145 +131,152 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     <title>CAHCET LMS - Login</title>
     <style>
         /* Modern Professional Theme */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: #333;
-        }
-        .header {
-            width: 100%;
-            height: auto;
-        }
-        .header img {
-            width: 100%;
-            height: auto;
-        }
-        .banner {
-            margin-top: 0;
-            padding: 0;
-            background-color: #003366;
-            color: white;
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .banner marquee {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding: 0 15px;
-        }
-        .container,
-        .notice_board {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            margin: 10px;
-            width: 30%;
-        }
-        h2 {
-            font-size: 22px;
-            color: #6a11cb;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .input-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 10px 0;
-        }
-        input {
-            flex: 1;
-            max-width: 350px;
-            width: 100%;
-            padding: 10px;
-            margin: 0 5px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            background-color: #f4f4f4;
-            font-size: 1em;
-            color: #333;
-        }
-        .eye-icon {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding-left: 6.5%;
-        }
-        .notice_board marquee p {
-            color: red;
-        }
-        .eye-icon input {
-            width: 100%;
-        }
-        .eye-icon i {
-            position: absolute;
-            right: 10%;
-            color: grey;
-            cursor: pointer;
-        }
-        button {
-            background-color: #2575fc;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #6a11cb;
-        }
-        input[type="password"]::-ms-reveal,
-        input[type="password"]::-ms-clear {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            background-color: #f4f4f4;
-            font-size: 1em;
-            color: #333;
-            display: none;
-        }
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header {
-                width: 100%;
-                height: 70px;
-            }
-            .container,
-            .notice_board {
-                width: 80%;
-            }
-        }
-        .alert {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #333;
+}
+.header {
+    width: 100%;
+    height: auto;
+}
+.header img {
+    width: 100%;
+    height: auto;
+}
+.banner {
+    margin-top: 0;
+    padding: 0;
+    background-color: #003366;
+    color: white;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.banner marquee {
+    font-size: 16px;
+    font-weight: bold;
+}
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+.container,
+.notice_board {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    width: 30%;
+}
+h2 {
+    font-size: 22px;
+    color: #6a11cb;
+    margin-bottom: 20px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+}
+input {
+    flex: 1;
+    max-width: 350px;
+    width: 100%;
+    padding: 10px;
+    margin: 0 5px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+}
+.eye-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure consistent width */
+}
+.eye-icon input {
+    flex: 1; /* Same as other input fields */
+    max-width: 350px;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+}
+.eye-icon i {
+    position: absolute;
+    right: 10px; /* Adjust icon position */
+    color: grey;
+    cursor: pointer;
+}
+button {
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #6a11cb;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+    display: none;
+}
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .header {
+        width: 100%;
+        height: 70px;
+    }
+    .container,
+    .notice_board {
+        width: 80%;
+    }
+}
+.alert {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.notice_board marquee p {
+    color: red;
+}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -291,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 </div>
                 <div class="input-group">
                     <div class="eye-icon">
-                        <input style="width: 100%;" type="password" name="password" placeholder="Password" required>
+                        <input type="password" name="password" placeholder="Password" required>
                         <i class="fas fa-eye-slash icon"></i>
                     </div>
                 </div>
