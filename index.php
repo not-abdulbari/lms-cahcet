@@ -332,18 +332,19 @@ input[type="password"]::-ms-clear {
         </div>
     </div>
     <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('passwordInput');
+    // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
 
-    togglePassword.addEventListener('click', function () {
-        // Toggle the type attribute
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
 
-        // Toggle the eye icon
-        this.classList.toggle('fa-eye-slash');
-        this.classList.toggle('fa-eye');
-    });
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
 
         $(document).ready(function () {
             // Handle Institution Login
