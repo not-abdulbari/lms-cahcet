@@ -241,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         }
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
             border: 2px solid #ddd;
@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 </div>
                 <div class="input-group">
                     <div class="eye-icon">
-                        <input type="password" name="password" placeholder="Password" required>
+                        <input style="width: 100%;" type="password" name="password" placeholder="Password" required>
                         <i class="fas fa-eye-slash icon"></i>
                     </div>
                 </div>
