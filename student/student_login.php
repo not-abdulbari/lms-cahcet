@@ -6,7 +6,6 @@ include '../faculty/db_connect.php';
 $marks_data = [];
 $attendance_data = [];
 $grades_data = [];
-$report_data = [];
 $university_results_data = [];
 $student_data_error = null;
 $student_data = null;
@@ -85,18 +84,6 @@ if (!empty($roll_number)) {
         }
         $stmt->close();
 
-        // Fetch report
-        $sql_report = "SELECT display_semester, general_behaviour, inside_campus, report_1, report_2, report_3, report_4, disciplinary_committee, parent_discussion, remarks
-                        FROM reports WHERE roll_no = ?";
-        $stmt = $conn->prepare($sql_report);
-        $stmt->bind_param("s", $roll_number);
-        $stmt->execute();
-        $result_report = $stmt->get_result();
-        while ($row = $result_report->fetch_assoc()) {
-            $report_data[$row['display_semester']] = $row;
-        }
-        $stmt->close();
-
         // Fetch university results
         $sql_university_results = "SELECT ur.semester, ur.subject_code, ur.grade, s.subject_name, ur.exam
                                     FROM university_results ur
@@ -140,7 +127,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parent - View Student Marks, Attendance, Grades, Report & University Results</title>
+    <title>View Student Marks, Attendance, Grades, Report & University Results</title>
     <style>
         :root {
             --primary-color: #007BFF;
@@ -245,13 +232,6 @@ $conn->close();
             background-color: var(--secondary-color);
             color: var(--white-color);
         }
-        .report ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        .report ul li {
-            margin-bottom: 5px;
-        }
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -296,12 +276,6 @@ $conn->close();
             foreach ($grades_data as $display_semester => $entries) {
                 $all_semesters[$display_semester]['grades'] = $entries;
             }
-            foreach ($report_data as $display_semester => $report) {
-                if (!isset($all_semesters[$display_semester])) {
-                    $all_semesters[$display_semester] = [];
-                }
-                $all_semesters[$display_semester]['report'] = $report;
-            }
             foreach ($university_results_data as $semester => $results) {
                 if (!isset($all_semesters[$semester])) {
                     $all_semesters[$semester] = [];
@@ -318,7 +292,6 @@ $conn->close();
                     !empty($all_semesters[$i]['marks']) ||
                     !empty($all_semesters[$i]['attendance']) ||
                     !empty($all_semesters[$i]['grades']) ||
-                    isset($all_semesters[$i]['report']) ||
                     !empty($all_semesters[$i]['university_results'])
                 );
                 $is_pg_sem3 = in_array(strtoupper($branch), ['MBA', 'MCA']) && $i == 3 &&
@@ -351,7 +324,6 @@ $conn->close();
                 $has_other_data = !empty($data['marks']) ||
                     !empty($data['attendance']) ||
                     !empty($data['grades']) ||
-                    isset($data['report']) ||
                     (!empty($data['university_results']) && !(in_array(strtoupper($branch), ['MBA', 'MCA']) && $semester == 3));
 
                 if ($has_other_data || $is_pg_sem3_content) {
@@ -402,25 +374,6 @@ $conn->close();
                                   </tr>";
                         }
                         echo "</table>";
-                    }
-
-                    // Report
-                    if (isset($data['report'])) {
-                        echo "<h4>Report</h4>
-                              <div class='report'>
-                                  <p><strong>General Behaviour:</strong> " . htmlspecialchars($data['report']['general_behaviour']) . "</p>
-                                  <p><strong>Inside the Campus:</strong> " . htmlspecialchars($data['report']['inside_campus']) . "</p>
-                                  <p><strong>Reports Sent to Parents:</strong></p>
-                                  <ul>
-                                      <li>" . htmlspecialchars($data['report']['report_1']) . "</li>
-                                      <li>" . htmlspecialchars($data['report']['report_2']) . "</li>
-                                      <li>" . htmlspecialchars($data['report']['report_3']) . "</li>
-                                      <li>" . htmlspecialchars($data['report']['report_4']) . "</li>
-                                  </ul>
-                                  <p><strong>Reports Sent to Disciplinary Committee:</strong> " . htmlspecialchars($data['report']['disciplinary_committee']) . "</p>
-                                  <p><strong>Discussion with Parents:</strong> " . htmlspecialchars($data['report']['parent_discussion']) . "</p>
-                                  <p><strong>Remarks:</strong> " . htmlspecialchars($data['report']['remarks']) . "</p>
-                              </div>";
                     }
 
                     // University Results
