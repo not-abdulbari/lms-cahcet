@@ -3,21 +3,21 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Load hCaptcha configuration
+// Load Turnstile configuration
 $config = include 'config.php';
 
 // Handle Institution Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
-    $hcaptcha_response = $_POST['h-captcha-response'] ?? '';
-    if (empty($hcaptcha_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the hCaptcha.']);
+    $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
+    if (empty($turnstile_response)) {
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Turnstile verification.']);
         exit();
     }
 
-    // Verify hCaptcha
+    // Verify Turnstile response
     $data = [
-        'secret' => $config['HCAPTCHA_SECRET_KEY'],
-        'response' => $hcaptcha_response,
+        'secret' => $config['TURNSTILE_SECRET_KEY'],
+        'response' => $turnstile_response,
     ];
     $options = [
         'http' => [
@@ -27,11 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         ],
     ];
     $context = stream_context_create($options);
-    $response = file_get_contents('https://hcaptcha.com/siteverify', false, $context);
+    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'hCaptcha verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Turnstile verification failed.']);
         exit();
     }
 
@@ -60,16 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
 // Handle Student Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
-    $hcaptcha_response = $_POST['h-captcha-response'] ?? '';
-    if (empty($hcaptcha_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the hCaptcha.']);
+    $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
+    if (empty($turnstile_response)) {
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Turnstile verification.']);
         exit();
     }
 
-    // Verify hCaptcha
+    // Verify Turnstile response
     $data = [
-        'secret' => $config['HCAPTCHA_SECRET_KEY'],
-        'response' => $hcaptcha_response,
+        'secret' => $config['TURNSTILE_SECRET_KEY'],
+        'response' => $turnstile_response,
     ];
     $options = [
         'http' => [
@@ -79,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         ],
     ];
     $context = stream_context_create($options);
-    $response = file_get_contents('https://hcaptcha.com/siteverify', false, $context);
+    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'hCaptcha verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Turnstile verification failed.']);
         exit();
     }
 
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <title>CAHCET LMS - Login</title>
     <style>
         /* Modern Professional Theme */
@@ -295,7 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                         <i class="fas fa-eye-slash icon"></i>
                     </div>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($config['TURNSTILE_SITE_KEY']); ?>" data-theme="light"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -308,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 <div class="input-group">
                     <input type="text" name="dob" placeholder="Date of Birth (DD-MM-YYYY)" required>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($config['TURNSTILE_SITE_KEY']); ?>" data-theme="light"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
