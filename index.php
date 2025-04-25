@@ -10,7 +10,7 @@ $config = include 'config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
     if (empty($turnstile_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the Turnstile verification.']);
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Cloudflare Turnstile verification.']);
         exit();
     }
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'Turnstile verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Cloudflare Turnstile verification failed.']);
         exit();
     }
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
     if (empty($turnstile_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the Turnstile verification.']);
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Cloudflare Turnstile verification.']);
         exit();
     }
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'Turnstile verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Cloudflare Turnstile verification failed.']);
         exit();
     }
 
