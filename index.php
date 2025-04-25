@@ -231,6 +231,7 @@ input {
     cursor: pointer;
 }
 button {
+    margin-top: 10px;
     background-color: #2575fc;
     color: white;
     border: none;
