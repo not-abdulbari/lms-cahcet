@@ -3,21 +3,21 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Load hCaptcha configuration
+// Load Turnstile configuration
 $config = include 'config.php';
 
 // Handle Institution Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
-    $hcaptcha_response = $_POST['h-captcha-response'] ?? '';
-    if (empty($hcaptcha_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the hCaptcha.']);
+    $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
+    if (empty($turnstile_response)) {
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Cloudflare Turnstile verification.']);
         exit();
     }
 
-    // Verify hCaptcha
+    // Verify Turnstile response
     $data = [
-        'secret' => $config['HCAPTCHA_SECRET_KEY'],
-        'response' => $hcaptcha_response,
+        'secret' => $config['TURNSTILE_SECRET_KEY'],
+        'response' => $turnstile_response,
     ];
     $options = [
         'http' => [
@@ -27,11 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         ],
     ];
     $context = stream_context_create($options);
-    $response = file_get_contents('https://hcaptcha.com/siteverify', false, $context);
+    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'hCaptcha verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Cloudflare Turnstile verification failed.']);
         exit();
     }
 
@@ -60,16 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
 
 // Handle Student Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
-    $hcaptcha_response = $_POST['h-captcha-response'] ?? '';
-    if (empty($hcaptcha_response)) {
-        echo json_encode(['status' => 'error', 'message' => 'Please complete the hCaptcha.']);
+    $turnstile_response = $_POST['cf-turnstile-response'] ?? '';
+    if (empty($turnstile_response)) {
+        echo json_encode(['status' => 'error', 'message' => 'Please complete the Cloudflare Turnstile verification.']);
         exit();
     }
 
-    // Verify hCaptcha
+    // Verify Turnstile response
     $data = [
-        'secret' => $config['HCAPTCHA_SECRET_KEY'],
-        'response' => $hcaptcha_response,
+        'secret' => $config['TURNSTILE_SECRET_KEY'],
+        'response' => $turnstile_response,
     ];
     $options = [
         'http' => [
@@ -79,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         ],
     ];
     $context = stream_context_create($options);
-    $response = file_get_contents('https://hcaptcha.com/siteverify', false, $context);
+    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
     $result = json_decode($response, true);
 
     if (!$result['success']) {
-        echo json_encode(['status' => 'error', 'message' => 'hCaptcha verification failed.']);
+        echo json_encode(['status' => 'error', 'message' => 'Cloudflare Turnstile verification failed.']);
         exit();
     }
 
@@ -127,149 +127,157 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <title>CAHCET LMS - Login</title>
     <style>
         /* Modern Professional Theme */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: #333;
-        }
-        .header {
-            width: 100%;
-            height: auto;
-        }
-        .header img {
-            width: 100%;
-            height: auto;
-        }
-        .banner {
-            margin-top: 0;
-            padding: 0;
-            background-color: #003366;
-            color: white;
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .banner marquee {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding: 0 15px;
-        }
-        .container,
-        .notice_board {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            margin: 10px;
-            width: 30%;
-        }
-        h2 {
-            font-size: 22px;
-            color: #6a11cb;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .input-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 10px 0;
-        }
-        input {
-            flex: 1;
-            max-width: 350px;
-            width: 100%;
-            padding: 10px;
-            margin: 0 5px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            background-color: #f4f4f4;
-            font-size: 1em;
-            color: #333;
-        }
-        .eye-icon {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding-left: 6.5%;
-        }
-        .notice_board marquee p {
-            color: red;
-        }
-        .eye-icon input {
-            width: 100%;
-        }
-        .eye-icon i {
-            position: absolute;
-            right: 10%;
-            color: grey;
-            cursor: pointer;
-        }
-        button {
-            background-color: #2575fc;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #6a11cb;
-        }
-        input[type="password"]::-ms-reveal,
-        input[type="password"]::-ms-clear {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            background-color: #f4f4f4;
-            font-size: 1em;
-            color: #333;
-            display: none;
-        }
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .header {
-                width: 100%;
-                height: 70px;
-            }
-            .container,
-            .notice_board {
-                width: 80%;
-            }
-        }
-        .alert {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #333;
+}
+.header {
+    width: 100%;
+    height: auto;
+}
+.header img {
+    width: 100%;
+    height: auto;
+}
+.banner {
+    margin-top: 0;
+    padding: 0;
+    background-color: #003366;
+    color: white;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.banner marquee {
+    font-size: 16px;
+    font-weight: bold;
+}
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+.container,
+.notice_board {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    width: 30%;
+}
+h2 {
+    font-size: 22px;
+    color: #6a11cb;
+    margin-bottom: 20px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+}
+input {
+    flex: 1;
+    max-width: 350px;
+    width: 100%;
+    padding: 10px;
+    margin: 0 5px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+}
+.eye-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure consistent width */
+}
+.eye-icon input {
+    flex: 1; /* Same as other input fields */
+    max-width: 350px;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+}
+.eye-icon i {
+    position: absolute;
+    right: 10px; /* Adjust icon position */
+    color: grey;
+    cursor: pointer;
+}
+button {
+    margin-top: 10px;
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #6a11cb;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
+    font-size: 1em;
+    color: #333;
+    display: none;
+}
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .header {
+        width: 100%;
+        height: 70px;
+    }
+    .container,
+    .notice_board {
+        width: 80%;
+    }
+}
+.alert {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.notice_board marquee p {
+    color: red;
+}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -291,11 +299,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 </div>
                 <div class="input-group">
                     <div class="eye-icon">
-                    <input type="password" name="password" id="password" placeholder="Password" required>
+                        <input type="password" name="password" placeholder="Password" required>
                         <i class="fas fa-eye-slash icon"></i>
                     </div>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($config['TURNSTILE_SITE_KEY']); ?>" data-theme="light"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -308,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
                 <div class="input-group">
                     <input type="text" name="dob" placeholder="Date of Birth (DD-MM-YYYY)" required>
                 </div>
-                <div class="h-captcha" data-sitekey="<?php echo $config['HCAPTCHA_SITE_KEY']; ?>"></div>
+                <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($config['TURNSTILE_SITE_KEY']); ?>" data-theme="light"></div>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -324,19 +332,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         </div>
     </div>
     <script>
-        document.querySelector('.icon').addEventListener('click', function () {
-            let passwordInput = document.getElementById('password');
-            let icon = this;
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            } else {
-                passwordInput.type = "password";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            }
+    // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('passwordInput');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
         });
+
         $(document).ready(function () {
             // Handle Institution Login
             $('#loginForm').on('submit', function (e) {
