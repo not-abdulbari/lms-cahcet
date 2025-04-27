@@ -80,43 +80,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Cell(0, 10, "Parent Phone No              : " . $student['parent_phone'], 0, 1);
     $pdf->Ln(10);
 
-    // Feedback Table
-    $pdf->SetFont('Times', 'B', 12);
-    $pdf->Cell(10, 10, 'S.No', 1);
-    $pdf->Cell(80, 10, 'Parameter', 1);
-    $pdf->Cell(25, 10, 'Excellent', 1);
-    $pdf->Cell(25, 10, 'Very Good', 1);
-    $pdf->Cell(25, 10, 'Good', 1);
-    $pdf->Cell(25, 10, 'Average', 1);
+// Feedback Table
+$pdf->SetFont('Times', 'B', 12);
+$pdf->Cell(10, 10, 'S.No', 1);
+$pdf->Cell(120, 10, 'Parameter', 1);
+$pdf->Cell(15, 10, 'Excellent', 1);
+$pdf->Cell(15, 10, 'Very Good', 1);
+$pdf->Cell(15, 10, 'Good', 1);
+$pdf->Cell(15, 10, 'Average', 1);
+$pdf->Ln();
+
+$parameters = [
+    'Institutional Discipline and Culture',
+    'Infrastructure Facilities',
+    'Communication from College about Progress of Your Ward',
+    'Career Guidance and Placement',
+    'How do you rate our college?'
+];
+
+$pdf->SetFont('Times', '', 12);
+foreach ($parameters as $index => $parameter) {
+    $pdf->Cell(10, 10, $index + 1, 1);
+    $pdf->Cell(120, 10, $parameter, 1);
+    $pdf->Cell(15, 10, '', 1);
+    $pdf->Cell(15, 10, '', 1);
+    $pdf->Cell(15, 10, '', 1);
+    $pdf->Cell(15, 10, '', 1);
     $pdf->Ln();
-
-    $parameters = [
-        'Institutional Discipline and Culture',
-        'Infrastructure Facilities',
-        "Communication from College about Progress of Your Ward",
-        'Career Guidance and Placement',
-        'How do you rate our college?'
-    ];
-
-    $pdf->SetFont('Times', '', 12);
-    foreach ($parameters as $index => $parameter) {
-        // Row Number Cell
-        $pdf->Cell(10, 20, $index + 1, 1, 0, 'C');
-        
-        if ($parameter === "Communication from College about Progress of Your Ward") {
-            // Static handling for parameter with extra rows
-            $pdf->Cell(80, 10, $parameter, 1, 2); // Static cell split into two rows
-            $pdf->Cell(80, 10, '', 1, 0); // Empty second row
-        } else {
-            // Dynamically handle other parameters with MultiCell
-            $x = $pdf->GetX(); // Save current X position
-            $y = $pdf->GetY(); // Save current Y position
-            $pdf->MultiCell(80, 10, $parameter, 1); // MultiCell for parameter description
-
-            // Reset X and Y after MultiCell for subsequent cells
-            $pdf->SetXY($x + 80, $y);
-        }
-
+}
         // Empty Rating Cells
         $pdf->Cell(25, 20, '', 1, 0, 'C');
         $pdf->Cell(25, 20, '', 1, 0, 'C');
