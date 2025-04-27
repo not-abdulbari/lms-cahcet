@@ -67,10 +67,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
 
     // Header Section
     $pdf->SetFont('Times', 'B', 14);
-    $pdf->Cell(14, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
+    $pdf->SetXY(40, 15); // Start text after the logo (X = 50, Y = 10)
+
+    $pdf->Cell(0, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
+    // Set font for the place
+    $pdf->SetFont('Times', 'B', 14);
+    $pdf->SetXY(40, 23); // Align with the college name
+    $pdf->Cell(0, 10, 'MELVISHARAM - 632509', 0, 1, 'C');
+
+    // Set font for the department
     $pdf->SetFont('Times', '', 12);
-    $pdf->Cell(0, 10, "Academic Year 2024 - 2025 (EVEN)", 0, 1, 'C');
-    $pdf->Cell(0, 10, str_repeat("_", 50), 0, 1, 'C');
+    $pdf->SetXY(40, 30); // Align with the college name
+    $pdf->Cell(0, 10, $department, 0, 1, 'C');
+
+    $pdf->SetFont('Times', '', 12);
+    $pdf->SetXY(40, 38); // Align with the college name
+    $pdf->Cell(0, 10, 'Academic Year 2024 - 2025 (EVEN)', 0, 1, 'C');
 
     // Parent Feedback Form Title
     $pdf->SetFont('Times', 'B', 14);
@@ -93,28 +105,28 @@ function addRow($pdf, $label, $value, $labelWidth, $valueWidth) {
 }
 
 // Adding student details with aligned colons
-$pdf->Cell($labelWidth, 10, "Name of the Student:", 0, 0);
-$pdf->Cell($valueWidth, 10, $student['name'], 0, 1);
+$pdf->Cell($labelWidth, 10, "Name of the Student", 0, 0);
+$pdf->Cell($valueWidth, 10, ":". $student['name'], 0, 1);
 
-$pdf->Cell($labelWidth, 10, "Roll No:", 0, 0);
-$pdf->Cell($valueWidth, 10, $roll_no, 0, 1);
+$pdf->Cell($labelWidth, 10, "Roll No", 0, 0);
+$pdf->Cell($valueWidth, 10, ":". $roll_no, 0, 1);
 
-$pdf->Cell($labelWidth, 10, "Branch:", 0, 0);
-$pdf->Cell($valueWidth, 10, $department, 0, 1);
+$pdf->Cell($labelWidth, 10, "Branch", 0, 0);
+$pdf->Cell($valueWidth, 10, ":". $department, 0, 1);
 
-$pdf->Cell($labelWidth, 10, "Name of the Parent:", 0, 0);
-$pdf->Cell($valueWidth, 10, $student['father_name'], 0, 1);
+$pdf->Cell($labelWidth, 10, "Name of the Parent", 0, 0);
+$pdf->Cell($valueWidth, 10, ":".$student['father_name'], 0, 1);
 
-// Handling multi-line Address with alignment
-addRow($pdf, "Address:", $student['permanent_addr'], $labelWidth, $valueWidth);
 
-$pdf->Ln(5);
+$pdf->Cell($labelWidth, 10, "Addres:", 0, 0); // Label with colon
+$pdf->MultiCell($valueWidth, 10, ":".$student['permanent_addr'], 0); // Multi-line value
 
-$pdf->Cell($labelWidth, 10, "Student Phone No:", 0, 0);
-$pdf->Cell($valueWidth, 10, $student['student_phone'], 0, 1);
 
-$pdf->Cell($labelWidth, 10, "Parent Phone No:", 0, 0);
-$pdf->Cell($valueWidth, 10, $student['parent_phone'], 0, 1);
+$pdf->Cell($labelWidth, 10, "Student Phone No", 0, 0);
+$pdf->Cell($valueWidth, 10, ":".$student['student_phone'], 0, 1);
+
+$pdf->Cell($labelWidth, 10, "Parent Phone No", 0, 0);
+$pdf->Cell($valueWidth, 10, ":".$student['parent_phone'], 0, 1);
 
 $pdf->Ln(10);
 
