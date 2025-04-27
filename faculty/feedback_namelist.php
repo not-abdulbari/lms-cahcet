@@ -105,7 +105,7 @@ th {
                 <tr>
                     <td><?= htmlspecialchars($student['name']) ?></td>
                     <td>
-                        <a href="feedback_generate.php?student_id=<?= $student['id'] ?>" target="_blank">Download Feedback</a>
+                        <a href="feedback_generate.php?student_id=<?= $student['roll_no'] ?>" target="_blank">Download Feedback</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
