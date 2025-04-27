@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -28,7 +25,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Student List</title>
-   <style>
+    <style>
     /* General Reset */
 * {
     margin: 0;
@@ -96,6 +93,7 @@ th {
     <table>
         <thead>
             <tr>
+                <th>Roll No</th>
                 <th>Name</th>
                 <th>Action</th>
             </tr>
@@ -103,9 +101,10 @@ th {
         <tbody>
             <?php while ($student = $result->fetch_assoc()): ?>
                 <tr>
+                    <td><?= htmlspecialchars($student['roll_no']) ?></td>
                     <td><?= htmlspecialchars($student['name']) ?></td>
                     <td>
-                        <a href="feedback_generate.php?student_id=<?= $student['roll_no'] ?>" target="_blank">Download Feedback</a>
+                        <a href="feedback_generate.php?roll_no=<?= $student['roll_no'] ?>" target="_blank">Download Feedback</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
@@ -113,3 +112,4 @@ th {
     </table>
 </body>
 </html>
+   
