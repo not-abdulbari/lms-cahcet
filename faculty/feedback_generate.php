@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
 
     // Header Section
     $pdf->SetFont('Times', 'B', 14);
-    $pdf->Cell(0, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
+    $pdf->Cell(14, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
     $pdf->SetFont('Times', '', 12);
     $pdf->Cell(0, 10, "Academic Year 2024 - 2025 (EVEN)", 0, 1, 'C');
     $pdf->Cell(0, 10, str_repeat("_", 50), 0, 1, 'C');
@@ -93,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     $pdf->SetFont('Times', 'B', 12);
     $pdf->Cell(10, 10, 'S.No', 1);
     $pdf->Cell(120, 10, 'Parameter', 1);
-    $pdf->Cell(15, 10, 'Excellent', 1);
-    $pdf->Cell(15, 10, 'Very Good', 1);
+    $pdf->Cell(22, 10, 'Excellent', 1);
+    $pdf->Cell(22, 10, 'Very Good', 1);
     $pdf->Cell(15, 10, 'Good', 1);
     $pdf->Cell(15, 10, 'Average', 1);
     $pdf->Ln();
@@ -111,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     foreach ($parameters as $index => $parameter) {
         $pdf->Cell(10, 10, $index + 1, 1);
         $pdf->Cell(120, 10, $parameter, 1);
-        $pdf->Cell(15, 10, '', 1);
-        $pdf->Cell(15, 10, '', 1);
+        $pdf->Cell(20, 10, '', 1);
+        $pdf->Cell(25, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
         $pdf->Ln();
