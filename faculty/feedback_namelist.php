@@ -16,7 +16,7 @@ $year = $_POST['year'];
 $section = $_POST['section'];
 
 // Fetch students based on criteria
-$students_sql = "SELECT id, name FROM students WHERE branch = ? AND year = ? AND section = ?";
+$students_sql = "SELECT roll_no, name FROM students WHERE branch = ? AND year = ? AND section = ?";
 $stmt = $conn->prepare($students_sql);
 $stmt->bind_param('sis', $branch, $year, $section);
 $stmt->execute();
