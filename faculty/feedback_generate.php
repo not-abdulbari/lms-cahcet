@@ -111,13 +111,13 @@ $pdf->Cell($labelWidth, 10, "Name of the Student", 0, 0);
 $pdf->Cell($valueWidth, 10, ": ". $student['name'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Roll No", 0, 0);
-$pdf->Cell($valueWidth, 10, ": ". $roll_no, 0, 1);
+$pdf->Cell($valueWidth, 10, ":  ". $roll_no, 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Branch", 0, 0);
-$pdf->Cell($valueWidth, 10, ": ". $student['branch'], 0, 1);
+$pdf->Cell($valueWidth, 10, ":  ". $student['branch'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Name of the Parent", 0, 0);
-$pdf->Cell($valueWidth, 10, ": ".$student['father_name'], 0, 1);
+$pdf->Cell($valueWidth, 10, ":  ".$student['father_name'], 0, 1);
 
 
 $pdf->Cell($labelWidth, 10, "Address", 0, 0); // Label with colon
@@ -125,13 +125,10 @@ $pdf->MultiCell($valueWidth, 10, ":  ".$student['permanent_addr'], 0); // Multi-
 
 
 $pdf->Cell($labelWidth, 10, "Student Phone No", 0, 0);
-$pdf->Cell($valueWidth, 10, ": ".$student['student_phone'], 0, 1);
+$pdf->Cell($valueWidth, 10, ":  ".$student['student_phone'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Parent Phone No", 0, 0);
-$pdf->Cell($valueWidth, 10, ": ".$student['parent_phone'], 0, 1);
-
-$pdf->Ln(10);
-
+$pdf->Cell($valueWidth, 10, ":  ".$student['parent_phone'], 0, 1);
 
     // Feedback Table
     $pdf->SetFont('Times', 'B', 12);
