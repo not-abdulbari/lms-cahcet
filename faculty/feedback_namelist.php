@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: ../index.php');
     exit;
 }
-
+include 'head.php';
 include 'db_connect.php'; // Include your database connection file
 
 $branch = $_POST['branch'];
