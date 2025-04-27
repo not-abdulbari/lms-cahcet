@@ -77,26 +77,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     $pdf->Cell(0, 10, 'Parent Feedback Form', 0, 1, 'C');
     $pdf->Ln(10);
 
-    // Student Information
-    $pdf->SetFont('Times', '', 12);
-    $pdf->Cell(0, 10, "Name of the Student: " . $student['name'], 0, 1);
-    $pdf->Cell(0, 10, "Roll No: " . $roll_no, 0, 1);
-    $pdf->Cell(0, 10, "Branch: " . $department, 0, 1);
-    $pdf->Cell(0, 10, "Name of the Parent: " . $student['father_name'], 0, 1);
-    $pdf->Cell(0, 10, "Address: " . $student['permanent_addr'], 0, 1);
-    $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Student Phone No: " . $student['student_phone'], 0, 1);
-    $pdf->Cell(0, 10, "Parent Phone No: " . $student['parent_phone'], 0, 1);
-    $pdf->Ln(10);
+$pdf->SetFont('Times', '', 12);
+
+// Define fixed widths for labels and values
+$labelWidth = 60; // Fixed width for labels
+$valueWidth = 130; // Fixed width for values
+
+// Function to maintain proper alignment of MultiCell()
+function addRow($pdf, $label, $value, $labelWidth, $valueWidth) {
+    $pdf->Cell($labelWidth, 10, $label, 0, 0); // Label cell
+    $x = $pdf->GetX(); // Store the X position
+    $y = $pdf->GetY(); // Store the Y position
+    $pdf->MultiCell($valueWidth, 10, $value, 0); // Multi-line value
+    $pdf->SetXY($x + $valueWidth, $y); // Reset cursor position to align next row properly
+}
+
+// Adding student details with aligned colons
+$pdf->Cell($labelWidth, 10, "Name of the Student:", 0, 0);
+$pdf->Cell($valueWidth, 10, $student['name'], 0, 1);
+
+$pdf->Cell($labelWidth, 10, "Roll No:", 0, 0);
+$pdf->Cell($valueWidth, 10, $roll_no, 0, 1);
+
+$pdf->Cell($labelWidth, 10, "Branch:", 0, 0);
+$pdf->Cell($valueWidth, 10, $department, 0, 1);
+
+$pdf->Cell($labelWidth, 10, "Name of the Parent:", 0, 0);
+$pdf->Cell($valueWidth, 10, $student['father_name'], 0, 1);
+
+// Handling multi-line Address with alignment
+addRow($pdf, "Address:", $student['permanent_addr'], $labelWidth, $valueWidth);
+
+$pdf->Ln(5);
+
+$pdf->Cell($labelWidth, 10, "Student Phone No:", 0, 0);
+$pdf->Cell($valueWidth, 10, $student['student_phone'], 0, 1);
+
+$pdf->Cell($labelWidth, 10, "Parent Phone No:", 0, 0);
+$pdf->Cell($valueWidth, 10, $student['parent_phone'], 0, 1);
+
+$pdf->Ln(10);
+
 
     // Feedback Table
     $pdf->SetFont('Times', 'B', 12);
     $pdf->Cell(10, 10, 'S.No', 1);
     $pdf->Cell(106, 10, 'Parameter', 1);
-    $pdf->Cell(22, 10, 'Excellent', 1);
-    $pdf->Cell(22, 10, 'Very Good', 1);
-    $pdf->Cell(15, 10, 'Good', 1);
-    $pdf->Cell(15, 10, 'Average', 1);
+    $pdf->Cell(22, 10, 'Excellent', 1, 0, 'C');
+    $pdf->Cell(22, 10, 'Very Good', 1, 0, 'C');
+    $pdf->Cell(15, 10, 'Good', 1, 0, 'C');
+    $pdf->Cell(17, 10, 'Average', 1, 0, 'C');
     $pdf->Ln();
 
     $parameters = [
@@ -114,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
         $pdf->Cell(22, 10, '', 1);
         $pdf->Cell(22, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
-        $pdf->Cell(15, 10, '', 1);
+        $pdf->Cell(17, 10, '', 1);
         $pdf->Ln();
     }
 
