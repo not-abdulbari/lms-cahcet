@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Ln(5);
     $pdf->Cell(0, 10, "Name of the Parent: " . $student['father_name'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Address: " . $student['permanent_address'], 0, 1);
+    $pdf->Cell(0, 10, "Address: " . $student['permanent_addr'], 0, 1);
     $pdf->Ln(5);
 
     // Phone Numbers Section (Student and Parent)
