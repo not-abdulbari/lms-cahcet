@@ -2,14 +2,14 @@
 require 'fpdf/fpdf.php';
 include 'db_connect.php'; // Include your database connection file
 
-$student_id = $_GET['student_id'];
+$roll_no = $_GET['roll_no'];
 
 // Fetch student details
 $student_sql = "SELECT s.name AS student_name, si.* FROM students s 
-                JOIN student_information si ON s.id = si.student_id 
-                WHERE s.id = ?";
+                JOIN student_information si ON s.roll_no = si.roll_no 
+                WHERE s.roll_no = ?";
 $stmt = $conn->prepare($student_sql);
-$stmt->bind_param('i', $student_id);
+$stmt->bind_param('s', $roll_no);
 $stmt->execute();
 $result = $stmt->get_result();
 $student = $result->fetch_assoc();
@@ -32,6 +32,7 @@ $pdf->Ln(10);
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(0, 10, "Academic Year: ____________ / Semester: ____________", 0, 1);
 $pdf->Cell(0, 10, "Name of the Student: " . $student['student_name'], 0, 1);
+$pdf->Cell(0, 10, "Roll No: " . $roll_no, 0, 1);
 $pdf->Cell(0, 10, "Branch & Batch of Study: " . $student['branch'] . " (" . $student['batch'] . ")", 0, 1);
 $pdf->Cell(0, 10, "Name of the Parent: ______________", 0, 1);
 $pdf->Cell(0, 10, "Address: ______________", 0, 1);
