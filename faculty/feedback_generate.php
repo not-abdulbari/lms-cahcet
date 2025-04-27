@@ -101,21 +101,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->SetFont('Times', '', 12);
     foreach ($parameters as $index => $parameter) {
         // Row Number Cell
-        $pdf->Cell(10, 10, $index + 1, 1, 0, 'C');
+        $pdf->Cell(10, 20, $index + 1, 1, 0, 'C');
 
-        // Parameter Description (MultiCell to handle multiline)
-        $x = $pdf->GetX(); // Save current X position
-        $y = $pdf->GetY(); // Save current Y position
-        $pdf->MultiCell(80, 10, $parameter, 1); // MultiCell for parameter description
-        
-        // Reset X and Y after MultiCell for subsequent cells
-        $pdf->SetXY($x + 80, $y);
+        // Handle the specific parameter with static 2 lines
+        if ($parameter === "Communication from College about Progress of Your Ward") {
+            $pdf->Cell(80, 20, $parameter, 1, 0, 'C');
+        } else {
+            // Dynamically handle other parameters with MultiCell
+            $x = $pdf->GetX(); // Save current X position
+            $y = $pdf->GetY(); // Save current Y position
+            $pdf->MultiCell(80, 10, $parameter, 1); // MultiCell for parameter description
+            
+            // Reset X and Y after MultiCell for subsequent cells
+            $pdf->SetXY($x + 80, $y);
+        }
 
         // Empty Rating Cells
-        $pdf->Cell(25, 10, '', 1, 0, 'C');
-        $pdf->Cell(25, 10, '', 1, 0, 'C');
-        $pdf->Cell(25, 10, '', 1, 0, 'C');
-        $pdf->Cell(25, 10, '', 1, 0, 'C');
+        $pdf->Cell(25, 20, '', 1, 0, 'C');
+        $pdf->Cell(25, 20, '', 1, 0, 'C');
+        $pdf->Cell(25, 20, '', 1, 0, 'C');
+        $pdf->Cell(25, 20, '', 1, 0, 'C');
         $pdf->Ln();
     }
 
@@ -128,8 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Cell(0, 10, 'Signature & Name of the Parent: ', 0, 1, 'R');
     $pdf->Ln(10);
 
+    // Set output filename
+    $filename = $roll_no . "-PARENT-FEEDBACK.pdf";
+
     // Clean output buffer and send PDF
     ob_end_clean();
-    $pdf->Output();
+    $pdf->Output('D', $filename); // Output as download with the specified filename
 }
 ?>
