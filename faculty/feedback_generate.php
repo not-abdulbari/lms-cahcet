@@ -102,16 +102,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     foreach ($parameters as $index => $parameter) {
         // Row Number Cell
         $pdf->Cell(10, 20, $index + 1, 1, 0, 'C');
-
-        // Handle the specific parameter with static 2 lines
+        
         if ($parameter === "Communication from College about Progress of Your Ward") {
-            $pdf->Cell(80, 20, $parameter, 1, 0, 'C');
+            // Static handling for parameter with extra rows
+            $pdf->Cell(80, 10, $parameter, 1, 2); // Static cell split into two rows
+            $pdf->Cell(80, 10, '', 1, 0); // Empty second row
         } else {
             // Dynamically handle other parameters with MultiCell
             $x = $pdf->GetX(); // Save current X position
             $y = $pdf->GetY(); // Save current Y position
             $pdf->MultiCell(80, 10, $parameter, 1); // MultiCell for parameter description
-            
+
             // Reset X and Y after MultiCell for subsequent cells
             $pdf->SetXY($x + 80, $y);
         }
