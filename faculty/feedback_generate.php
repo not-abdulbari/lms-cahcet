@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $roll_no = $_GET['roll_no'];
 
     // Fetch student info and additional details
-    $sql = "SELECT s.name, si.father_name, si.permanent_address, si.student_phone, si.parent_phone, s.branch 
+    $sql = "SELECT s.name, si.father_name, si.permanent_addr, si.student_phone, si.parent_phone, s.branch 
             FROM students s 
             JOIN student_information si ON s.roll_no = si.roll_no 
             WHERE s.roll_no = ?";
