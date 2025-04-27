@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'fpdf/fpdf.php';
+require '../fpdf/fpdf.php';
 include 'db_connect.php'; // Include your database connection file
 
 $roll_no = $_GET['roll_no'];
