@@ -52,20 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Add college logo
     $pdf->Image('../assets/24349bb44aaa1a8c.jpg', 10, 10, 30); // Logo positioned at (10, 10) with width 30
 
-    // Set font for the header
     $pdf->SetFont('Times', 'B', 14);
-
-    // Add college name
+    $pdf->SetXY(40, 15); // Start text after the logo (X = 50, Y = 10)
     $pdf->Cell(0, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
-    $pdf->Ln(5);
-
     // Add academic year
     $pdf->SetFont('Times', '', 12);
     $pdf->Cell(0, 10, "Academic Year 2024 - 2025 (EVEN)", 0, 1, 'C');
+    $pdf->Cell(0, 10, "_____________________________________________________", 0, 1, 'C');
+
+    
     $pdf->Ln(10);
 
     // Add Parent Feedback Form title
-    $pdf->SetFont('Times', '', 18);
+    $pdf->SetFont('Times', 'B', 14);
     $pdf->Cell(0, 10, 'Parent Feedback Form', 0, 1, 'C');
     $pdf->Ln(10);
 
