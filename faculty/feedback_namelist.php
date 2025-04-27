@@ -104,7 +104,7 @@ th {
                     <td><?= htmlspecialchars($student['roll_no']) ?></td>
                     <td><?= htmlspecialchars($student['name']) ?></td>
                     <td>
-                        <button type="submit" class="btn">href="feedback_generate.php?roll_no=<?= $student['roll_no'] ?>" target="_blank">Download Feedback</button>
+                    <button type="button" class="btn" onclick="window.open('feedback_generate.php?roll_no=<?= $student['roll_no'] ?>', '_blank')">Download Feedback</button>
                     </td>
                 </tr>
             <?php endwhile; ?>
