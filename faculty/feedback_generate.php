@@ -30,6 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         die("Student not found.");
     }
 
+    // Define department names
+    $departmentNames = [
+        "CSE" => "Department of Computer Science and Engineering",
+        "ECE" => "Department of Electronics and Communication Engineering",
+        "EEE" => "Department of Electrical and Electronics Engineering",
+        "MECH" => "Department of Mechanical Engineering",
+        "CIVIL" => "Department of Civil Engineering",
+        "IT" => "Department of Information Technology",
+        "AIDS" => "Department of Artificial Intelligence & Data Science",
+        "MBA" => "Department of Master of Business Administration",
+        "MCA" => "Department of Master of Computer Applications",
+    ];
+
+    $department = isset($departmentNames[$student['branch']]) ? $departmentNames[$student['branch']] : "Department of " . $student['branch'];
+
     // Create a new PDF instance
     $pdf = new FPDF();
     $pdf->AddPage();
@@ -44,29 +59,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Cell(0, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
     $pdf->Ln(5);
 
-    // Add Parent Feedback Form title
+    // Add academic year
     $pdf->SetFont('Times', '', 12);
+    $pdf->Cell(0, 10, "Academic Year 2024 - 2025 (EVEN)", 0, 1, 'C');
+    $pdf->Ln(10);
+
+    // Add Parent Feedback Form title
+    $pdf->SetFont('Times', '', 18);
     $pdf->Cell(0, 10, 'Parent Feedback Form', 0, 1, 'C');
     $pdf->Ln(10);
 
     // Student Details Section
     $pdf->SetFont('Times', '', 12);
-    $pdf->Cell(0, 10, "Academic Year: ____________ / Semester: ____________", 0, 1);
+    $pdf->Cell(0, 10, "Name of the Student : " . $student['name'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Name of the Student: " . $student['name'], 0, 1);
+    $pdf->Cell(0, 10, "Roll No             : " . $roll_no, 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Roll No: " . $roll_no, 0, 1);
+    $pdf->Cell(0, 10, "Branch              : " . $department, 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Branch: " . $student['branch'], 0, 1);
+    $pdf->Cell(0, 10, "Name of the Parent  : " . $student['father_name'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Name of the Parent: " . $student['father_name'], 0, 1);
-    $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Address: " . $student['permanent_addr'], 0, 1);
+    $pdf->MultiCell(0, 10, "Address             : " . $student['permanent_addr'], 0, 1);
     $pdf->Ln(5);
 
     // Phone Numbers Section (Student and Parent)
-    $pdf->Cell(50, 10, "Student Phone No: " . $student['student_phone'], 0, 0);
-    $pdf->Cell(50, 10, "Parent Phone No: " . $student['parent_phone'], 0, 1);
+    $pdf->Cell(0, 10, "Student Phone No   : " . $student['student_phone'], 0, 0);
+    $pdf->Ln(5);
+    $pdf->Cell(0, 10, "Parent Phone No    : " . $student['parent_phone'], 0, 1);
     $pdf->Ln(10);
 
     // Feedback Table
@@ -82,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $parameters = [
         'Institutional Discipline and Culture',
         'Infrastructure Facilities',
-        "Communication from College about Progress of Your Ward\n(continued line for clarity)",
+        "Communication from College about Progress of Your Ward",
         'Career Guidance and Placement',
         'How do you rate our college?'
     ];
@@ -99,12 +118,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $pdf->Ln(10);
-    $pdf->Cell(0, 10, 'Suggestions if any: ______________', 0, 1);
-    $pdf->Ln(10);
+    $pdf->Cell(0, 10, 'Suggestions if any:', 0, 1);
+    $pdf->Ln(30);
 
     // Align Signature & Name of Parent to the right
     $pdf->Cell(140); // Move cursor to the right
-    $pdf->Cell(0, 10, 'Signature & Name of the Parent: ______________', 0, 1, 'R');
+    $pdf->Cell(0, 10, 'Signature & Name of the Parent: ', 0, 1, 'R');
     $pdf->Ln(10);
 
     // Clean output buffer and send PDF
