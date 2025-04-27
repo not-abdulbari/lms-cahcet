@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     // Feedback Table
     $pdf->SetFont('Times', 'B', 12);
     $pdf->Cell(10, 10, 'S.No', 1);
-    $pdf->Cell(120, 10, 'Parameter', 1);
+    $pdf->Cell(106, 10, 'Parameter', 1);
     $pdf->Cell(22, 10, 'Excellent', 1);
     $pdf->Cell(22, 10, 'Very Good', 1);
     $pdf->Cell(15, 10, 'Good', 1);
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     $pdf->SetFont('Times', '', 12);
     foreach ($parameters as $index => $parameter) {
         $pdf->Cell(10, 10, $index + 1, 1);
-        $pdf->Cell(120, 10, $parameter, 1);
+        $pdf->Cell(106, 10, $parameter, 1);
         $pdf->Cell(22, 10, '', 1);
         $pdf->Cell(22, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
