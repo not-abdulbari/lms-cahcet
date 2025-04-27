@@ -111,8 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     foreach ($parameters as $index => $parameter) {
         $pdf->Cell(10, 10, $index + 1, 1);
         $pdf->Cell(120, 10, $parameter, 1);
-        $pdf->Cell(20, 10, '', 1);
-        $pdf->Cell(25, 10, '', 1);
+        $pdf->Cell(22, 10, '', 1);
+        $pdf->Cell(22, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
         $pdf->Cell(15, 10, '', 1);
         $pdf->Ln();
