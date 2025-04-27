@@ -12,8 +12,11 @@ include 'db_connect.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $roll_no = $_GET['roll_no'];
 
-    // Fetch student info
-    $sql = "SELECT * FROM students WHERE roll_no = ?";
+    // Fetch student info and additional details
+    $sql = "SELECT s.name, si.father_name, si.permanent_address, si.student_phone, si.parent_phone, s.branch 
+            FROM students s 
+            JOIN student_information si ON s.roll_no = si.roll_no 
+            WHERE s.roll_no = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $roll_no);
     $stmt->execute();
@@ -28,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf = new FPDF();
     $pdf->AddPage();
 
-    // Add college logo (replace 'college_logo.jpg' with the actual path to your logo)
+    // Add college logo
     $pdf->Image('../assets/24349bb44aaa1a8c.jpg', 10, 10, 30); // Logo positioned at (10, 10) with width 30
 
     // Set font for the header
@@ -38,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Cell(0, 10, 'C. ABDUL HAKEEM COLLEGE OF ENGINEERING & TECHNOLOGY', 0, 1, 'C');
     $pdf->Ln(5);
 
-    // Add department and feedback form title
+    // Add Parent Feedback Form title
     $pdf->SetFont('Times', '', 12);
     $pdf->Cell(0, 10, 'Parent Feedback Form', 0, 1, 'C');
     $pdf->Ln(10);
@@ -51,15 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Ln(5);
     $pdf->Cell(0, 10, "Roll No: " . $roll_no, 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Branch & Batch of Study: " . $student['branch'] . " (" . $student['batch'] . ")", 0, 1);
+    $pdf->Cell(0, 10, "Branch: " . $student['branch'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Name of the Parent: ______________", 0, 1);
+    $pdf->Cell(0, 10, "Name of the Parent: " . $student['father_name'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Address: ______________", 0, 1);
+    $pdf->Cell(0, 10, "Address: " . $student['permanent_address'], 0, 1);
     $pdf->Ln(5);
-    $pdf->Cell(0, 10, "Phone No: ______________", 0, 1);
-    $pdf->Ln(5);
-    $pdf->Cell(0, 10, "E-mail: ______________", 0, 1);
+
+    // Phone Numbers Section (Student and Parent)
+    $pdf->Cell(50, 10, "Student Phone No: " . $student['student_phone'], 0, 0);
+    $pdf->Cell(50, 10, "Parent Phone No: " . $student['parent_phone'], 0, 1);
     $pdf->Ln(10);
 
     // Feedback Table
@@ -75,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $parameters = [
         'Institutional Discipline and Culture',
         'Infrastructure Facilities',
-        'Communication from College about Progress of Your Ward',
+        "Communication from College about Progress of Your Ward\n(continued line for clarity)",
         'Career Guidance and Placement',
         'How do you rate our college?'
     ];
@@ -94,8 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Ln(10);
     $pdf->Cell(0, 10, 'Suggestions if any: ______________', 0, 1);
     $pdf->Ln(10);
-    $pdf->Cell(0, 10, 'Date: ______________', 0, 1);
-    $pdf->Cell(0, 10, 'Signature & Name of the Parent: ______________', 0, 1);
+
+    // Align Signature & Name of Parent to the right
+    $pdf->Cell(140); // Move cursor to the right
+    $pdf->Cell(0, 10, 'Signature & Name of the Parent: ______________', 0, 1, 'R');
+    $pdf->Ln(10);
 
     // Output PDF
     $pdf->Output();
