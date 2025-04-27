@@ -3,6 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Start output buffering
+ob_start();
+
 // Include the FPDF library
 require('../fpdf186/fpdf.php');
 
@@ -104,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pdf->Cell(0, 10, 'Signature & Name of the Parent: ______________', 0, 1, 'R');
     $pdf->Ln(10);
 
-    // Output PDF
+    // Clean output buffer and send PDF
+    ob_end_clean();
     $pdf->Output();
 }
 ?>
