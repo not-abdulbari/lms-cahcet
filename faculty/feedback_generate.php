@@ -83,6 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     $pdf->SetFont('Times', '', 12);
     $pdf->SetXY(40, 38); // Align with the college name
     $pdf->Cell(0, 10, 'Academic Year 2024 - 2025 (EVEN)', 0, 1, 'C');
+    $pdf->Cell(0, 10, '_________________________________________________________________________', 0, 1, 'C');
+
 
     // Parent Feedback Form Title
     $pdf->SetFont('Times', 'B', 14);
@@ -106,35 +108,35 @@ function addRow($pdf, $label, $value, $labelWidth, $valueWidth) {
 
 // Adding student details with aligned colons
 $pdf->Cell($labelWidth, 10, "Name of the Student", 0, 0);
-$pdf->Cell($valueWidth, 10, ":". $student['name'], 0, 1);
+$pdf->Cell($valueWidth, 10, ": ". $student['name'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Roll No", 0, 0);
-$pdf->Cell($valueWidth, 10, ":". $roll_no, 0, 1);
+$pdf->Cell($valueWidth, 10, ": ". $roll_no, 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Branch", 0, 0);
-$pdf->Cell($valueWidth, 10, ":". $department, 0, 1);
+$pdf->Cell($valueWidth, 10, ": ". $student['branch'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Name of the Parent", 0, 0);
-$pdf->Cell($valueWidth, 10, ":".$student['father_name'], 0, 1);
+$pdf->Cell($valueWidth, 10, ": ".$student['father_name'], 0, 1);
 
 
-$pdf->Cell($labelWidth, 10, "Addres:", 0, 0); // Label with colon
-$pdf->MultiCell($valueWidth, 10, ":".$student['permanent_addr'], 0); // Multi-line value
+$pdf->Cell($labelWidth, 10, "Address", 0, 0); // Label with colon
+$pdf->MultiCell($valueWidth, 10, ":  ".$student['permanent_addr'], 0); // Multi-line value
 
 
 $pdf->Cell($labelWidth, 10, "Student Phone No", 0, 0);
-$pdf->Cell($valueWidth, 10, ":".$student['student_phone'], 0, 1);
+$pdf->Cell($valueWidth, 10, ": ".$student['student_phone'], 0, 1);
 
 $pdf->Cell($labelWidth, 10, "Parent Phone No", 0, 0);
-$pdf->Cell($valueWidth, 10, ":".$student['parent_phone'], 0, 1);
+$pdf->Cell($valueWidth, 10, ": ".$student['parent_phone'], 0, 1);
 
 $pdf->Ln(10);
 
 
     // Feedback Table
     $pdf->SetFont('Times', 'B', 12);
-    $pdf->Cell(10, 10, 'S.No', 1);
-    $pdf->Cell(106, 10, 'Parameter', 1);
+    $pdf->Cell(10, 10, 'S.No', 1, 0, 'C');
+    $pdf->Cell(106, 10, 'Parameter', 1, 0, 'C');
     $pdf->Cell(22, 10, 'Excellent', 1, 0, 'C');
     $pdf->Cell(22, 10, 'Very Good', 1, 0, 'C');
     $pdf->Cell(15, 10, 'Good', 1, 0, 'C');
@@ -162,11 +164,11 @@ $pdf->Ln(10);
 
     $pdf->Ln(10);
     $pdf->Cell(0, 10, 'Suggestions if any:', 0, 1);
-    $pdf->Ln(30);
+    $pdf->Ln(20);
 
     // Signature section
     $pdf->Cell(140);
-    $pdf->Cell(0, 10, 'Signature & Name of the Parent: ', 0, 1, 'R');
+    $pdf->Cell(0, 10, 'Signature & Name of the Parent', 0, 1, 'R');
     $pdf->Ln(10);
 
     // Output PDF
