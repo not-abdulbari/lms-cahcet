@@ -5,6 +5,9 @@ ini_set('display_errors', 1);
 require '../fpdf186/fpdf.php';
 include 'db_connect.php'; // Include your database connection file
 
+// Start output buffering to suppress accidental output
+ob_start();
+
 $roll_no = $_GET['roll_no'];
 
 // Fetch student details
@@ -78,5 +81,7 @@ $pdf->Ln(10);
 $pdf->Cell(0, 10, 'Date: ______________', 0, 1);
 $pdf->Cell(0, 10, 'Signature & Name of the Parent: ______________', 0, 1);
 
+// Clean buffer and send PDF
+ob_end_clean();
 $pdf->Output();
 ?>
