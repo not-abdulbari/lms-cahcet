@@ -20,6 +20,8 @@
   $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
   $year_roman = isset($_POST['year_roman']) ? $_POST['year_roman'] : convertToRoman($year);
   $exam = isset($_POST['exam']) ? $_POST['exam'] : 'University'; // Default to University if not specified
+          $nba_logo = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
   // Fetch student info 
   $sql = "SELECT * FROM students WHERE roll_no = ?"; 
@@ -109,6 +111,10 @@
   $pdf->SetFont('Times', '', 12); 
   $pdf->SetXY(40, 30); 
   $pdf->Cell(0, 10, $department, 0, 1, 'C'); 
+
+      if ($nba_logo) {
+        $pdf->Image('../assets/nba-logo.png', 170, 23, 30); // NBA logo positioned at (170, 23) with width 30
+    }
 
   // Add a line 
   $pdf->SetY(38); 
