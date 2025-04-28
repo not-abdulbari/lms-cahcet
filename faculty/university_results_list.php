@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exam = isset($_POST['exam']) ? $_POST['exam'] : 'University';
     $nba_logo = isset($_POST['nba_logo']) ? $_POST['nba_logo'] : 0; // Capture the NBA logo checkbox value
 
+
     // Fetch students based on criteria
     $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
     $stmt = $conn->prepare($sql);
@@ -84,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         /* Table Styling */
         table {
-            width: 80%;
+            width: 1200px;
             margin: 20px auto;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
@@ -108,6 +109,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #f7f9fc; /* Soft header background */
             font-weight: bold;
         }
+
+        input[type="checkbox"] {
+        accent-color: green; /* Set checkbox color to green */
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    .check-label {
+        font-size: 18px;
+        padding-left: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
 
         /* Button Styling */
         .btn {
@@ -210,9 +224,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php else: ?>
     <!-- Students Table -->
-    <h2>Students List</h2>
+    <h2 style="font-size: 30px;">Students List</h2>
+    <form action="generate_university_bulk_pdf.php" method="post">
+    <div style="display: flex; justify-content: space-between; width:70%; margin: 20px auto;">
+        <div style="display: flex;">
+            <input type="checkbox" id="select-all">
+            <label for="select-all" class="check-label">Select All</label>
+        </div>
+        <button type="submit" class="btn">Download Selected</button>
+    </div>
     <table>
         <tr>
+            <th>Select</th>
             <th>Roll No</th>
             <th>Name</th>
             <th>Reg No</th>
@@ -221,6 +244,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($result && $result->num_rows > 0): ?>
             <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
+                <td>
+                    <input type="checkbox" class="student-checkbox" name="students[]" value="<?= htmlspecialchars($row['roll_no']) ?>">
+                </td>
                 <td><?= htmlspecialchars($row['roll_no']) ?></td>
                 <td><?= htmlspecialchars($row['name']) ?></td>
                 <td><?= htmlspecialchars($row['reg_no']) ?></td>
@@ -245,10 +271,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
         <?php endif; ?>
     </table>
+        </form>
     <div style="text-align: center; margin: 20px;">
         <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn">Back to Selection</a>
     </div>
     <?php endif; ?>
+    <script>
+        // Handle "Select All" functionality
+        const selectAllCheckbox = document.getElementById('select-all');
+        const studentCheckboxes = document.querySelectorAll('.student-checkbox');
+
+        selectAllCheckbox.addEventListener('change', () => {
+            studentCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+    </script>
 </body>
 </html>
 
