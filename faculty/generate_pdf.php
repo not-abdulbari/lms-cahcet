@@ -82,6 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->SetXY(40, 30); // Align with the college name
     $pdf->Cell(0, 10, $department, 0, 1, 'C');
 
+    if ($nba_logo) {
+        $pdf->Image('../assets/nba-logo.svg', 160, 30, 30); // NBA logo positioned at (160, 30) with width 30
+    }
+
     $pdf->SetFont('Times', '', 12);
     $pdf->SetXY(40, 38); // Align with the college name
     $pdf->Cell(0, 10, 'Academic Year 2024 - 2025 (EVEN)', 0, 1, 'C');
