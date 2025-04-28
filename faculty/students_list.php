@@ -111,9 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .btn:active {
         transform: scale(1); /* Return to normal */
     }
+    .adjacent-table{
+        display: flex;
+    }
 </style>
 <body>
     <h2 style="text-align: center; font-size: 30px;">Students List</h2>
+<div class = "adjacent-table">
 <form id="bulk-download-form" action="generate_bulk_pdf.php" method="post">
     <div style="display: flex; justify-content: space-between; width: 80%; margin: 20px auto;">
         <div>
@@ -165,6 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 <?php endforeach; ?>
     </table>
+</div>
 <script>
     // Handle "Select All" functionality
     const selectAllCheckbox = document.getElementById('select-all');
