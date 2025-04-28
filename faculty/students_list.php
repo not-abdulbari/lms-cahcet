@@ -8,6 +8,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 include 'head.php';
 include 'db_connect.php'; // Include your database connection file
 
+$result = null; // Initialize $result to avoid undefined variable error
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $branch = $_POST['branch'];
     $year = $_POST['year'];
@@ -20,9 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Fetch students based on criteria
     $sql = "SELECT roll_no, name FROM students WHERE branch = ? AND year = ? AND section = ?";
     $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("SQL prepare failed: " . $conn->error);
+    }
     $stmt->bind_param("sss", $branch, $year, $section);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        die("SQL execution failed: " . $stmt->error);
+    }
     $result = $stmt->get_result();
+    if (!$result) {
+        die("Fetching result failed: " . $stmt->error);
+    }
 }
 ?>
 
@@ -32,10 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Students List</title>
     <style>
-    /* Keep the table styles as they are */
-    </style>
-</head>
-<style>
     /* General Reset */
     * {
         margin: 0;
@@ -52,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     /* Table Styling */
     table {
-        width: 800px; /* Adjusted to make the table occupy full width */
+        width: 1000px; /* Adjusted to make the table occupy full width */
         max-width: 1500px; /* Optional: Set a max width for large screens */
         margin: 20px auto;
         border-collapse: collapse;
@@ -111,16 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .btn:active {
         transform: scale(1); /* Return to normal */
     }
-    .adjacent-table{
-        display: flex;
-        justify-content: center;
-        align-item: center;
-        
-    }
-</style>
+    </style>
+</head>
 <body>
     <h2 style="text-align: center; font-size: 30px;">Students List</h2>
-<div class = "adjacent-table">
 <form id="bulk-download-form" action="generate_bulk_pdf.php" method="post">
     <div style="display: flex; justify-content: space-between; width: 80%; margin: 20px auto;">
         <div>
@@ -134,16 +134,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Select</th>
             <th>Roll No</th>
             <th>Name</th>
+            <th>Action</th> <!-- Add Action column -->
         </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td>
-                <input type="checkbox" class="student-checkbox" name="students[]" value="<?= htmlspecialchars($row['roll_no']) ?>">
-            </td>
-            <td><?= htmlspecialchars($row['roll_no']) ?></td>
-            <td><?= htmlspecialchars($row['name']) ?></td>
-        </tr>
-        <?php endwhile; ?>
+        <?php if ($result && $result->num_rows > 0): ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td>
+                    <input type="checkbox" class="student-checkbox" name="students[]" value="<?= htmlspecialchars($row['roll_no']) ?>">
+                </td>
+                <td><?= htmlspecialchars($row['roll_no']) ?></td>
+                <td><?= htmlspecialchars($row['name']) ?></td>
+                <td>
+                    <!-- Generate PDF button for each row -->
+                    <button 
+                        type="button" 
+                        class="btn generate-pdf-btn" 
+                        data-roll-no="<?= htmlspecialchars($row['roll_no']) ?>"
+                        data-branch="<?= htmlspecialchars($branch) ?>"
+                        data-year="<?= htmlspecialchars($year) ?>"
+                        data-year-roman="<?= htmlspecialchars($year_roman) ?>"
+                        data-section="<?= htmlspecialchars($section) ?>"
+                        data-semester="<?= htmlspecialchars($semester) ?>"
+                        data-exam="<?= htmlspecialchars($exam) ?>"
+                        data-nba-logo="<?= htmlspecialchars($nba_logo) ?>"
+                    >
+                        Generate PDF
+                    </button>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="4" style="text-align: center;">No students found for the given criteria.</td>
+            </tr>
+        <?php endif; ?>
     </table>
     <!-- Hidden Inputs to Pass Form Data -->
     <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
@@ -154,25 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
     <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
 </form>
-
-    <table>
-        <tr><th>Action</th></tr>
-<!-- Individual Forms for Each Student -->
-<?php foreach ($result as $row): ?>
-<form action="generate_pdf.php" method="post" style="margin: 10px 0;">
-    <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
-    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
-    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
-    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
-    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
-    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
-    <tr><td><button type="submit" class="btn">Generate PDF</button></td></tr>
-</form>
-<?php endforeach; ?>
-    </table>
-</div>
 <script>
     // Handle "Select All" functionality
     const selectAllCheckbox = document.getElementById('select-all');
@@ -183,8 +188,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             checkbox.checked = selectAllCheckbox.checked;
         });
     });
+
+    // Handle Generate PDF for an individual student
+    const generatePdfButtons = document.querySelectorAll('.generate-pdf-btn');
+    generatePdfButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const rollNo = button.dataset.rollNo;
+            const branch = button.dataset.branch;
+            const year = button.dataset.year;
+            const yearRoman = button.dataset.yearRoman;
+            const section = button.dataset.section;
+            const semester = button.dataset.semester;
+            const exam = button.dataset.exam;
+            const nbaLogo = button.dataset.nbaLogo;
+
+            // Create a form dynamically
+            const form = document.createElement('form');
+            form.action = 'generate_pdf.php';
+            form.method = 'post';
+            form.style.display = 'none';
+
+            // Add form fields dynamically
+            const fields = {
+                roll_no: rollNo,
+                branch: branch,
+                year: year,
+                year_roman: yearRoman,
+                section: section,
+                semester: semester,
+                exam: exam,
+                nba_logo: nbaLogo
+            };
+
+            for (const name in fields) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = fields[name];
+                form.appendChild(input);
+            }
+
+            // Append form to body and submit it
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
 </script>
-   
 </body>
 </html>
 
