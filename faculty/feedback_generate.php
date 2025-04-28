@@ -57,6 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     ];
 
     $department = $departmentNames[$student['branch']] ?? "Department of " . $student['branch'];
+            $nba_logo = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
 
     // Create PDF instance
     $pdf = new FPDF();
@@ -84,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     $pdf->SetFont('Times', '', 12);
     $pdf->SetXY(40, 30); // Align with the college name
     $pdf->Cell(0, 10, $department, 0, 1, 'C');
+    
+    if ($nba_logo) {
+        $pdf->Image('../assets/nba-logo.png', 170, 23, 30); // NBA logo positioned at (170, 23) with width 30
+    }
+
 
     $pdf->SetFont('Times', '', 12);
     $pdf->SetXY(40, 38); // Align with the college name
