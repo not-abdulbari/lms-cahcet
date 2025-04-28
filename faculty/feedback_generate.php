@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_no'])) {
     ];
 
     $department = $departmentNames[$student['branch']] ?? "Department of " . $student['branch'];
-            $nba_logo = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+    $nba_logo = isset($_GET['nba_logo']) && $_GET['nba_logo'] == "1";
 
 
     // Create PDF instance
