@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $semester = $_POST['semester'];
     $exam = $_POST['exam'];
 
+        $nba_logo = isset($_POST['nba_logo']) && $_POST['nba_logo'] == "1";
+
+
     // Fetch student info
     $sql = "SELECT * FROM students WHERE roll_no = ?";
     $stmt = $conn->prepare($sql);
