@@ -114,64 +114,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </style>
 <body>
     <h2 style="text-align: center; font-size: 30px;">Students List</h2>
-    <form id="bulk-download-form" action="generate_bulk_pdf.php" method="post">
-        <div style="display: flex; justify-content: space-between; width: 80%; margin: 20px auto;">
-            <div>
-                <input type="checkbox" id="select-all">
-                <label for="select-all" class="check-label">Select All</label>
-            </div>
-            <button type="submit" class="btn">Download Selected</button>
+<form id="bulk-download-form" action="generate_bulk_pdf.php" method="post">
+    <div style="display: flex; justify-content: space-between; width: 80%; margin: 20px auto;">
+        <div>
+            <input type="checkbox" id="select-all">
+            <label for="select-all" class="check-label">Select All</label>
         </div>
-        <table>
-            <tr>
-                <th>Select</th>
-                <th>Roll No</th>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-            <?php while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td>
-                    <input type="checkbox" class="student-checkbox" name="students[]" value="<?= htmlspecialchars($row['roll_no']) ?>">
-                </td>
-                <td><?= htmlspecialchars($row['roll_no']) ?></td>
-                <td><?= htmlspecialchars($row['name']) ?></td>
-                <td>
-                    <form action="generate_pdf.php" method="post" style="margin: 0;">
-                        <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
-                        <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
-                        <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
-                        <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
-                        <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-                        <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-                        <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
-                        <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>"> <!-- Add NBA logo value -->
-                        <button type="submit" class="btn">Generate PDF</button>
-                    </form>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
-        <!-- Hidden Inputs to Pass Form Data -->
-        <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
-        <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
-        <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
-        <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-        <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-        <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
-        <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
-    </form>
-    <script>
-        // Handle "Select All" functionality
-        const selectAllCheckbox = document.getElementById('select-all');
-        const studentCheckboxes = document.querySelectorAll('.student-checkbox');
+        <button type="submit" class="btn">Download Selected</button>
+    </div>
+    <table>
+        <tr>
+            <th>Select</th>
+            <th>Roll No</th>
+            <th>Name</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td>
+                <input type="checkbox" class="student-checkbox" name="students[]" value="<?= htmlspecialchars($row['roll_no']) ?>">
+            </td>
+            <td><?= htmlspecialchars($row['roll_no']) ?></td>
+            <td><?= htmlspecialchars($row['name']) ?></td>
+        </tr>
+        <?php endwhile; ?>
+    </table>
+    <!-- Hidden Inputs to Pass Form Data -->
+    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
+    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
+    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
+    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
+    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
+    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
+</form>
 
-        selectAllCheckbox.addEventListener('change', () => {
-            studentCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
+<!-- Individual Forms for Each Student -->
+<?php foreach ($result as $row): ?>
+<form action="generate_pdf.php" method="post" style="margin: 10px 0;">
+    <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
+    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
+    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
+    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
+    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
+    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
+    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
+    <button type="submit" class="btn">Generate PDF for <?= htmlspecialchars($row['name']) ?></button>
+</form>
+<?php endforeach; ?>
+
+<script>
+    // Handle "Select All" functionality
+    const selectAllCheckbox = document.getElementById('select-all');
+    const studentCheckboxes = document.querySelectorAll('.student-checkbox');
+
+    selectAllCheckbox.addEventListener('change', () => {
+        studentCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
         });
-    </script>
+    });
+</script>
+   
 </body>
 </html>
 
