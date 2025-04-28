@@ -162,7 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
     <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
     <tr><td><button type="submit" class="btn">Generate PDF</button></td></tr>
-    <button type="submit" class="btn">Generate PDF</button>
 </form>
 <?php endforeach; ?>
     </table>
