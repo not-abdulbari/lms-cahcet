@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $year_roman = isset($_POST['year_roman']) ? $_POST['year_roman'] : '';    $section = $_POST['section'];
     $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
     $exam = isset($_POST['exam']) ? $_POST['exam'] : 'University';
+    $nba_logo = isset($_POST['nba_logo']) ? $_POST['nba_logo'] : 0; // Capture the NBA logo checkbox value
 
     // Fetch students based on criteria
     $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
@@ -232,6 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
                         <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
                         <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
+                        <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>"> <!-- Add NBA logo value -->
                         <button type="submit" class="btn">Generate PDF</button>
                     </form>
                 </td>
