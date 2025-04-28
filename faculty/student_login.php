@@ -643,7 +643,7 @@ table tr:hover {
                         <tr><th>Section</th><td><?php echo htmlspecialchars($student_data['section']); ?></td></tr>
                         <tr><th>Year</th><td><?php echo htmlspecialchars($student_data['year']); ?></td></tr>
                         <tr><th>Email</th><td><?php echo htmlspecialchars($student_data['mail'] ?? 'Not Available'); ?></td></tr>
-                        <tr><th>Date of Birth</th><td><?php echo htmlspecialchars($student_data['dob'] ?? 'Not Available'); ?></td></tr>
+                        <tr><th>Date of Birth</th><td><?php echo isset($student_data['dob']) && ($timestamp = strtotime($student_data['dob'])) !== false ? htmlspecialchars(date('d-m-Y', $timestamp)) : 'Not Available'; ?></td></tr>
                         <tr><th>Student Phone</th><td><?php echo htmlspecialchars($student_data['student_phone'] ?? 'Not Available'); ?></td></tr>
                         <tr><th>Father's Name</th><td><?php echo htmlspecialchars($student_data['father_name'] ?? 'Not Available'); ?></td></tr>
                         <tr><th>Occupation</th><td><?php echo htmlspecialchars($student_data['occupation'] ?? 'Not Available'); ?></td></tr>
