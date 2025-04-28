@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf->Cell(0, 10, $department, 0, 1, 'C');
 
     if ($nba_logo) {
-        $pdf->Image('../assets/nba-logo.png', 170, 30, 30); // NBA logo positioned at (170, 30) with width 30
+        $pdf->Image('../assets/nba-logo.png', 170, 25, 30); // NBA logo positioned at (170, 25) with width 30
     }
 
     $pdf->SetFont('Times', '', 12);
