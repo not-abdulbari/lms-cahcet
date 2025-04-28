@@ -259,6 +259,12 @@ body {
                     <?php endforeach; ?>
                 </select>
             </div>
+                        <!-- Add a checkbox for NBA logo -->
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="nba_logo" value="1"> Is NBA logo needed?
+                </label>
+            </div>
             <div class="form-group">
                 <button type="submit">Submit</button>
             </div>
