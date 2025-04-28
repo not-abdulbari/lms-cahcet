@@ -127,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Select</th>
             <th>Roll No</th>
             <th>Name</th>
-            <th>Action</th> <!-- Added Action Column -->
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
@@ -136,23 +135,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </td>
             <td><?= htmlspecialchars($row['roll_no']) ?></td>
             <td><?= htmlspecialchars($row['name']) ?></td>
-            <td> <!-- Embedding the Individual Form Inside the Table -->
-                <form action="generate_pdf.php" method="post">
-                    <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
-                    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
-                    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
-                    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
-                    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-                    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-                    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
-                    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
-                    <button type="submit" class="btn">Generate PDF</button>
-                </form>
-            </td>
         </tr>
         <?php endwhile; ?>
     </table>
+    <!-- Hidden Inputs to Pass Form Data -->
+    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
+    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
+    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
+    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
+    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
+    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
 </form>
+
+<!-- Individual Forms for Each Student -->
+<?php foreach ($result as $row): ?>
+<form action="generate_pdf.php" method="post" style="margin: 10px 0;">
+    <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
+    <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
+    <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
+    <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
+    <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
+    <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+    <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
+    <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
+    <button type="submit" class="btn">Generate PDF for <?= htmlspecialchars($row['name']) ?></button>
+</form>
+<?php endforeach; ?>
 
 <script>
     // Handle "Select All" functionality
