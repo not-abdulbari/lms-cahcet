@@ -113,7 +113,7 @@
   $pdf->Cell(0, 10, $department, 0, 1, 'C'); 
 
       if ($nba_logo) {
-        $pdf->Image('../assets/nba-logo.png', 170, 23, 30); // NBA logo positioned at (170, 23) with width 30
+        $pdf->Image('../assets/nba-logo.png', 170, 22, 30); // NBA logo positioned at (170, 22) with width 30
     }
 
   // Add a line 
