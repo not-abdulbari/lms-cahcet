@@ -56,10 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         color: #333;
     }
 
+    /* Responsive Container */
+    .container {
+        padding: 0 15px;
+        margin: 0 auto;
+        max-width: 1200px; /* Limit the maximum width of the content */
+    }
+
     /* Table Styling */
     table {
-        width: 1000px; /* Adjusted to make the table occupy full width */
-        max-width: 1500px; /* Optional: Set a max width for large screens */
+        width: 100%; /* Full width for responsiveness */
         margin: 20px auto;
         border-collapse: collapse;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
@@ -117,7 +123,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .btn:active {
         transform: scale(1); /* Return to normal */
     }
-    </style>
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        table {
+            font-size: 14px; /* Slightly smaller font size for smaller screens */
+        }
+
+        th, td {
+            padding: 10px; /* Adjust padding for smaller screens */
+        }
+
+        .btn {
+            padding: 8px 12px; /* Adjust button size */
+        }
+
+        .check-label {
+            font-size: 16px; /* Adjust label font size */
+        }
+    }
+
+    @media (max-width: 480px) {
+        table {
+            font-size: 12px; /* Smaller font size for very small screens */
+        }
+
+        th, td {
+            padding: 8px; /* Reduce padding further */
+        }
+
+        .btn {
+            padding: 6px 10px; /* Adjust button size for very small screens */
+        }
+
+        .check-label {
+            font-size: 14px; /* Adjust label font size */
+        }
+    }
+</style>
 </head>
 <body>
     <h2 style="text-align: center; font-size: 30px;">Students List</h2>
