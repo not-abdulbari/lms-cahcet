@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Add a line
     $pdf->SetY(40); // Adjust Y position to leave space for the logo and header
-    $pdf->Cell(0, 10, '_____________________________________________________', 0, 1, 'C');
+    $pdf->Cell(0, 10, '_______________________________________________________________', 0, 1, 'C');
 
     // Add "Progress Report" heading
     $pdf->SetFont('Times', 'B', 16);
