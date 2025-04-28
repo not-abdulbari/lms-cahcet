@@ -5,12 +5,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: ../index.php');
     exit;
 }
+
 include 'head.php';
 include 'db_connect.php'; // Include your database connection file
 
 $branch = $_POST['branch'];
 $year = $_POST['year'];
 $section = $_POST['section'];
+$nba_logo = isset($_POST['nba_logo']) ? $_POST['nba_logo'] : 0; // Capture the NBA logo checkbox value
 
 // Fetch students based on criteria
 $students_sql = "SELECT roll_no, name FROM students WHERE branch = ? AND year = ? AND section = ?";
@@ -26,66 +28,66 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Student List</title>
     <style>
-    /* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Body Styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f7f9fc, #e4f1fe); /* Soft gradient background */
-    color: #333;
-}
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f7f9fc, #e4f1fe); /* Soft gradient background */
+            color: #333;
+        }
 
-/* Table Styling */
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-    background: #ffffff;
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden;
-}
+        /* Table Styling */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+            background: #ffffff;
+            border-radius: 8px; /* Rounded corners */
+            overflow: hidden;
+        }
 
-table, th, td {
-    border: 1px solid #ddd; /* Subtle border color */
-}
+        table, th, td {
+            border: 1px solid #ddd; /* Subtle border color */
+        }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    font-size: 16px;
-    color: #2c3e50; /* Elegant text color */
-}
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+            color: #2c3e50; /* Elegant text color */
+        }
 
-th {
-    background-color: #f7f9fc; /* Soft header background */
-    font-weight: bold;
-}
+        th {
+            background-color: #f7f9fc; /* Soft header background */
+            font-weight: bold;
+        }
 
-/* Button Styling */
-.btn {
-    padding: 10px 15px;
-    background-color: #3498db; /* Vibrant blue */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
+        /* Button Styling */
+        .btn {
+            padding: 10px 15px;
+            background-color: #3498db; /* Vibrant blue */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-.btn:hover {
-    background-color: #2980b9; /* Darker blue */
-    transform: scale(1.05); /* Subtle zoom on hover */
-}
+        .btn:hover {
+            background-color: #2980b9; /* Darker blue */
+            transform: scale(1.05); /* Subtle zoom on hover */
+        }
 
-.btn:active {
-    transform: scale(1); /* Return to normal */
-}
+        .btn:active {
+            transform: scale(1); /* Return to normal */
+        }
     </style>
 </head>
 <body>
@@ -104,7 +106,11 @@ th {
                     <td><?= htmlspecialchars($student['roll_no']) ?></td>
                     <td><?= htmlspecialchars($student['name']) ?></td>
                     <td>
-                    <button type="button" class="btn" onclick="window.open('feedback_generate.php?roll_no=<?= $student['roll_no'] ?>', '_blank')">Download Feedback</button>
+                        <form action="feedback_generate.php" method="GET">
+                            <input type="hidden" name="roll_no" value="<?= htmlspecialchars($student['roll_no']) ?>">
+                            <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>"> <!-- Add NBA logo value -->
+                            <button type="submit" class="btn">Download Feedback</button>
+                        </form>
                     </td>
                 </tr>
             <?php endwhile; ?>
@@ -112,4 +118,3 @@ th {
     </table>
 </body>
 </html>
-   
