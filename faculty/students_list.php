@@ -148,6 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
 </form>
 
+    <table>
+        <tr><th>Action</th></tr>
 <!-- Individual Forms for Each Student -->
 <?php foreach ($result as $row): ?>
 <form action="generate_pdf.php" method="post" style="margin: 10px 0;">
@@ -159,10 +161,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
     <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
     <input type="hidden" name="nba_logo" value="<?= htmlspecialchars($nba_logo) ?>">
-    <button type="submit" class="btn">Generate PDF for <?= htmlspecialchars($row['name']) ?></button>
+    <tr><td><button type="submit" class="btn">Generate PDF</button></td></tr>
+    <button type="submit" class="btn">Generate PDF</button>
 </form>
 <?php endforeach; ?>
-
+    </table>
 <script>
     // Handle "Select All" functionality
     const selectAllCheckbox = document.getElementById('select-all');
