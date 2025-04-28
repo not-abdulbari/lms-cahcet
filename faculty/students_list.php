@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     /* Table Styling */
     table {
-        width: 1000px; /* Adjusted to make the table occupy full width */
+        width: 800px; /* Adjusted to make the table occupy full width */
         max-width: 1500px; /* Optional: Set a max width for large screens */
         margin: 20px auto;
         border-collapse: collapse;
@@ -113,6 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     .adjacent-table{
         display: flex;
+        justify-content: center;
+        align-item: center;
+        
     }
 </style>
 <body>
