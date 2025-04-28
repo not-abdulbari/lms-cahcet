@@ -31,7 +31,7 @@ if (!function_exists('getCurrentDateTime')) {
         font-family: 'Roboto', sans-serif;
         background-color: #f4f6f9;
         color: #333;
-        font-size: 12px; /* Reduced font size for a more compact design */
+        font-size: 12px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -46,43 +46,30 @@ if (!function_exists('getCurrentDateTime')) {
         width: 100%;
     }
 
-    /* Header Image */
-    .header-image {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-    }
-
     /* Banner */
     .banner {
-        background-color: #4caf50; /* Lively green banner */
+        background-color: #4caf50;
         color: #ffffff;
-        padding: 15px; /* Reduced padding */
+        padding: 15px;
         text-align: center;
         border-bottom: 3px solid #ffffff;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
-    }
-
-    .banner:hover {
-        background-color: #66bb6a; /* Lighter green on hover */
     }
 
     /* Date-Time */
     .datetime {
-        font-size: 14px; /* Reduced font size */
+        font-size: 14px;
         margin-top: 5px;
         font-weight: 600;
         letter-spacing: 0.5px;
-        transition: all 0.3s ease;
     }
 
     /* Navigation */
     nav {
-        background-color: #3f51b5; /* Deep blue for navigation */
+        background-color: #3f51b5;
         text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         width: 100%;
+        position: relative;
     }
 
     nav ul {
@@ -96,37 +83,28 @@ if (!function_exists('getCurrentDateTime')) {
     }
 
     nav ul li {
-        margin-right: 12px; /* Reduced space between links */
-        position: relative; /* Needed for dropdown */
+        margin-right: 12px;
+        position: relative;
     }
 
     nav ul li a {
         color: #ffffff;
         text-decoration: none;
-        padding: 8px 12px; /* Reduced padding */
+        padding: 8px 12px;
         display: inline-block;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1px;
         border-radius: 4px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        font-size: 12px; /* Reduced font size */
+        font-size: 12px;
     }
 
     nav ul li a:hover {
-        background-color: #2c387e; /* Darker blue for hover effect */
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #2c387e;
     }
 
-    nav ul li a:active {
-        transform: scale(0.98);
-    }
-
-    /* Active Links */
     nav ul li a.active {
-        background-color: #2c387e; /* Active link color */
-        transform: scale(1.05);
+        background-color: #2c387e;
     }
 
     /* Dropdown Menu */
@@ -135,7 +113,6 @@ if (!function_exists('getCurrentDateTime')) {
         position: absolute;
         background-color: #3f51b5;
         min-width: 160px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         z-index: 1;
         border-radius: 4px;
         overflow: hidden;
@@ -146,7 +123,6 @@ if (!function_exists('getCurrentDateTime')) {
         padding: 12px 16px;
         text-decoration: none;
         display: block;
-        text-align: left;
     }
 
     .dropdown-content a:hover {
@@ -160,19 +136,13 @@ if (!function_exists('getCurrentDateTime')) {
     /* Hamburger Button */
     .hamburger {
         display: none;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 30px;
-        height: 20px;
         cursor: pointer;
-    }
-
-    .hamburger div {
-        background-color: #ffffff;
-        height: 4px;
-        width: 100%;
-        border-radius: 2px;
-        transition: all 0.3s ease;
+        color: #ffffff;
+        font-size: 24px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 8px;
+        left: 10px;
     }
 
     /* Mobile Navigation */
@@ -186,49 +156,41 @@ if (!function_exists('getCurrentDateTime')) {
         top: 50px;
         left: 0;
         z-index: 1000;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .mobile-nav.active {
         display: flex;
     }
 
-    nav ul.mobile {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    nav ul.mobile li {
-        margin: 8px 0;
-    }
-
     @media screen and (max-width: 768px) {
         .hamburger {
-            display: flex;
+            display: block;
         }
 
         nav ul {
             display: none;
         }
 
-        .mobile-nav {
+        .mobile-nav ul {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mobile-nav ul li {
+            margin: 8px 0;
         }
     }
 </style>
 </head>
 <body>
-
-    <!-- <div class="header-container">
-        <img src="logo.jpg" alt="College Logo" class="header-image">
-    </div>
-     -->
     <div class="banner">
         <h1>Welcome - C. Abdul Hakeem College of Engineering & Technology</h1>
         <div class="datetime" id="datetime"><?php echo getCurrentDateTime(); ?></div>
     </div>
 
     <nav>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
         <ul>
             <li><a href="home.php">Home</a></li>
             <li><a href="faculty_dashboard.php">Marks</a></li>
@@ -250,17 +212,28 @@ if (!function_exists('getCurrentDateTime')) {
                 </div>
             </li>
             <li><a href="student_login.php">STUDENT LOGIN</a></li>
-            <li><a href="logout.php" class="logout-link">Logout</a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
+        <div class="mobile-nav">
+            <ul>
+                <li><a href="home.php">Home</a></li>
+                <li><a href="faculty_dashboard.php">Marks</a></li>
+                <li><a href="attendance_dashboard.php">Attendance</a></li>
+                <li><a href="add_subject.php">Subject</a></li>
+                <li><a href="revaluation.php">REVALUATION</a></li>
+                <li><a href="report_selection.php">Reports</a></li>
+                <li><a href="student_login.php">STUDENT LOGIN</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </div>
     </nav>
+
     <script>
         function toggleMenu() {
             const mobileNav = document.querySelector('.mobile-nav');
             mobileNav.classList.toggle('active');
         }
-    </script>
 
-    <script>
         function updateDateTime() {
             const datetimeElement = document.getElementById("datetime");
             const now = new Date();
@@ -279,7 +252,6 @@ if (!function_exists('getCurrentDateTime')) {
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // Adding 'active' class to the current page link
         const links = document.querySelectorAll('nav ul li a');
         links.forEach(link => {
             if (window.location.href.includes(link.getAttribute('href'))) {
