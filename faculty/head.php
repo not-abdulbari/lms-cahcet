@@ -207,7 +207,8 @@ if (!function_exists('getCurrentDateTime')) {
                     <a href="generate_namelist.php">Students Namelist</a>
                     <a href="consolidated_marklist.php">Consolidated Marklist</a>
                     <a href="university_results.php">University Progress Report</a>
-                    <a href="parent_feedback.php">PARENT FEEDBACK</a>
+                    <a href="parent_feedback.php">PARENT FEEDBACK</a>counselling_report.php
+                    <a href="counselling_report.php">COUNSELLING REPORT</a>
                 </div>
             </li>
             <li><a href="student_login.php">STUDENT LOGIN</a></li>
