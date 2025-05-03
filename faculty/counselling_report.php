@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 .form-group label {
     display: flex;
     align-items: center;
+    margin-bottom: 15px;
     gap: 8px; /* Space between checkbox and text */
     font-weight: bold;
     color: #2c3e50;
