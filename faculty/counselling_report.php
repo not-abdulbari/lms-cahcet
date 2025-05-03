@@ -233,6 +233,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="faculty_code">Faculty Code:</label>
                 <input type="text" id="faculty_code" name="faculty_code" placeholder="Enter Faculty Code" required>
             </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="nba_logo" value="1"> Is NBA logo needed?
+                </label>
+            </div>
             
             <button type="submit" class="btn">Get Students</button>
         </form>
