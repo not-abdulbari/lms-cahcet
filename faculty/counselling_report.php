@@ -82,16 +82,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between checkbox and text */
+    font-weight: bold;
+    color: #2c3e50;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
+.form-group input[type="checkbox"] {
+    margin: 0;
+}
+
 
         select, input {
             width: 100%;
