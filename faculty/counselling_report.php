@@ -59,180 +59,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Counselling List</title>
     <style>
-        /* Base styling for body */
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* Body Styling */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #f7f9fc, #e4f1fe); /* Light gradient background */
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f7f9fc, #e4f1fe);
+            color: #333;
+        }
 
-/* Header Styling */
-h2 {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 28px;
-    margin: 40px 0;
-    font-weight: bold;
-}
+        .selection-form {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Form Styling */
-form {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
-    border-left: 5px solid #3498db;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-form:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
-/* Form Elements Styling */
-label {
-    margin-top: 15px;
-    display: block;
-    font-weight: bold;
-    color: #2c3e50;
-    font-size: 16px;
-}
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-select, button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-    transition: background-color 0.3s, border-color 0.3s;
-}
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-select:focus, button:focus {
-    outline: none;
-    border-color: #3498db;
-}
+        table, th, td {
+            border: 1px solid #ddd; 
+        }
 
-select:hover, button:hover {
-    background-color: #eaf2f8;
-}
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+            color: #2c3e50; 
+        }
 
-/* Button Styling */
-button {
-    background-color: #3498db;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        th {
+            background-color: #f7f9fc; 
+            font-weight: bold;
+        }
 
-button:hover {
-    background-color: #2980b9;
-    transform: scale(1.05);
-}
+        .btn {
+            padding: 10px 15px;
+            background-color: #3498db; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-button:active {
-    transform: scale(1);
-}
+        .btn:hover {
+            background-color: #2980b9; 
+            transform: scale(1.05); 
+        }
 
-/* Responsive Form Layout */
-.form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+        .btn:active {
+            transform: scale(1); 
+        }
 
-.form-row .form-group {
-    flex: 1;
-    min-width: 250px;
-}
-
-.form-row select {
-    width: 100%;
-}
-
-/* Specific Styling for Form-Group Labels */
-.form-row .form-group label {
-    font-weight: normal;
-    font-size: 16px;
-}
-
-/* Interactive Select Dropdowns */
-select {
-    background-color: #f9f9f9;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-select option:hover {
-    background-color: #f1f1f1;
-}
-
-/* Button Hover for Different States */
-button:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-/* Mobile Responsive Styling */
-@media (max-width: 768px) {
-    form {
-        padding: 20px;
-    }
-
-    .form-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .form-row .form-group {
-        width: 100%;
-    }
-}
-
-/* Smooth Input Animations */
-form {
-    animation: fadeIn 1s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Placeholder Text Color */
-input::placeholder,
-select::placeholder {
-    color: #bbb;
-}
-
-/* Gradient Background for the Page */
-body {
-    background: linear-gradient(135deg, #f7f9fc, #e4f1fe);
-}
-
-
-
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
@@ -363,7 +281,7 @@ body {
             </tr>
         <?php endif; ?>
     </table>
-    <div style="text-align: center ; margin: 20px;">
+    <div style="text-align: center; margin: 20px;">
         <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn">Back to Selection</a>
     </div>
     <?php endif; ?>
