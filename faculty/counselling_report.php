@@ -86,13 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-    gap: 8px; /* Space between checkbox and text */
     font-weight: bold;
     color: #2c3e50;
 }
 
 .form-group input[type="checkbox"] {
-    align-items: center;
+    align-items: left;
     margin: 0;
 }
 
