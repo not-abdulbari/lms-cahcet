@@ -281,7 +281,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
         <?php endif; ?>
     </table>
-    <div style="text-align: center; margin: 20px;">
+    <div style="text-align: ; margin: 20px;">
         <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn">Back to Selection</a>
     </div>
     <?php endif; ?>
