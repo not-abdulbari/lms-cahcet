@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 .form-group input[type="checkbox"] {
+    align-items: center;
     margin: 0;
 }
 
