@@ -82,15 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .form-group label {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* Adjust spacing between checkbox and text */
-}
-
-.form-group input[type="checkbox"] {
-    margin: 0;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
         label {
             display: block;
