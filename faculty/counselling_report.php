@@ -83,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 .form-group label {
-    display: flex;
     align-items: center;
     margin-bottom: 15px;
     font-weight: bold;
