@@ -36,17 +36,19 @@ $exam_types_result = $conn->query($exam_types_sql);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Process form data
-    $branch = $_POST['branch'];
-    $year = $_POST['year'];
-    $year_roman = $_POST['year_roman'];
-    $section = $_POST['section'];
-    $batch = $_POST['batch'];
-    $semester = $_POST['semester'];
-    $exam = $_POST['exam'];
-    $faculty_code = $_POST['faculty_code'];
+    $_SESSION['form_data'] = [
+        'branch' => $_POST['branch'],
+        'year' => $_POST['year'],
+        'year_roman' => $_POST['year_roman'],
+        'section' => $_POST['section'],
+        'batch' => $_POST['batch'],
+        'semester' => $_POST['semester'],
+        'exam' => $_POST['exam'],
+        'faculty_code' => $_POST['faculty_code']
+    ];
 
-    // Redirect to generate_counselling_list.php with the form data
-    header("Location: generate_counselling_list.php?branch=$branch&year=$year&year_roman=$year_roman&section=$section&batch=$batch&semester=$semester&exam=$exam&faculty_code=$faculty_code");
+    // Redirect to generate_counselling_list.php
+    header("Location: generate_counselling_list.php");
     exit;
 }
 ?>
