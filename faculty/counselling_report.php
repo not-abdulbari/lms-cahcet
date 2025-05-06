@@ -1,4 +1,7 @@
 <?php
+// Start output buffering to prevent "headers already sent" issues
+ob_start();
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,6 +10,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: ../index.php');
     exit;
 }
+
 include 'head.php';
 include 'db_connect.php'; // Include your database connection file
 
@@ -30,10 +34,8 @@ $semesters_result = $conn->query($semesters_sql);
 $exam_types_sql = "SELECT DISTINCT exam FROM marks";
 $exam_types_result = $conn->query($exam_types_sql);
 
-$showForm = true;
-$result = null;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Process form data
     $branch = $_POST['branch'];
     $year = $_POST['year'];
     $year_roman = $_POST['year_roman'];
@@ -43,13 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exam = $_POST['exam'];
     $faculty_code = $_POST['faculty_code'];
 
-    // Fetch students based on criteria
-    $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $branch, $year, $section);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $showForm = false;
+    // Redirect to generate_counselling_list.php with the form data
+    header("Location: generate_counselling_list.php?branch=$branch&year=$year&year_roman=$year_roman&section=$section&batch=$batch&semester=$semester&exam=$exam&faculty_code=$faculty_code");
+    exit;
 }
 ?>
 
@@ -57,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Counselling List</title>
+    <title>Counselling Report</title>
     <style>
         /* General Reset */
         * {
@@ -82,18 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-.form-group label {
-    align-items: center;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: #2c3e50;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-.form-group input[type="checkbox"] {
-    align-items: left;
-    margin: 0;
-}
-
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
         select, input {
             width: 100%;
@@ -101,32 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
-        }
-
-        table {
-            width: 90%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            background: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd; 
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            font-size: 16px;
-            color: #2c3e50; 
-        }
-
-        th {
-            background-color: #f7f9fc; 
-            font-weight: bold;
         }
 
         .btn {
@@ -156,8 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <?php if ($showForm): ?>
-    <!-- Selection Form -->
     <div class="selection-form">
         <h2>Select Class Details</h2>
         <form method="POST" action="">
@@ -235,63 +203,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="faculty_code">Faculty Code:</label>
                 <input type="text" id="faculty_code" name="faculty_code" placeholder="Enter Faculty Code" required>
             </div>
-
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="nba_logo" value="1"> Is NBA logo needed?
-                </label>
-            </div>
             
-            <button type="submit" class="btn">Get Students</button>
+            <button type="submit" class="btn">Submit</button>
         </form>
     </div>
-    <?php else: ?>
-    <!-- Students Table -->
-    <h2>Counselling List</h2>
-    <table>
-        <tr>
-            <th>Roll No</th>
-            <th>Name</th>
-            <th>Reg No</th>
-            <th>Action</th>
-        </tr>
-        <?php if ($result && $result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['roll_no']) ?></td>
-                <td><?= htmlspecialchars($row['name']) ?></td>
-                <td><?= htmlspecialchars($row['reg_no']) ?></td>
-                <td>
-                    <form action="generate_counselling_report.php" method="post" style="margin: 0;">
-                        <input type="hidden" name="roll_no" value="<?= htmlspecialchars($row['roll_no']) ?>">
-                        <input type="hidden" name="branch" value="<?= htmlspecialchars($branch) ?>">
-                        <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
-                        <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
-                        <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-                        <input type="hidden" name="batch" value="<?= htmlspecialchars($batch) ?>">
-                        <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-                        <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
-                        <input type="hidden" name="faculty_code" value="<?= htmlspecialchars($faculty_code) ?>">
-                        <button type="submit" class="btn">Generate Counselling Report</button>
-                    </form>
-                </td>
-            </tr>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="4" style="text-align: center;">No students found for the selected criteria.</td>
-            </tr>
-        <?php endif; ?>
-    </table>
-    <div style="text-align: center; margin: 20px;">
-        <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn">Back to Selection</a>
-    </div>
-    <?php endif; ?>
 </body>
 </html>
 
 <?php
+// Close database connection
 if (isset($conn)) {
     $conn->close();
 }
+
+// Flush output buffer
+ob_end_flush();
 ?>
