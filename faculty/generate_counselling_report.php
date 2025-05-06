@@ -210,13 +210,13 @@ $pdf->Cell(80, 6, $batch, 0, 1);
 $pdf->SetFont('Times', 'B', 10);
 $pdf->Cell(0, 6, '1. Reason for Counseling:', 0, 1);
 $pdf->SetFont('Times', '', 10);
-$pdf->Cell(10, 6, '[ ]', 0, 0);
+$pdf->Cell(10, 6, '☐', 0, 0);
 $pdf->Cell(0, 6, 'Lack of Attendance / Late Coming', 0, 1);
-$pdf->Cell(10, 6, '[ ]', 0, 0);
+$pdf->Cell(10, 6, '☐', 0, 0);
 $pdf->Cell(0, 6, 'Poor Performance in CAT / Model Examination / University Examination', 0, 1);
-$pdf->Cell(10, 6, '[ ]', 0, 0);
+$pdf->Cell(10, 6, '☐', 0, 0);
 $pdf->Cell(0, 6, 'Indiscipline', 0, 1);
-$pdf->Cell(10, 6, '[ ]', 0, 0);
+$pdf->Cell(10, 6, '☐', 0, 0);
 $pdf->Cell(0, 6, 'Others Specify', 0, 1);
 
 // Academic Performance
