@@ -128,7 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['roll_no'])) {
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <title>CAHCET LMS - Login</title>
+    <title>CAHCET Learning Management System - Secure Login</title>
+    <meta name="description" content="Login to CAHCET LMS - Secure access for institutions and students to manage coursework, announcements, and attendance.">
+    <meta name="keywords" content="CAHCET, LMS, Learning Management System, student login, institution login, secure login">
+
     <style>
         /* Modern Professional Theme */
 body {
@@ -283,7 +286,7 @@ input[type="password"]::-ms-clear {
 </head>
 <body>
     <div class="header">
-        <img src="assets/789asdfkl.webp" alt="Sunridge University LMS Portal Image">
+        <img src="assets/789asdfkl.webp" alt="CAHCET Learning Management System Portal">
     </div>
     <div class="banner">
         <marquee behavior="scroll" direction="left">
