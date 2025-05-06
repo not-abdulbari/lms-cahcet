@@ -7,30 +7,25 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: ../index.php');
     exit;
 }
-include 'head.php';
-include 'db_connect.php'; // Include your database connection file
+include 'head.php'; // Ensure no output or whitespace exists in this file
+include 'db_connect.php'; // Ensure no output or whitespace exists in this file
 
-// Check if we need to show the selection form
-$showForm = true;
-$result = null;
+// Get form data from query parameters
+$branch = $_GET['branch'];
+$year = $_GET['year'];
+$year_roman = $_GET['year_roman'];
+$section = $_GET['section'];
+$batch = $_GET['batch'];
+$semester = $_GET['semester'];
+$exam = $_GET['exam'];
+$faculty_code = $_GET['faculty_code'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $branch = $_POST['branch'];
-    $year = $_POST['year'];
-    $year_roman = isset($_POST['year_roman']) ? $_POST['year_roman'] : '';
-    $section = $_POST['section'];
-    $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
-    $batch = isset($_POST['batch']) ? $_POST['batch'] : '';
-    $faculty_code = isset($_POST['faculty_code']) ? $_POST['faculty_code'] : '';
-
-    // Fetch students based on criteria
-    $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $branch, $year, $section);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $showForm = false;
-}
+// Fetch students based on criteria
+$sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sss", $branch, $year, $section);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -46,46 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-sizing: border-box;
         }
 
-        /* Body Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f7f9fc, #e4f1fe);
             color: #333;
         }
 
-        /* Form Styling */
-        .selection-form {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        /* Table Styling */
         table {
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
@@ -110,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: bold;
         }
 
-        /* Button Styling */
         .btn {
             padding: 10px 15px;
             background-color: #3498db; 
@@ -138,68 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <?php if ($showForm): ?>
-    <!-- Selection Form -->
-    <div class="selection-form">
-        <h2>Select Class Details</h2>
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="branch">Branch:</label>
-                <select id="branch" name="branch" required>
-                    <option value="">Select Branch</option>
-                    <option value="CSE">Computer Science and Engineering</option>
-                    <option value="ECE">Electronics and Communication Engineering</option>
-                    <option value="EEE">Electrical and Electronics Engineering</option>
-                    <option value="MECH">Mechanical Engineering</option>
-                    <option value="CIVIL">Civil Engineering</option>
-                    <option value="IT">Information Technology</option>
-                    <option value="AIDS">Artificial Intelligence & Data Science</option>
-                    <option value="MBA">Master of Business Administration</option>
-                    <option value="MCA">Master of Computer Applications</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="year">Year:</label>
-                <select id="year" name="year" required>
-                    <option value="">Select Year</option>
-                    <option value="1">I</option>
-                    <option value="2">II</option>
-                    <option value="3">III</option>
-                    <option value="4">IV</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="section">Section:</label>
-                <select id="section" name="section" required>
-                    <option value="">Select Section</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="semester">Semester:</label>
-                <select id="semester" name="semester">
-                    <option value="">Select Semester</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </div>
-            
-            <button type="submit" class="btn">Get Students</button>
-        </form>
-    </div>
-    <?php else: ?>
-    <!-- Students Table -->
     <h2>Counselling List</h2>
     <table>
         <tr>
@@ -221,7 +121,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="hidden" name="year" value="<?= htmlspecialchars($year) ?>">
                         <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
                         <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
-                        <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>"><input type="hidden" name="batch" value="<?= htmlspecialchars($batch) ?>">
+                        <input type="hidden" name="batch" value="<?= htmlspecialchars($batch) ?>">
+                        <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+                        <input type="hidden" name="exam" value="<?= htmlspecialchars($exam) ?>">
                         <input type="hidden" name="faculty_code" value="<?= htmlspecialchars($faculty_code) ?>">
                         <button type="submit" class="btn">Generate Counselling Report</button>
                     </form>
@@ -235,9 +137,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
     </table>
     <div style="text-align: center; margin: 20px;">
-        <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn">Back to Selection</a>
+        <a href="counselling_report.php" class="btn">Back to Selection</a>
     </div>
-    <?php endif; ?>
 </body>
 </html>
 
