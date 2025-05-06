@@ -10,15 +10,22 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 include 'head.php'; // Ensure no output or whitespace exists in this file
 include 'db_connect.php'; // Ensure no output or whitespace exists in this file
 
-// Get form data from query parameters
-$branch = $_GET['branch'];
-$year = $_GET['year'];
-$year_roman = $_GET['year_roman'];
-$section = $_GET['section'];
-$batch = $_GET['batch'];
-$semester = $_GET['semester'];
-$exam = $_GET['exam'];
-$faculty_code = $_GET['faculty_code'];
+// Get form data from session
+$form_data = $_SESSION['form_data'] ?? null;
+
+if (!$form_data) {
+    header('Location: counselling_report.php');
+    exit;
+}
+
+$branch = $form_data['branch'];
+$year = $form_data['year'];
+$year_roman = $form_data['year_roman'];
+$section = $form_data['section'];
+$batch = $form_data['batch'];
+$semester = $form_data['semester'];
+$exam = $form_data['exam'];
+$faculty_code = $form_data['faculty_code'];
 
 // Fetch students based on criteria
 $sql = "SELECT roll_no, name, reg_no FROM students WHERE branch = ? AND year = ? AND section = ?";
