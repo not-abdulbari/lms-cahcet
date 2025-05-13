@@ -205,7 +205,7 @@ if (!function_exists('getCurrentDateTime')) {
                     <a href="class_performance.php">Consolidated Exam Result Analysis</a>
                     <a href="capa_select.php">CAPA Form</a>
                     <a href="generate_namelist.php">Students Namelist</a>
-                    <a href="consolidated_marklist1.php">Consolidated Marklist</a>
+                    <a href="consolidated_marklist.php">Consolidated Marklist</a>
                     <a href="university_results.php">University Progress Report</a>
                     <a href="parent_feedback.php">PARENT FEEDBACK</a>
                     <a href="counselling_report.php">COUNSELLING REPORT</a>
