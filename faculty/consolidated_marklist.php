@@ -224,7 +224,7 @@ body {
 <body>
     <div class="container">
         <h2>Consolidated Markslist</h2>
-        <form id="marksheetForm" method="post" action="generate_consolidated_marklist.php">
+        <form id="marksheetForm" method="post" action="generate_consolidated_marklist1.php">
             <div class="dropdown-group">
                 <label>Branch:</label>
                 <select name="branch" id="branch" required>
