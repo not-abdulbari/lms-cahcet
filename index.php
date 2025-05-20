@@ -325,9 +325,16 @@ input[type="password"]::-ms-clear {
         </div>
         <div class="notice_board">
             <h2>Notice Board</h2>
-                <p style="color: red; text-align: justify;">
-                    Students who are yet to pay their college and exam fees are hereby informed to complete the payment on or before 23/05/2025. Failure to do so will result in disqualification from appearing in the practical examinations. Kindly note that the college office will remain closed on 24/05/2025, so all payments must be made by 23/05/2025 without exception.
-                </p>
+            <?php
+                $noticeFile = __DIR__ . '/notice/notice_board.txt';
+                $noticeContent = "No current notices.";
+                if (file_exists($noticeFile)) {
+                    $noticeContent = nl2br(htmlspecialchars(file_get_contents($noticeFile)));
+                }
+            ?>
+            <p style="color: red; text-align: justify;">
+                <?= $noticeContent ?>
+            </p>
         </div>
     </div>
     <script>
