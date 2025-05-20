@@ -1,7 +1,5 @@
 <?php
 session_start();
-include 'head.php';
-
 // Only allow access if logged in as faculty/staff (institution login)
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // Not logged in, redirect to login page
@@ -9,6 +7,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
+// Only allow access if user is 'admin'
+if (!isset($_SESSION['username']) || $_SESSION['username'] !== 'admin') {
+    // Not admin, show error message
+    echo "<!DOCTYPE html><html><head><title>Access Denied</title></head><body>
+    <h2 style='color:red;'>Access Denied</h2>
+    <p>Only the admin can access this page.</p>
+    <a href='../index.php'>Go back to Home</a>
+    </body></html>";
+    exit();
+}
 // Path to the notice file (you can change the storage as needed)
 $noticeFile = __DIR__ . '/notice_board.txt';
 
