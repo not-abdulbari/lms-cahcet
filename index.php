@@ -325,7 +325,9 @@ input[type="password"]::-ms-clear {
         </div>
         <div class="notice_board">
             <h2>Notice Board</h2>
-                <p>Students who are yet to pay their college and exam fees are hereby informed to complete the payment on or before 23/05/2025. Failure to do so will result in disqualification from appearing in the practical examinations. Kindly note that the college office will remain closed on 24/05/2025, so all payments must be made by 23/05/2025 without exception.</p>
+                <p style="color: red; text-align: justify;">
+                    Students who are yet to pay their college and exam fees are hereby informed to complete the payment on or before 23/05/2025. Failure to do so will result in disqualification from appearing in the practical examinations. Kindly note that the college office will remain closed on 24/05/2025, so all payments must be made by 23/05/2025 without exception.
+                </p>
         </div>
     </div>
     <script>
