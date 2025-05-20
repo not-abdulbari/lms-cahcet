@@ -326,7 +326,7 @@ input[type="password"]::-ms-clear {
         <div class="notice_board">
             <h2>Notice Board</h2>
             <?php
-                $noticeFile = __DIR__ . '/notice/notice_board.txt';
+                $noticeFile = __DIR__ . '/faculty/notice_board.txt';
                 $noticeContent = "No current notices.";
                 if (file_exists($noticeFile)) {
                     $noticeContent = nl2br(htmlspecialchars(file_get_contents($noticeFile)));
