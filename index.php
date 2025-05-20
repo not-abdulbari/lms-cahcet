@@ -325,13 +325,7 @@ input[type="password"]::-ms-clear {
         </div>
         <div class="notice_board">
             <h2>Notice Board</h2>
-            <marquee behavior="scroll" direction="left" scrollamount="3">
-                <p>Important: Faculty and Student Login Details are available on the portal.</p>
-                <p>Note: The system will be down for maintenance from 2:00 AM to 4:00 AM tomorrow.</p>
-                <p>Reminder: Mark your attendance before the deadline to avoid penalties.</p>
-                <p>New: Updated student portal is now live with improved navigation.</p>
-                <p>Announcement: End semester exams schedule has been published.</p>
-            </marquee>
+                <p>Students who are yet to pay their college and exam fees are hereby informed to complete the payment on or before 23/05/2025. Failure to do so will result in disqualification from appearing in the practical examinations. Kindly note that the college office will remain closed on 24/05/2025, so all payments must be made by 23/05/2025 without exception.</p>
         </div>
     </div>
     <script>
