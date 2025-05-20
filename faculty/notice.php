@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'head.php';
 
 // Only allow access if logged in as faculty/staff (institution login)
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
