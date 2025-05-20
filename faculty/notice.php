@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 }
 
 // Path to the notice file (you can change the storage as needed)
-$noticeFile = __DIR__ . '../notice/notice_board.txt';
+$noticeFile = __DIR__ . '/notice_board.txt';
 
 // Handle notice update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notice'])) {
