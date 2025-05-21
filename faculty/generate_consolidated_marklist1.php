@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body { margin: 14px; font-family: "Times New Roman"; font-size: 14px; }
         .no-print { display: none; }
         table { width: 100%; border-collapse: collapse; margin-top: 14px; }
-        th, td { border: 1px solid #000; padding: 1.5px; text-align: center; font-size: 12px; } /* Changed to center alignment */
+        th, td { border: 1px solid #000; padding: 2px; text-align: center; font-size: 12px; } /* Changed to center alignment */
         .header { text-align: center; display: flex; align-items: center; justify-content: center; }
         h3 { margin-bottom: -10px; }
         .header img { margin-top: 10px; height: 90px; }
@@ -183,7 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .page-break { page-break-before: always; }
         .center-text { text-align: center; }
         .report-data { margin-top: 20px; }
-        .name-row{text-align: left; padding-left: 5px; width:180px;}
     }
     @media screen {
         body { margin: 14px; font-family: "Times New Roman"; font-size: 14px; }
@@ -259,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <tr>
                         <td><?= $i++ ?></td>
                         <td><?= htmlspecialchars($roll_no) ?></td>
-                        <td class="name-row"><?= htmlspecialchars($student['name']) ?></td>
+                        <td><?= htmlspecialchars($student['name']) ?></td>
                         <?php
                         $subjects->data_seek(0); // Reset pointer to the beginning
                         while ($subject = $subjects->fetch_assoc()) {
@@ -280,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Subject-wise Analysis Table matching the uploaded image - vertical format -->
             <table>
                 <tr>
-                    <th style="width: 300px;">Total No. of Students</th>
+                    <th>Total No. of Students</th>
                     <?php foreach ($reportData as $data) : ?>
                         <td><?= htmlspecialchars($data['totalStudents']) ?></td>
                     <?php endforeach; ?>
