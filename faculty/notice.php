@@ -84,7 +84,7 @@ if (file_exists($noticeFile)) {
             <textarea name="notice" id="notice" required><?= htmlspecialchars($currentNotice) ?></textarea><br>
             <button type="submit">Update Notice</button>
         </form>
-        <p style="margin-top:30px;"><a href="../index.php">⬅️ Go back to Home</a></p>
+        <p style="margin-top:30px;"><a href="home.php">⬅️ Go back to Home</a></p>
     </div>
 </body>
 </html>
