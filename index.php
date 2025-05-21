@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
     $stmt->fetch();
     if ($input_hashed_password === $stored_hashed_password) {
         $_SESSION['logged_in'] = true;
+        $_SESSION['username'] = $input_username;
         $stmt->close();
         $conn->close();
         echo json_encode(['status' => 'success', 'redirect' => 'faculty/home.php']);
