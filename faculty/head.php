@@ -197,21 +197,30 @@ if (!function_exists('getCurrentDateTime')) {
             <li><a href="add_subject.php">Subject</a></li>
             <li><a href="revaluation.php">REVALUATION</a></li>
             <li class="dropdown">
-                <a href="javascript:void(0)">Reports</a>
+                <a href="javascript:void(0)">Institution Reports</a>
                 <div class="dropdown-content">
                     <a href="report_selection.php">Subjectwise Result Analysis</a>
                     <a href="generate_marksheet.php">MarkList</a>
-                    <a href="progress_prelims.php">Internal Exam Progress Report</a>
                     <a href="class_performance.php">Consolidated Exam Result Analysis</a>
                     <a href="capa_select.php">CAPA Form</a>
                     <a href="generate_namelist.php">Students Namelist</a>
-                    <a href="consolidated_marklist.php">Consolidated Marklist</a>
-                    <a href="university_results.php">University Progress Report</a>
-                    <a href="parent_feedback.php">PARENT FEEDBACK</a>
-                    <a href="counselling_report.php">COUNSELLING REPORT</a>
+                    <a href="consolidated_marklist.php">Consolidated Marklist</a>                 
                 </div>
             </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)">Student Reports</a>
+                <div class="dropdown-content">
+                    <a href="progress_prelims.php">Internal Exam Progress Report</a>
+                    <a href="university_results.php">University Progress Report</a>
+                    <a href="counselling_report.php">COUNSELLING REPORT</a>
+                    <a href="nodue_form.php">NO DUE FORM</a>
+                    <a href="parent_feedback.php">PARENT FEEDBACK</a>
+                </div>
+            </li>
+
             <li><a href="student_login.php">STUDENT LOGIN</a></li>
+            <li><a href="notice
+                    .php">ADMIN</a></li>
             <li><a href="logout.php" class="logout-link">Logout</a></li>
         </ul>
     </nav>
