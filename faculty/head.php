@@ -219,8 +219,7 @@ if (!function_exists('getCurrentDateTime')) {
             </li>
 
             <li><a href="student_login.php">STUDENT LOGIN</a></li>
-            <li><a href="notice
-                    .php">ADMIN</a></li>
+            <li><a href="notice.php">ADMIN</a></li>
             <li><a href="logout.php" class="logout-link">Logout</a></li>
         </ul>
     </nav>
