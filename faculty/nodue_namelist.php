@@ -6,7 +6,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit;
 }
 include 'head.php';
-include 'db_connect.php'; // Include your database connection file
+include 'db_connect.php';
 
 // Check if form was submitted
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -24,6 +24,9 @@ $selected_subjects = $_POST['selected_subjects'] ?? [];
 $faculty = $_POST['faculty'] ?? [];
 $subject_names = $_POST['subject_names'] ?? [];
 $faculty_names = $_POST['faculty_names'] ?? [];
+
+// For department table extra rows
+$extra_dept_rows = isset($_POST['extra_dept_rows']) ? intval($_POST['extra_dept_rows']) : 0;
 
 // Validate that required fields are present
 if (empty($branch) || empty($year) || empty($year_roman) || empty($section) || empty($semester) || empty($selected_subjects)) {
@@ -225,7 +228,7 @@ if ($students_result->num_rows == 0) {
         <input type="hidden" name="year_roman" value="<?= htmlspecialchars($year_roman) ?>">
         <input type="hidden" name="section" value="<?= htmlspecialchars($section) ?>">
         <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
-        
+
         <?php foreach ($selected_subjects as $subject_code): ?>
             <input type="hidden" name="selected_subjects[]" value="<?= htmlspecialchars($subject_code) ?>">
             <?php if (isset($subject_names[$subject_code])): ?>
@@ -238,7 +241,14 @@ if ($students_result->num_rows == 0) {
                 <input type="hidden" name="faculty_names[<?= htmlspecialchars($subject_code) ?>]" value="<?= htmlspecialchars($faculty_names[$subject_code]) ?>">
             <?php endif; ?>
         <?php endforeach; ?>
-        
+
+        <!-- Department Table Extra Rows Option -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <input type="checkbox" id="add-more-dept-rows" name="add_more_dept_rows" value="1" <?php if ($extra_dept_rows > 0) echo 'checked'; ?> onchange="toggleDeptRowsInput()">
+            <label for="add-more-dept-rows" class="check-label">Add more rows to department table</label>
+            <input type="number" id="extra-dept-rows" name="extra_dept_rows" min="1" max="10" style="width: 75px; <?php if ($extra_dept_rows > 0) { echo 'display:inline-block;'; } else { echo 'display:none;'; } ?>" placeholder="No. of rows" value="<?= $extra_dept_rows > 0 ? $extra_dept_rows : '' ?>">
+        </div>
+
         <div style="display: flex; justify-content: space-between; width: 80%; margin: 20px auto;">
             <div>
                 <input type="checkbox" id="select-all">
@@ -295,14 +305,32 @@ if ($students_result->num_rows == 0) {
             });
         });
 
-        // Handle Generate for an individual student
+        // Show/hide extra rows input
+        function toggleDeptRowsInput() {
+            const cb = document.getElementById('add-more-dept-rows');
+            const input = document.getElementById('extra-dept-rows');
+            input.style.display = cb.checked ? 'inline-block' : 'none';
+            if (!cb.checked) input.value = '';
+        }
+
+        // Form validation for extra rows
+        $('#no-due-form').submit(function(e) {
+            if ($('#add-more-dept-rows').is(':checked')) {
+                if (!$('#extra-dept-rows').val() || parseInt($('#extra-dept-rows').val()) < 1) {
+                    alert('Please enter the number of extra department rows.');
+                    $('#extra-dept-rows').focus();
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        // Ensure extra_dept_rows is sent in single PDF generation too
         const generateSingleButtons = document.querySelectorAll('.generate-single-btn');
         generateSingleButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const rollNo = button.dataset.rollNo;
                 const regNo = button.dataset.regNo;
-                
-                // Create a form dynamically
                 const form = document.createElement('form');
                 form.action = 'nodue_generate_pdf.php';
                 form.method = 'post';
@@ -311,7 +339,6 @@ if ($students_result->num_rows == 0) {
                 // Add all the hidden inputs from the main form
                 const mainForm = document.getElementById('no-due-form');
                 const hiddenInputs = mainForm.querySelectorAll('input[type="hidden"]');
-                
                 hiddenInputs.forEach(input => {
                     const newInput = document.createElement('input');
                     newInput.type = 'hidden';
@@ -332,6 +359,26 @@ if ($students_result->num_rows == 0) {
                 regInput.name = 'reg_no';
                 regInput.value = regNo;
                 form.appendChild(regInput);
+
+                // Add extra_dept_rows input if present
+                const extraDeptRowsInput = mainForm.querySelector('input[name="extra_dept_rows"]');
+                if (extraDeptRowsInput && extraDeptRowsInput.value) {
+                    const extra = document.createElement('input');
+                    extra.type = 'hidden';
+                    extra.name = 'extra_dept_rows';
+                    extra.value = extraDeptRowsInput.value;
+                    form.appendChild(extra);
+                }
+
+                // Add add_more_dept_rows if checked
+                const addMoreDeptCheckbox = mainForm.querySelector('input[name="add_more_dept_rows"]');
+                if (addMoreDeptCheckbox && addMoreDeptCheckbox.checked) {
+                    const addMore = document.createElement('input');
+                    addMore.type = 'hidden';
+                    addMore.name = 'add_more_dept_rows';
+                    addMore.value = '1';
+                    form.appendChild(addMore);
+                }
 
                 // Append form to body and submit it
                 document.body.appendChild(form);
