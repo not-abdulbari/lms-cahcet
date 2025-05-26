@@ -358,7 +358,7 @@ while ($row = $result->fetch_assoc()) {
             ''
         ], $other_depts_row_height);
     }
-    $pdf->Ln(10);
+    $pdf->Ln(8);
     $pdf->SetFont('Times', 'B', 10);
     $pdf->Cell(47.5, 10, 'CLASS INCHARGE', 0, 0, 'C');
     $pdf->Cell(47.5, 10, 'ASSISTANT MANAGER', 0, 0, 'C');
@@ -366,7 +366,7 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(47.5, 10, 'HOD', 0, 1, 'C');
 
     // BELOW LINE: VICE PRINCIPAL, PRINCIPAL
-    $pdf->Ln(10);
+    $pdf->Ln(6);
     $pdf->Cell(95, 10, 'VICE PRINCIPAL', 0, 0, 'C');
     $pdf->Cell(95, 10, 'PRINCIPAL', 0, 1, 'C');
 }
