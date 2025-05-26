@@ -314,7 +314,7 @@ while ($row = $result->fetch_assoc()) {
         } else {
             $pdf->SetFont('Times', '', $regular_font_size);
         }
-        $attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
+       // $attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
         $pdf->Row([
             $sno,
             $dept[0],
