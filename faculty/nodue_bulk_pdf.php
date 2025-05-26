@@ -317,7 +317,8 @@ while ($row = $result->fetch_assoc()) {
         } else {
             $pdf->SetFont('Times', '', $regular_font_size);
         }
-       // $attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
+        // Fix: Set $attendance_value only for Attendance Percentage row
+        //$attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
         $pdf->Row([
             $sno,
             $dept[0],
@@ -363,11 +364,11 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(47.5, 10, 'ASSISTANT MANAGER', 0, 0, 'C');
     $pdf->Cell(47.5, 10, 'MANAGER', 0, 0, 'C');
     $pdf->Cell(47.5, 10, 'HOD', 0, 1, 'C');
-}
-    $pdf->Ln(8);
-    $pdf->SetFont('Times', 'B', 10);
-    $pdf->Cell(47.5, 10, 'VICE PRINCIPAL', 0, 0, 'C');
-    $pdf->Cell(47.5, 10, 'PRINCIPAL', 0, 0, 'C');
+
+    // BELOW LINE: VICE PRINCIPAL, PRINCIPAL
+    $pdf->Ln(4);
+    $pdf->Cell(95, 10, 'VICE PRINCIPAL', 0, 0, 'C');
+    $pdf->Cell(95, 10, 'PRINCIPAL', 0, 1, 'C');
 }
 
 $stmt->close();
