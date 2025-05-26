@@ -361,7 +361,7 @@ function generatePDF($roll_no, $reg_no, $extra_dept_rows = 0) {
         } else {
             $pdf->SetFont('Times', '', $regular_font_size);
         }
-        $attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
+        //$attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
         $pdf->Row([
             $sno,
             $dept[0],
