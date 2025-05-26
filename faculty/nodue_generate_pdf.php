@@ -207,7 +207,7 @@ function generatePDF($roll_no, $reg_no, $extra_dept_rows = 0) {
     $pdf->Cell(0, 6, 'DEPARTMENT OF ' . strtoupper($branch), 0, 1, 'C');
     $semester_type = ($semester % 2 === 0) ? 'EVEN' : 'ODD';
     $pdf->Cell(0, 6, 'HALL TICKET NO-DUE FORM FOR ACADEMIC YEAR: 2024-2025 (' . $semester_type . ')', 0, 1, 'C');
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->SetFont('Times', 'B', 10);
     $pdf->Cell(40, 6, 'NAME', 0, 0);
     $pdf->Cell(5, 6, ':', 0, 0);
@@ -302,87 +302,87 @@ function generatePDF($roll_no, $reg_no, $extra_dept_rows = 0) {
     $pdf->Ln(5);
 
     // TABLE 2: Practical subjects table
-    if (!empty($practical_subjects)) {
-        $pdf->SetWidths([10, 75, 45, 35, 25]);
-        $pdf->SetAligns(['C', 'L', 'L', 'C', 'C']);
-        $pdf->SetFont('Times', 'B', 10);
-        $pdf->Cell(10, 9, 'S.No.', 1, 0, 'C');
-        $pdf->Cell(75, 9, 'Practical Subjects', 1, 0, 'C');
-        $pdf->Cell(45, 9, 'Staff In-charge', 1, 0, 'C');
-        $pdf->Cell(35, 9, '', 1, 0, 'C');
-        $pdf->Cell(25, 9, 'Signature', 1, 1, 'C');
-        $pdf->SetFont('Times', '', 9);
-        $practical_count = 0;
-        for ($i = 0; $i < count($practical_subjects); $i++) {
-            $subject = $practical_subjects[$i];
-            $practical_count++;
-            $subject_text = $subject['code'] . ' - ' . $subject['name'];
-            $pdf->Row([
-                $practical_count,
-                $subject_text,
-                $subject['faculty'],
-                '',
-                ''
-            ], $row_height);
-        }
-    }
-
-    // Department Table
-    $y_position = $pdf->GetY();
-    $page_height = 297;
-    $bottom_margin = 15;
-    $space_left = $page_height - $y_position - $bottom_margin;
-    if ($space_left < 50) {
-        $pdf->AddPage();
-    } else {
-        $pdf->Ln(5);
-    }
-
-    $other_depts_row_height = 6.8;
-
-    $pdf->SetFont('Times', '', 10);
-    $other_departments = [
-        1 => ['Central Library', 'Mr.A. Fahim Shariff'],
-        2 => ['Department Library', ''],
-        3 => ['Attendance Percentage', 'Counselor'],
-        4 => ['Physical Director', 'Dr.S.I.Aslam'],
-        5 => ['Department', 'Head of the Department'],
-        6 => ['Others', 'Mr.K.Md.Saleem (Reception)']
-    ];
-
-    $regular_font_size = 10;
-    $small_font_size = 8.5;
-    $pdf->SetWidths([10, 75, 40, 40, 25]);
+if (!empty($practical_subjects)) {
+    $row_height = 6; // Reduced from default (e.g., 8 or 9) to make rows more compact
+    $pdf->SetWidths([10, 75, 45, 35, 25]);
     $pdf->SetAligns(['C', 'L', 'L', 'C', 'C']);
-
-    foreach ($other_departments as $sno => $dept) {
-        if ($dept[1] == 'Mr.K.Md.Saleem (Reception)') {
-            $pdf->SetFont('Times', '', $small_font_size);
-        } else {
-            $pdf->SetFont('Times', '', $regular_font_size);
-        }
-        //$attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
+    $pdf->SetFont('Times', 'B', 10);
+    $pdf->Cell(10, $row_height, 'S.No.', 1, 0, 'C');
+    $pdf->Cell(75, $row_height, 'Practical Subjects', 1, 0, 'C');
+    $pdf->Cell(45, $row_height, 'Staff In-charge', 1, 0, 'C');
+    $pdf->Cell(35, $row_height, '', 1, 0, 'C');
+    $pdf->Cell(25, $row_height, 'Signature', 1, 1, 'C');
+    $pdf->SetFont('Times', '', 9);
+    $practical_count = 0;
+    for ($i = 0; $i < count($practical_subjects); $i++) {
+        $subject = $practical_subjects[$i];
+        $practical_count++;
+        $subject_text = $subject['code'] . ' - ' . $subject['name'];
         $pdf->Row([
-            $sno,
-            $dept[0],
-            $dept[1],
-            $attendance_value,
+            $practical_count,
+            $subject_text,
+            $subject['faculty'],
+            '',
             ''
+        ], $row_height); // Use reduced row height
+    }
+}
+
+// Department Table
+$y_position = $pdf->GetY();
+$page_height = 297;
+$bottom_margin = 15;
+$space_left = $page_height - $y_position - $bottom_margin;
+if ($space_left < 50) {
+    $pdf->AddPage();
+} else {
+    $pdf->Ln(2); // Reduce vertical padding after the table
+}
+
+$other_depts_row_height = 6; // Reduced from 6.8 to make it more compact
+
+$pdf->SetFont('Times', '', 10);
+$other_departments = [
+    1 => ['Central Library', 'Mr.A. Fahim Shariff'],
+    2 => ['Department Library', ''],
+    3 => ['Attendance Percentage', 'Counselor'],
+    4 => ['Physical Director', 'Dr.S.I.Aslam'],
+    5 => ['Department', 'Head of the Department'],
+    6 => ['Others', 'Mr.K.Md.Saleem (Reception)']
+];
+
+$regular_font_size = 10;
+$small_font_size = 8.5;
+$pdf->SetWidths([10, 75, 40, 40, 25]);
+$pdf->SetAligns(['C', 'L', 'L', 'C', 'C']);
+
+foreach ($other_departments as $sno => $dept) {
+    if ($dept[1] == 'Mr.K.Md.Saleem (Reception)') {
+        $pdf->SetFont('Times', '', $small_font_size);
+    } else {
+        $pdf->SetFont('Times', '', $regular_font_size);
+    }
+    //$attendance_value = ($dept[0] == 'Attendance Percentage') ? ($attendance_percentage . '%') : '';
+    $pdf->Row([
+        $sno,
+        $dept[0],
+        $dept[1],
+        $attendance_value,
+        ''
+    ], $other_depts_row_height); // Use reduced row height
+}
+
+// ---- ADD EMPTY ROWS IF REQUESTED ----
+if (!empty($extra_dept_rows) && intval($extra_dept_rows) > 0) {
+    $pdf->SetFont('Times', '', $regular_font_size);
+    for ($i = 0; $i < intval($extra_dept_rows); $i++) {
+        $pdf->Row([
+            '', '', '', '', ''
         ], $other_depts_row_height);
     }
-
-    // ---- ADD EMPTY ROWS IF REQUESTED ----
-    if (!empty($extra_dept_rows) && intval($extra_dept_rows) > 0) {
-        $pdf->SetFont('Times', '', $regular_font_size);
-        for ($i = 0; $i < intval($extra_dept_rows); $i++) {
-            $pdf->Row([
-                '', '', '', '', ''
-            ], $other_depts_row_height);
-        }
-    }
-
+}
     // Admin Table
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->SetWidths([85, 40, 65]);
     $pdf->SetAligns(['L', 'L', 'C']);
     $admin_departments = [
