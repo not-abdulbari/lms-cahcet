@@ -214,7 +214,7 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(20, 6, 'BATCH', 0, 0);
     $pdf->Cell(5, 6, ':', 0, 0);
     $pdf->Cell(30, 6, $year, 0, 1);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
 
     $row_height = 7.2;
 
@@ -252,7 +252,7 @@ while ($row = $result->fetch_assoc()) {
             ], $row_height);
         }
     }
-    $pdf->Ln(5);
+    $pdf->Ln(2);
 
     // PRACTICAL SUBJECTS TABLE
     if (!empty($practical_subjects)) {
@@ -288,7 +288,7 @@ while ($row = $result->fetch_assoc()) {
     if ($space_left < 50) {
         $pdf->AddPage();
     } else {
-        $pdf->Ln(5);
+        $pdf->Ln(2);
     }
 
     $other_depts_row_height = 6.8;
@@ -354,13 +354,17 @@ while ($row = $result->fetch_assoc()) {
             ''
         ], $other_depts_row_height);
     }
-    $pdf->Ln(15);
-    $pdf->SetFont('Times', 'B', 10);
-    $pdf->Cell(47.5, 10, 'HOD', 0, 0, 'C');
-    $pdf->Cell(47.5, 10, 'ASSISTANT MANAGER', 0, 0, 'C');
-    $pdf->Cell(47.5, 10, 'MANAGER', 0, 0, 'C');
-    $pdf->Cell(47.5, 10, 'PRINCIPAL', 0, 1, 'C');
-}
+$pdf->Ln(4); // Less vertical space than before (was 10)
+$pdf->SetFont('Times', 'B', 10);
+$pdf->Cell(47.5, 10, 'CLASS INCHARGE', 0, 0, 'C');
+$pdf->Cell(47.5, 10, 'ASSISTANT MANAGER', 0, 0, 'C');
+$pdf->Cell(47.5, 10, 'MANAGER', 0, 0, 'C');
+$pdf->Cell(47.5, 10, 'HOD', 0, 1, 'C');
+
+// BELOW LINE: VICE PRINCIPAL, PRINCIPAL
+$pdf->Ln(2); // Even less vertical space before this line
+$pdf->Cell(95, 8, 'VICE PRINCIPAL', 0, 0, 'C');
+$pdf->Cell(95, 8, 'PRINCIPAL', 0, 1, 'C');
 
 $stmt->close();
 
