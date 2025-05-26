@@ -198,7 +198,7 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(0, 6, 'DEPARTMENT OF ' . strtoupper($branch), 0, 1, 'C');
     $semester_type = ($semester % 2 === 0) ? 'EVEN' : 'ODD';
     $pdf->Cell(0, 6, 'HALL TICKET NO-DUE FORM FOR ACADEMIC YEAR: 2024-2025 (' . $semester_type . ')', 0, 1, 'C');
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     $pdf->SetFont('Times', 'B', 10);
     $pdf->Cell(40, 6, 'NAME', 0, 0);
     $pdf->Cell(5, 6, ':', 0, 0);
@@ -332,7 +332,7 @@ while ($row = $result->fetch_assoc()) {
         }
     }
 
-    $pdf->Ln(5);
+    $pdf->Ln(2);
 
     // ADMIN DEPARTMENT TABLE
     $pdf->SetWidths([85, 40, 65]);
