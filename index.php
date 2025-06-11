@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
         echo json_encode(['status' => 'success', 'redirect' => 'faculty/home.php']);
         exit();
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid username or ']);
         exit();
     }
 }
@@ -304,7 +304,7 @@ input[type="password"]::-ms-clear {
                 <div class="input-group">
                     <div class="eye-icon">
                         <input type="password" name="password" placeholder="Password" required>
-                        <i class="fas fa-eye-slash icon"></i>
+                        <!---<i class="fas fa-eye-slash icon"></i> --->
                     </div>
                 </div>
                 <div class="cf-turnstile" data-sitekey="<?php echo $config['TURNSTILE_SITE_KEY']; ?>" data-theme="light"></div>
